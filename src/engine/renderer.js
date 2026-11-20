@@ -225,8 +225,11 @@ export class Renderer {
     }
     g.setTransform(flip ? -sc : sc, 0, 0, sc, X, Y);
     if (rot) g.rotate(flip ? -rot : rot);
+    const fade = it.alpha ?? 1;                         // an event may fade a thing out (a wreck tumbling away)
+    if (fade < 1) g.globalAlpha = Math.max(0, fade);
     this.paint(g, it, o);
     if (it.carry) for (const cid of it.carry) this.carry(g, it, cid, w, h, o);
+    if (fade < 1) g.globalAlpha = 1;
     g.setTransform(1, 0, 0, 1, 0, 0);
     box.top = Math.min(box.top, Y - h * sc * (it.carry ? 2 : 1)); box.bottom = Math.max(box.bottom, Y + 2);
     return true;

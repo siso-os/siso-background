@@ -7,4 +7,5 @@ import islandFall from './island-fall.js';
 import portal from './portal.js';
 import palaceAttack from './palace-attack.js';
 import launch from './launch.js';
-export const EVENTS = [patrol, flyby, raid, hellfire, barrage, islandFall, portal, palaceAttack, launch];
+import strike from './strike.js';
+export const EVENTS = [patrol, flyby, raid, hellfire, barrage, islandFall, portal, palaceAttack, launch, strike];

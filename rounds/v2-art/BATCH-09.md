@@ -1,0 +1,347 @@
+# Batch 09: Aliens, the portal and real effects (57 images)
+
+The owner liked the portal, walker, flyer and drifter. Effects stay mostly in code; these real ones are references and optional sprites (fire, explosions, flashes on black for screen blending).
+
+Read `README.md` and `STYLE.md` in this folder first. Make the images in the order below: an image whose reference is an id from this batch is an edit of that image, so make that one first.
+
+## b09-alien-craft-day
+
+- background: magenta
+
+SISO Background sprite of one isolated subject: a hyper-real live-action cinema photograph at the largest native resolution your tool offers (at least 2048 px on the long side), landscape 3:2. True side elevation from a camera level with the subject's middle and at most 5 degrees above it, long lens, so it sits naturally in a sideways-scrolling scene. Believable full scale, real materials with fine weathering, physically correct light. The whole subject is in frame with a clear margin of about 8 percent on every side: nothing cropped, nothing touching an edge. The subject: an alien craft: a smooth flattened organic saucer with ribbed edges. Alien design language: iridescent dark chitin and bone-white ribbed shell, organic curves with no bolts or panels, glowing teal-cyan bioluminescent veins and soft amber eyes. Light: clear midday; warm sun from the upper right, cool blue skylight fill from the left, crisp soft-edged shadows. BACKGROUND: a transparent background if your image tool can output one (best). Otherwise a perfectly flat, uniform pure magenta #FF00FF filling every pixel around the subject: no gradient, texture, floor, cast or contact shadow, reflection, horizon or vignette, and no magenta light spilling onto the subject. No cartoon, illustration, video-game render, toy scale, plastic or clay look, and no outlines. No text, letters, numbers, logos, watermarks, UI, borders or captions.
+
+## b09-alien-craft-night
+
+- background: magenta; reference: b09-alien-craft-day (edit it)
+
+EDIT the reference image b09-alien-craft-day: keep exactly the same subject, design, materials, colours, proportions, camera distance and scale, so the two images line up when swapped. Then change only the lighting and time of day, to night. SISO Background sprite of one isolated subject: a hyper-real live-action cinema photograph at the largest native resolution your tool offers (at least 2048 px on the long side), landscape 3:2. True side elevation from a camera level with the subject's middle and at most 5 degrees above it, long lens, so it sits naturally in a sideways-scrolling scene. Believable full scale, real materials with fine weathering, physically correct light. The whole subject is in frame with a clear margin of about 8 percent on every side: nothing cropped, nothing touching an edge. The subject: an alien craft: a smooth flattened organic saucer with ribbed edges. Alien design language: iridescent dark chitin and bone-white ribbed shell, organic curves with no bolts or panels, glowing teal-cyan bioluminescent veins and soft amber eyes. Light: night; a cool moonlight rim from the upper left; the subject's own lights carry it (windows, beacons, engines, signs), with readable dark detail and a restrained, physical glow, no bloom haze. BACKGROUND: a transparent background if your image tool can output one (best). Otherwise a perfectly flat, uniform pure magenta #FF00FF filling every pixel around the subject: no gradient, texture, floor, cast or contact shadow, reflection, horizon or vignette, and no magenta light spilling onto the subject. No cartoon, illustration, video-game render, toy scale, plastic or clay look, and no outlines. No text, letters, numbers, logos, watermarks, UI, borders or captions.
+
+## b09-alien-mothership-day
+
+- background: magenta
+
+SISO Background sprite of one isolated subject: a hyper-real live-action cinema photograph at the largest native resolution your tool offers (at least 2048 px on the long side), landscape 3:2. True side elevation from a camera level with the subject's middle and at most 5 degrees above it, long lens, so it sits naturally in a sideways-scrolling scene. Believable full scale, real materials with fine weathering, physically correct light. The whole subject is in frame with a clear margin of about 8 percent on every side: nothing cropped, nothing touching an edge. The subject: an alien mothership: a vast ribbed organic hull like a giant seed pod. Alien design language: iridescent dark chitin and bone-white ribbed shell, organic curves with no bolts or panels, glowing teal-cyan bioluminescent veins and soft amber eyes. Light: clear midday; warm sun from the upper right, cool blue skylight fill from the left, crisp soft-edged shadows. BACKGROUND: a transparent background if your image tool can output one (best). Otherwise a perfectly flat, uniform pure magenta #FF00FF filling every pixel around the subject: no gradient, texture, floor, cast or contact shadow, reflection, horizon or vignette, and no magenta light spilling onto the subject. No cartoon, illustration, video-game render, toy scale, plastic or clay look, and no outlines. No text, letters, numbers, logos, watermarks, UI, borders or captions.
+
+## b09-alien-mothership-night
+
+- background: magenta; reference: b09-alien-mothership-day (edit it)
+
+EDIT the reference image b09-alien-mothership-day: keep exactly the same subject, design, materials, colours, proportions, camera distance and scale, so the two images line up when swapped. Then change only the lighting and time of day, to night. SISO Background sprite of one isolated subject: a hyper-real live-action cinema photograph at the largest native resolution your tool offers (at least 2048 px on the long side), landscape 3:2. True side elevation from a camera level with the subject's middle and at most 5 degrees above it, long lens, so it sits naturally in a sideways-scrolling scene. Believable full scale, real materials with fine weathering, physically correct light. The whole subject is in frame with a clear margin of about 8 percent on every side: nothing cropped, nothing touching an edge. The subject: an alien mothership: a vast ribbed organic hull like a giant seed pod. Alien design language: iridescent dark chitin and bone-white ribbed shell, organic curves with no bolts or panels, glowing teal-cyan bioluminescent veins and soft amber eyes. Light: night; a cool moonlight rim from the upper left; the subject's own lights carry it (windows, beacons, engines, signs), with readable dark detail and a restrained, physical glow, no bloom haze. BACKGROUND: a transparent background if your image tool can output one (best). Otherwise a perfectly flat, uniform pure magenta #FF00FF filling every pixel around the subject: no gradient, texture, floor, cast or contact shadow, reflection, horizon or vignette, and no magenta light spilling onto the subject. No cartoon, illustration, video-game render, toy scale, plastic or clay look, and no outlines. No text, letters, numbers, logos, watermarks, UI, borders or captions.
+
+## b09-alien-hive-isle-day
+
+- background: magenta
+
+SISO Background sprite of one isolated subject: a hyper-real live-action cinema photograph at the largest native resolution your tool offers (at least 2048 px on the long side), landscape 3:2. True side elevation from a camera level with the subject's middle and at most 5 degrees above it, long lens, so it sits naturally in a sideways-scrolling scene. Believable full scale, real materials with fine weathering, physically correct light. The whole subject is in frame with a clear margin of about 8 percent on every side: nothing cropped, nothing touching an edge. The subject: an alien hive island: a floating island: a broad mass of real weathered rock (layered sandstone and dark basalt, roots, moss, grass and small trees along the flat top) tapering underneath into a jagged hanging root of rock overgrown with organic shell towers and glowing pods. Alien design language: iridescent dark chitin and bone-white ribbed shell, organic curves with no bolts or panels, glowing teal-cyan bioluminescent veins and soft amber eyes. Light: clear midday; warm sun from the upper right, cool blue skylight fill from the left, crisp soft-edged shadows. BACKGROUND: a transparent background if your image tool can output one (best). Otherwise a perfectly flat, uniform pure magenta #FF00FF filling every pixel around the subject: no gradient, texture, floor, cast or contact shadow, reflection, horizon or vignette, and no magenta light spilling onto the subject. No cartoon, illustration, video-game render, toy scale, plastic or clay look, and no outlines. No text, letters, numbers, logos, watermarks, UI, borders or captions.
+
+## b09-alien-hive-isle-night
+
+- background: magenta; reference: b09-alien-hive-isle-day (edit it)
+
+EDIT the reference image b09-alien-hive-isle-day: keep exactly the same subject, design, materials, colours, proportions, camera distance and scale, so the two images line up when swapped. Then change only the lighting and time of day, to night. SISO Background sprite of one isolated subject: a hyper-real live-action cinema photograph at the largest native resolution your tool offers (at least 2048 px on the long side), landscape 3:2. True side elevation from a camera level with the subject's middle and at most 5 degrees above it, long lens, so it sits naturally in a sideways-scrolling scene. Believable full scale, real materials with fine weathering, physically correct light. The whole subject is in frame with a clear margin of about 8 percent on every side: nothing cropped, nothing touching an edge. The subject: an alien hive island: a floating island: a broad mass of real weathered rock (layered sandstone and dark basalt, roots, moss, grass and small trees along the flat top) tapering underneath into a jagged hanging root of rock overgrown with organic shell towers and glowing pods. Alien design language: iridescent dark chitin and bone-white ribbed shell, organic curves with no bolts or panels, glowing teal-cyan bioluminescent veins and soft amber eyes. Light: night; a cool moonlight rim from the upper left; the subject's own lights carry it (windows, beacons, engines, signs), with readable dark detail and a restrained, physical glow, no bloom haze. BACKGROUND: a transparent background if your image tool can output one (best). Otherwise a perfectly flat, uniform pure magenta #FF00FF filling every pixel around the subject: no gradient, texture, floor, cast or contact shadow, reflection, horizon or vignette, and no magenta light spilling onto the subject. No cartoon, illustration, video-game render, toy scale, plastic or clay look, and no outlines. No text, letters, numbers, logos, watermarks, UI, borders or captions.
+
+## b09-alien-wreck-day
+
+- background: magenta
+
+SISO Background sprite of one isolated subject: a hyper-real live-action cinema photograph at the largest native resolution your tool offers (at least 2048 px on the long side), landscape 3:2. True side elevation from a camera level with the subject's middle and at most 5 degrees above it, long lens, so it sits naturally in a sideways-scrolling scene. Believable full scale, real materials with fine weathering, physically correct light. The whole subject is in frame with a clear margin of about 8 percent on every side: nothing cropped, nothing touching an edge. The subject: a crashed alien craft half buried in a rock outcrop, cut cleanly at the ground. Alien design language: iridescent dark chitin and bone-white ribbed shell, organic curves with no bolts or panels, glowing teal-cyan bioluminescent veins and soft amber eyes. Light: clear midday; warm sun from the upper right, cool blue skylight fill from the left, crisp soft-edged shadows. BACKGROUND: a transparent background if your image tool can output one (best). Otherwise a perfectly flat, uniform pure magenta #FF00FF filling every pixel around the subject: no gradient, texture, floor, cast or contact shadow, reflection, horizon or vignette, and no magenta light spilling onto the subject. No cartoon, illustration, video-game render, toy scale, plastic or clay look, and no outlines. No text, letters, numbers, logos, watermarks, UI, borders or captions.
+
+## b09-alien-seed-pod-night
+
+- background: magenta
+
+SISO Background sprite of one isolated subject: a hyper-real live-action cinema photograph at the largest native resolution your tool offers (at least 2048 px on the long side), landscape 3:2. True side elevation from a camera level with the subject's middle and at most 5 degrees above it, long lens, so it sits naturally in a sideways-scrolling scene. Believable full scale, real materials with fine weathering, physically correct light. The whole subject is in frame with a clear margin of about 8 percent on every side: nothing cropped, nothing touching an edge. The subject: a landed alien seed pod opening its petals. Alien design language: iridescent dark chitin and bone-white ribbed shell, organic curves with no bolts or panels, glowing teal-cyan bioluminescent veins and soft amber eyes. Light: night; a cool moonlight rim from the upper left; the subject's own lights carry it (windows, beacons, engines, signs), with readable dark detail and a restrained, physical glow, no bloom haze. BACKGROUND: a transparent background if your image tool can output one (best). Otherwise a perfectly flat, uniform pure magenta #FF00FF filling every pixel around the subject: no gradient, texture, floor, cast or contact shadow, reflection, horizon or vignette, and no magenta light spilling onto the subject. No cartoon, illustration, video-game render, toy scale, plastic or clay look, and no outlines. No text, letters, numbers, logos, watermarks, UI, borders or captions.
+
+## b09-alien-spire-night
+
+- background: magenta
+
+SISO Background sprite of one isolated subject: a hyper-real live-action cinema photograph at the largest native resolution your tool offers (at least 2048 px on the long side), landscape 3:2. True side elevation from a camera level with the subject's middle and at most 5 degrees above it, long lens, so it sits naturally in a sideways-scrolling scene. Believable full scale, real materials with fine weathering, physically correct light. The whole subject is in frame with a clear margin of about 8 percent on every side: nothing cropped, nothing touching an edge. The subject: a tall organic alien tendril tower. Alien design language: iridescent dark chitin and bone-white ribbed shell, organic curves with no bolts or panels, glowing teal-cyan bioluminescent veins and soft amber eyes. Light: night; a cool moonlight rim from the upper left; the subject's own lights carry it (windows, beacons, engines, signs), with readable dark detail and a restrained, physical glow, no bloom haze. BACKGROUND: a transparent background if your image tool can output one (best). Otherwise a perfectly flat, uniform pure magenta #FF00FF filling every pixel around the subject: no gradient, texture, floor, cast or contact shadow, reflection, horizon or vignette, and no magenta light spilling onto the subject. No cartoon, illustration, video-game render, toy scale, plastic or clay look, and no outlines. No text, letters, numbers, logos, watermarks, UI, borders or captions.
+
+## b09-drifter-1-night
+
+- background: magenta
+
+SISO Background sprite of one isolated subject: a hyper-real live-action cinema photograph at the largest native resolution your tool offers (at least 2048 px on the long side), landscape 3:2. True side elevation from a camera level with the subject's middle and at most 5 degrees above it, long lens, so it sits naturally in a sideways-scrolling scene. Believable full scale, real materials with fine weathering, physically correct light. The whole subject is in frame with a clear margin of about 8 percent on every side: nothing cropped, nothing touching an edge. The subject: an alien drifter, a huge translucent jellyfish-like floater with a glowing bell and long trailing tendrils, bell relaxed. Alien design language: iridescent dark chitin and bone-white ribbed shell, organic curves with no bolts or panels, glowing teal-cyan bioluminescent veins and soft amber eyes. Light: night; a cool moonlight rim from the upper left; the subject's own lights carry it (windows, beacons, engines, signs), with readable dark detail and a restrained, physical glow, no bloom haze. BACKGROUND: a transparent background if your image tool can output one (best). Otherwise a perfectly flat, uniform pure magenta #FF00FF filling every pixel around the subject: no gradient, texture, floor, cast or contact shadow, reflection, horizon or vignette, and no magenta light spilling onto the subject. No cartoon, illustration, video-game render, toy scale, plastic or clay look, and no outlines. No text, letters, numbers, logos, watermarks, UI, borders or captions.
+
+## b09-drifter-2-night
+
+- background: magenta; reference: b09-drifter-1-night (edit it)
+
+EDIT the reference image b09-drifter-1-night: keep exactly the same subject, design, materials, colours, proportions, camera distance and scale, so the two images line up when swapped. Then the bell contracted, tendrils pulled up. SISO Background sprite of one isolated subject: a hyper-real live-action cinema photograph at the largest native resolution your tool offers (at least 2048 px on the long side), landscape 3:2. True side elevation from a camera level with the subject's middle and at most 5 degrees above it, long lens, so it sits naturally in a sideways-scrolling scene. Believable full scale, real materials with fine weathering, physically correct light. The whole subject is in frame with a clear margin of about 8 percent on every side: nothing cropped, nothing touching an edge. The alien drifter. Light: night; a cool moonlight rim from the upper left; the subject's own lights carry it (windows, beacons, engines, signs), with readable dark detail and a restrained, physical glow, no bloom haze. BACKGROUND: a transparent background if your image tool can output one (best). Otherwise a perfectly flat, uniform pure magenta #FF00FF filling every pixel around the subject: no gradient, texture, floor, cast or contact shadow, reflection, horizon or vignette, and no magenta light spilling onto the subject. No cartoon, illustration, video-game render, toy scale, plastic or clay look, and no outlines. No text, letters, numbers, logos, watermarks, UI, borders or captions.
+
+## b09-drifter-3-night
+
+- background: magenta; reference: b09-drifter-1-night (edit it)
+
+EDIT the reference image b09-drifter-1-night: keep exactly the same subject, design, materials, colours, proportions, camera distance and scale, so the two images line up when swapped. Then the bell fully expanded, tendrils streaming down. SISO Background sprite of one isolated subject: a hyper-real live-action cinema photograph at the largest native resolution your tool offers (at least 2048 px on the long side), landscape 3:2. True side elevation from a camera level with the subject's middle and at most 5 degrees above it, long lens, so it sits naturally in a sideways-scrolling scene. Believable full scale, real materials with fine weathering, physically correct light. The whole subject is in frame with a clear margin of about 8 percent on every side: nothing cropped, nothing touching an edge. The alien drifter. Light: night; a cool moonlight rim from the upper left; the subject's own lights carry it (windows, beacons, engines, signs), with readable dark detail and a restrained, physical glow, no bloom haze. BACKGROUND: a transparent background if your image tool can output one (best). Otherwise a perfectly flat, uniform pure magenta #FF00FF filling every pixel around the subject: no gradient, texture, floor, cast or contact shadow, reflection, horizon or vignette, and no magenta light spilling onto the subject. No cartoon, illustration, video-game render, toy scale, plastic or clay look, and no outlines. No text, letters, numbers, logos, watermarks, UI, borders or captions.
+
+## b09-flyer-1-day
+
+- background: magenta
+
+SISO Background sprite of one isolated subject: a hyper-real live-action cinema photograph at the largest native resolution your tool offers (at least 2048 px on the long side), landscape 3:2. True side elevation from a camera level with the subject's middle and at most 5 degrees above it, long lens, so it sits naturally in a sideways-scrolling scene. Believable full scale, real materials with fine weathering, physically correct light. The whole subject is in frame with a clear margin of about 8 percent on every side: nothing cropped, nothing touching an edge. The subject: an alien flyer, a manta-ray-like creature-craft with wide wings, wings level. Alien design language: iridescent dark chitin and bone-white ribbed shell, organic curves with no bolts or panels, glowing teal-cyan bioluminescent veins and soft amber eyes. Light: clear midday; warm sun from the upper right, cool blue skylight fill from the left, crisp soft-edged shadows. BACKGROUND: a transparent background if your image tool can output one (best). Otherwise a perfectly flat, uniform pure magenta #FF00FF filling every pixel around the subject: no gradient, texture, floor, cast or contact shadow, reflection, horizon or vignette, and no magenta light spilling onto the subject. No cartoon, illustration, video-game render, toy scale, plastic or clay look, and no outlines. No text, letters, numbers, logos, watermarks, UI, borders or captions.
+
+## b09-flyer-2-day
+
+- background: magenta; reference: b09-flyer-1-day (edit it)
+
+EDIT the reference image b09-flyer-1-day: keep exactly the same subject, design, materials, colours, proportions, camera distance and scale, so the two images line up when swapped. Then the wings raised high. SISO Background sprite of one isolated subject: a hyper-real live-action cinema photograph at the largest native resolution your tool offers (at least 2048 px on the long side), landscape 3:2. True side elevation from a camera level with the subject's middle and at most 5 degrees above it, long lens, so it sits naturally in a sideways-scrolling scene. Believable full scale, real materials with fine weathering, physically correct light. The whole subject is in frame with a clear margin of about 8 percent on every side: nothing cropped, nothing touching an edge. The alien flyer. Light: clear midday; warm sun from the upper right, cool blue skylight fill from the left, crisp soft-edged shadows. BACKGROUND: a transparent background if your image tool can output one (best). Otherwise a perfectly flat, uniform pure magenta #FF00FF filling every pixel around the subject: no gradient, texture, floor, cast or contact shadow, reflection, horizon or vignette, and no magenta light spilling onto the subject. No cartoon, illustration, video-game render, toy scale, plastic or clay look, and no outlines. No text, letters, numbers, logos, watermarks, UI, borders or captions.
+
+## b09-flyer-3-day
+
+- background: magenta; reference: b09-flyer-1-day (edit it)
+
+EDIT the reference image b09-flyer-1-day: keep exactly the same subject, design, materials, colours, proportions, camera distance and scale, so the two images line up when swapped. Then the wings swept low. SISO Background sprite of one isolated subject: a hyper-real live-action cinema photograph at the largest native resolution your tool offers (at least 2048 px on the long side), landscape 3:2. True side elevation from a camera level with the subject's middle and at most 5 degrees above it, long lens, so it sits naturally in a sideways-scrolling scene. Believable full scale, real materials with fine weathering, physically correct light. The whole subject is in frame with a clear margin of about 8 percent on every side: nothing cropped, nothing touching an edge. The alien flyer. Light: clear midday; warm sun from the upper right, cool blue skylight fill from the left, crisp soft-edged shadows. BACKGROUND: a transparent background if your image tool can output one (best). Otherwise a perfectly flat, uniform pure magenta #FF00FF filling every pixel around the subject: no gradient, texture, floor, cast or contact shadow, reflection, horizon or vignette, and no magenta light spilling onto the subject. No cartoon, illustration, video-game render, toy scale, plastic or clay look, and no outlines. No text, letters, numbers, logos, watermarks, UI, borders or captions.
+
+## b09-walker-1-day
+
+- background: magenta
+
+SISO Background sprite of one isolated subject: a hyper-real live-action cinema photograph at the largest native resolution your tool offers (at least 2048 px on the long side), landscape 3:2. True side elevation from a camera level with the subject's middle and at most 5 degrees above it, long lens, so it sits naturally in a sideways-scrolling scene. Believable full scale, real materials with fine weathering, physically correct light. The whole subject is in frame with a clear margin of about 8 percent on every side: nothing cropped, nothing touching an edge. The subject: an alien walker, a tall three-legged tripod machine with a domed head, side-on, mid-stride with the front leg forward. Alien design language: iridescent dark chitin and bone-white ribbed shell, organic curves with no bolts or panels, glowing teal-cyan bioluminescent veins and soft amber eyes. Light: clear midday; warm sun from the upper right, cool blue skylight fill from the left, crisp soft-edged shadows. BACKGROUND: a transparent background if your image tool can output one (best). Otherwise a perfectly flat, uniform pure magenta #FF00FF filling every pixel around the subject: no gradient, texture, floor, cast or contact shadow, reflection, horizon or vignette, and no magenta light spilling onto the subject. No cartoon, illustration, video-game render, toy scale, plastic or clay look, and no outlines. No text, letters, numbers, logos, watermarks, UI, borders or captions.
+
+## b09-walker-2-day
+
+- background: magenta; reference: b09-walker-1-day (edit it)
+
+EDIT the reference image b09-walker-1-day: keep exactly the same subject, design, materials, colours, proportions, camera distance and scale, so the two images line up when swapped. Then the legs passing each other, all three under the body. SISO Background sprite of one isolated subject: a hyper-real live-action cinema photograph at the largest native resolution your tool offers (at least 2048 px on the long side), landscape 3:2. True side elevation from a camera level with the subject's middle and at most 5 degrees above it, long lens, so it sits naturally in a sideways-scrolling scene. Believable full scale, real materials with fine weathering, physically correct light. The whole subject is in frame with a clear margin of about 8 percent on every side: nothing cropped, nothing touching an edge. The alien walker. Light: clear midday; warm sun from the upper right, cool blue skylight fill from the left, crisp soft-edged shadows. BACKGROUND: a transparent background if your image tool can output one (best). Otherwise a perfectly flat, uniform pure magenta #FF00FF filling every pixel around the subject: no gradient, texture, floor, cast or contact shadow, reflection, horizon or vignette, and no magenta light spilling onto the subject. No cartoon, illustration, video-game render, toy scale, plastic or clay look, and no outlines. No text, letters, numbers, logos, watermarks, UI, borders or captions.
+
+## b09-walker-3-day
+
+- background: magenta; reference: b09-walker-1-day (edit it)
+
+EDIT the reference image b09-walker-1-day: keep exactly the same subject, design, materials, colours, proportions, camera distance and scale, so the two images line up when swapped. Then the rear leg swinging forward. SISO Background sprite of one isolated subject: a hyper-real live-action cinema photograph at the largest native resolution your tool offers (at least 2048 px on the long side), landscape 3:2. True side elevation from a camera level with the subject's middle and at most 5 degrees above it, long lens, so it sits naturally in a sideways-scrolling scene. Believable full scale, real materials with fine weathering, physically correct light. The whole subject is in frame with a clear margin of about 8 percent on every side: nothing cropped, nothing touching an edge. The alien walker. Light: clear midday; warm sun from the upper right, cool blue skylight fill from the left, crisp soft-edged shadows. BACKGROUND: a transparent background if your image tool can output one (best). Otherwise a perfectly flat, uniform pure magenta #FF00FF filling every pixel around the subject: no gradient, texture, floor, cast or contact shadow, reflection, horizon or vignette, and no magenta light spilling onto the subject. No cartoon, illustration, video-game render, toy scale, plastic or clay look, and no outlines. No text, letters, numbers, logos, watermarks, UI, borders or captions.
+
+## b09-walker-4-day
+
+- background: magenta; reference: b09-walker-1-day (edit it)
+
+EDIT the reference image b09-walker-1-day: keep exactly the same subject, design, materials, colours, proportions, camera distance and scale, so the two images line up when swapped. Then the stance wide, about to step. SISO Background sprite of one isolated subject: a hyper-real live-action cinema photograph at the largest native resolution your tool offers (at least 2048 px on the long side), landscape 3:2. True side elevation from a camera level with the subject's middle and at most 5 degrees above it, long lens, so it sits naturally in a sideways-scrolling scene. Believable full scale, real materials with fine weathering, physically correct light. The whole subject is in frame with a clear margin of about 8 percent on every side: nothing cropped, nothing touching an edge. The alien walker. Light: clear midday; warm sun from the upper right, cool blue skylight fill from the left, crisp soft-edged shadows. BACKGROUND: a transparent background if your image tool can output one (best). Otherwise a perfectly flat, uniform pure magenta #FF00FF filling every pixel around the subject: no gradient, texture, floor, cast or contact shadow, reflection, horizon or vignette, and no magenta light spilling onto the subject. No cartoon, illustration, video-game render, toy scale, plastic or clay look, and no outlines. No text, letters, numbers, logos, watermarks, UI, borders or captions.
+
+## b09-walker-1-night
+
+- background: magenta; reference: b09-walker-1-day (edit it)
+
+EDIT the reference image b09-walker-1-day: keep exactly the same subject, design, materials, colours, proportions, camera distance and scale, so the two images line up when swapped. Then change only the lighting to night. SISO Background sprite of one isolated subject: a hyper-real live-action cinema photograph at the largest native resolution your tool offers (at least 2048 px on the long side), landscape 3:2. True side elevation from a camera level with the subject's middle and at most 5 degrees above it, long lens, so it sits naturally in a sideways-scrolling scene. Believable full scale, real materials with fine weathering, physically correct light. The whole subject is in frame with a clear margin of about 8 percent on every side: nothing cropped, nothing touching an edge. The alien walker. Light: night; a cool moonlight rim from the upper left; the subject's own lights carry it (windows, beacons, engines, signs), with readable dark detail and a restrained, physical glow, no bloom haze. BACKGROUND: a transparent background if your image tool can output one (best). Otherwise a perfectly flat, uniform pure magenta #FF00FF filling every pixel around the subject: no gradient, texture, floor, cast or contact shadow, reflection, horizon or vignette, and no magenta light spilling onto the subject. No cartoon, illustration, video-game render, toy scale, plastic or clay look, and no outlines. No text, letters, numbers, logos, watermarks, UI, borders or captions.
+
+## b09-portal-ring-night
+
+- background: magenta
+
+SISO Background sprite of one isolated subject: a hyper-real live-action cinema photograph at the largest native resolution your tool offers (at least 2048 px on the long side), landscape 3:2. True side elevation from a camera level with the subject's middle and at most 5 degrees above it, long lens, so it sits naturally in a sideways-scrolling scene. Believable full scale, real materials with fine weathering, physically correct light. The whole subject is in frame with a clear margin of about 8 percent on every side: nothing cropped, nothing touching an edge. The subject: a huge dormant alien portal: a ring of dark chitin and bone standing upright, its centre empty. Alien design language: iridescent dark chitin and bone-white ribbed shell, organic curves with no bolts or panels, glowing teal-cyan bioluminescent veins and soft amber eyes. Light: night; a cool moonlight rim from the upper left; the subject's own lights carry it (windows, beacons, engines, signs), with readable dark detail and a restrained, physical glow, no bloom haze. BACKGROUND: a transparent background if your image tool can output one (best). Otherwise a perfectly flat, uniform pure magenta #FF00FF filling every pixel around the subject: no gradient, texture, floor, cast or contact shadow, reflection, horizon or vignette, and no magenta light spilling onto the subject. No cartoon, illustration, video-game render, toy scale, plastic or clay look, and no outlines. No text, letters, numbers, logos, watermarks, UI, borders or captions.
+
+## b09-portal-opening-night
+
+- background: black; reference: b09-portal-ring-night (edit it)
+
+EDIT the reference image b09-portal-ring-night: keep exactly the same subject, design, materials, colours, proportions, camera distance and scale, so the two images line up when swapped. Then teal lightning crackling across the ring's centre. SISO Background sprite of one isolated subject: a hyper-real live-action cinema photograph at the largest native resolution your tool offers (at least 2048 px on the long side), landscape 3:2. True side elevation from a camera level with the subject's middle and at most 5 degrees above it, long lens, so it sits naturally in a sideways-scrolling scene. Believable full scale, real materials with fine weathering, physically correct light. The whole subject is in frame with a clear margin of about 8 percent on every side: nothing cropped, nothing touching an edge. The alien portal. Light: night; a cool moonlight rim from the upper left; the subject's own lights carry it (windows, beacons, engines, signs), with readable dark detail and a restrained, physical glow, no bloom haze. BACKGROUND: pure black #000000 everywhere around the subject: no stars, haze, floor or glow beyond the subject itself. The subject is self-luminous and will be screen-blended over the scene, so anything that is not the subject must be exactly black. No cartoon, illustration, video-game render, toy scale, plastic or clay look, and no outlines. No text, letters, numbers, logos, watermarks, UI, borders or captions.
+
+## b09-portal-open-night
+
+- background: black; reference: b09-portal-ring-night (edit it)
+
+EDIT the reference image b09-portal-ring-night: keep exactly the same subject, design, materials, colours, proportions, camera distance and scale, so the two images line up when swapped. Then a swirling teal-violet vortex filling the ring, light pouring out. SISO Background sprite of one isolated subject: a hyper-real live-action cinema photograph at the largest native resolution your tool offers (at least 2048 px on the long side), landscape 3:2. True side elevation from a camera level with the subject's middle and at most 5 degrees above it, long lens, so it sits naturally in a sideways-scrolling scene. Believable full scale, real materials with fine weathering, physically correct light. The whole subject is in frame with a clear margin of about 8 percent on every side: nothing cropped, nothing touching an edge. The alien portal. Light: night; a cool moonlight rim from the upper left; the subject's own lights carry it (windows, beacons, engines, signs), with readable dark detail and a restrained, physical glow, no bloom haze. BACKGROUND: pure black #000000 everywhere around the subject: no stars, haze, floor or glow beyond the subject itself. The subject is self-luminous and will be screen-blended over the scene, so anything that is not the subject must be exactly black. No cartoon, illustration, video-game render, toy scale, plastic or clay look, and no outlines. No text, letters, numbers, logos, watermarks, UI, borders or captions.
+
+## b09-portal-closing-night
+
+- background: black; reference: b09-portal-ring-night (edit it)
+
+EDIT the reference image b09-portal-ring-night: keep exactly the same subject, design, materials, colours, proportions, camera distance and scale, so the two images line up when swapped. Then the vortex collapsing into a bright point. SISO Background sprite of one isolated subject: a hyper-real live-action cinema photograph at the largest native resolution your tool offers (at least 2048 px on the long side), landscape 3:2. True side elevation from a camera level with the subject's middle and at most 5 degrees above it, long lens, so it sits naturally in a sideways-scrolling scene. Believable full scale, real materials with fine weathering, physically correct light. The whole subject is in frame with a clear margin of about 8 percent on every side: nothing cropped, nothing touching an edge. The alien portal. Light: night; a cool moonlight rim from the upper left; the subject's own lights carry it (windows, beacons, engines, signs), with readable dark detail and a restrained, physical glow, no bloom haze. BACKGROUND: pure black #000000 everywhere around the subject: no stars, haze, floor or glow beyond the subject itself. The subject is self-luminous and will be screen-blended over the scene, so anything that is not the subject must be exactly black. No cartoon, illustration, video-game render, toy scale, plastic or clay look, and no outlines. No text, letters, numbers, logos, watermarks, UI, borders or captions.
+
+## b09-portal-sea-night
+
+- background: magenta
+
+SISO Background sprite of one isolated subject: a hyper-real live-action cinema photograph at the largest native resolution your tool offers (at least 2048 px on the long side), landscape 3:2. True side elevation from a camera level with the subject's middle and at most 5 degrees above it, long lens, so it sits naturally in a sideways-scrolling scene. Believable full scale, real materials with fine weathering, physically correct light. The whole subject is in frame with a clear margin of about 8 percent on every side: nothing cropped, nothing touching an edge. The subject: an alien portal ring rising half out of the sea, its open vortex lighting the spray, cut cleanly at the waterline. Alien design language: iridescent dark chitin and bone-white ribbed shell, organic curves with no bolts or panels, glowing teal-cyan bioluminescent veins and soft amber eyes. Light: night; a cool moonlight rim from the upper left; the subject's own lights carry it (windows, beacons, engines, signs), with readable dark detail and a restrained, physical glow, no bloom haze. BACKGROUND: a transparent background if your image tool can output one (best). Otherwise a perfectly flat, uniform pure magenta #FF00FF filling every pixel around the subject: no gradient, texture, floor, cast or contact shadow, reflection, horizon or vignette, and no magenta light spilling onto the subject. No cartoon, illustration, video-game render, toy scale, plastic or clay look, and no outlines. No text, letters, numbers, logos, watermarks, UI, borders or captions.
+
+## b09-blast-1
+
+- background: black; explosion flipbook
+
+SISO Background effect sprite: one isolated visual effect, shot as real practical pyrotechnics and light at the largest native resolution your tool offers, square 1:1, centred with a clear margin, nothing touching an edge. The subject: a large mid-air explosion, frame 1 of 8: the first white-hot flash and ignition core. BACKGROUND: pure black #000000 everywhere around the subject: no stars, haze, floor or glow beyond the subject itself. The subject is self-luminous and will be screen-blended over the scene, so anything that is not the subject must be exactly black. No cartoon, illustration, video-game render, toy scale, plastic or clay look, and no outlines. No text, letters, numbers, logos, watermarks, UI, borders or captions.
+
+## b09-blast-2
+
+- background: black; reference: b09-blast-1 (edit it)
+
+EDIT the reference image b09-blast-1: keep exactly the same subject, design, materials, colours, proportions, camera distance and scale, so the two images line up when swapped. Then show frame 2 of 8 of the same explosion at the same scale: a growing orange fireball. SISO Background effect sprite: one isolated visual effect, shot as real practical pyrotechnics and light at the largest native resolution your tool offers, square 1:1, centred with a clear margin, nothing touching an edge. A mid-air explosion. BACKGROUND: pure black #000000 everywhere around the subject: no stars, haze, floor or glow beyond the subject itself. The subject is self-luminous and will be screen-blended over the scene, so anything that is not the subject must be exactly black. No cartoon, illustration, video-game render, toy scale, plastic or clay look, and no outlines. No text, letters, numbers, logos, watermarks, UI, borders or captions.
+
+## b09-blast-3
+
+- background: black; reference: b09-blast-1 (edit it)
+
+EDIT the reference image b09-blast-1: keep exactly the same subject, design, materials, colours, proportions, camera distance and scale, so the two images line up when swapped. Then show frame 3 of 8 of the same explosion at the same scale: the fireball at its peak, rolling. SISO Background effect sprite: one isolated visual effect, shot as real practical pyrotechnics and light at the largest native resolution your tool offers, square 1:1, centred with a clear margin, nothing touching an edge. A mid-air explosion. BACKGROUND: pure black #000000 everywhere around the subject: no stars, haze, floor or glow beyond the subject itself. The subject is self-luminous and will be screen-blended over the scene, so anything that is not the subject must be exactly black. No cartoon, illustration, video-game render, toy scale, plastic or clay look, and no outlines. No text, letters, numbers, logos, watermarks, UI, borders or captions.
+
+## b09-blast-4
+
+- background: black; reference: b09-blast-1 (edit it)
+
+EDIT the reference image b09-blast-1: keep exactly the same subject, design, materials, colours, proportions, camera distance and scale, so the two images line up when swapped. Then show frame 4 of 8 of the same explosion at the same scale: the fireball rolling and darkening at the edges. SISO Background effect sprite: one isolated visual effect, shot as real practical pyrotechnics and light at the largest native resolution your tool offers, square 1:1, centred with a clear margin, nothing touching an edge. A mid-air explosion. BACKGROUND: pure black #000000 everywhere around the subject: no stars, haze, floor or glow beyond the subject itself. The subject is self-luminous and will be screen-blended over the scene, so anything that is not the subject must be exactly black. No cartoon, illustration, video-game render, toy scale, plastic or clay look, and no outlines. No text, letters, numbers, logos, watermarks, UI, borders or captions.
+
+## b09-blast-5
+
+- background: black; reference: b09-blast-1 (edit it)
+
+EDIT the reference image b09-blast-1: keep exactly the same subject, design, materials, colours, proportions, camera distance and scale, so the two images line up when swapped. Then show frame 5 of 8 of the same explosion at the same scale: breaking up into flame tongues and dark smoke. SISO Background effect sprite: one isolated visual effect, shot as real practical pyrotechnics and light at the largest native resolution your tool offers, square 1:1, centred with a clear margin, nothing touching an edge. A mid-air explosion. BACKGROUND: pure black #000000 everywhere around the subject: no stars, haze, floor or glow beyond the subject itself. The subject is self-luminous and will be screen-blended over the scene, so anything that is not the subject must be exactly black. No cartoon, illustration, video-game render, toy scale, plastic or clay look, and no outlines. No text, letters, numbers, logos, watermarks, UI, borders or captions.
+
+## b09-blast-6
+
+- background: black; reference: b09-blast-1 (edit it)
+
+EDIT the reference image b09-blast-1: keep exactly the same subject, design, materials, colours, proportions, camera distance and scale, so the two images line up when swapped. Then show frame 6 of 8 of the same explosion at the same scale: mostly dark smoke with fire inside. SISO Background effect sprite: one isolated visual effect, shot as real practical pyrotechnics and light at the largest native resolution your tool offers, square 1:1, centred with a clear margin, nothing touching an edge. A mid-air explosion. BACKGROUND: pure black #000000 everywhere around the subject: no stars, haze, floor or glow beyond the subject itself. The subject is self-luminous and will be screen-blended over the scene, so anything that is not the subject must be exactly black. No cartoon, illustration, video-game render, toy scale, plastic or clay look, and no outlines. No text, letters, numbers, logos, watermarks, UI, borders or captions.
+
+## b09-blast-7
+
+- background: black; reference: b09-blast-1 (edit it)
+
+EDIT the reference image b09-blast-1: keep exactly the same subject, design, materials, colours, proportions, camera distance and scale, so the two images line up when swapped. Then show frame 7 of 8 of the same explosion at the same scale: thinning smoke with glowing embers. SISO Background effect sprite: one isolated visual effect, shot as real practical pyrotechnics and light at the largest native resolution your tool offers, square 1:1, centred with a clear margin, nothing touching an edge. A mid-air explosion. BACKGROUND: pure black #000000 everywhere around the subject: no stars, haze, floor or glow beyond the subject itself. The subject is self-luminous and will be screen-blended over the scene, so anything that is not the subject must be exactly black. No cartoon, illustration, video-game render, toy scale, plastic or clay look, and no outlines. No text, letters, numbers, logos, watermarks, UI, borders or captions.
+
+## b09-blast-8
+
+- background: black; reference: b09-blast-1 (edit it)
+
+EDIT the reference image b09-blast-1: keep exactly the same subject, design, materials, colours, proportions, camera distance and scale, so the two images line up when swapped. Then show frame 8 of 8 of the same explosion at the same scale: a faint last wisp and falling embers. SISO Background effect sprite: one isolated visual effect, shot as real practical pyrotechnics and light at the largest native resolution your tool offers, square 1:1, centred with a clear margin, nothing touching an edge. A mid-air explosion. BACKGROUND: pure black #000000 everywhere around the subject: no stars, haze, floor or glow beyond the subject itself. The subject is self-luminous and will be screen-blended over the scene, so anything that is not the subject must be exactly black. No cartoon, illustration, video-game render, toy scale, plastic or clay look, and no outlines. No text, letters, numbers, logos, watermarks, UI, borders or captions.
+
+## b09-fireball-1
+
+- background: black
+
+SISO Background effect sprite: one isolated visual effect, shot as real practical pyrotechnics and light at the largest native resolution your tool offers, square 1:1, centred with a clear margin, nothing touching an edge. The subject: a round orange fireball. BACKGROUND: pure black #000000 everywhere around the subject: no stars, haze, floor or glow beyond the subject itself. The subject is self-luminous and will be screen-blended over the scene, so anything that is not the subject must be exactly black. No cartoon, illustration, video-game render, toy scale, plastic or clay look, and no outlines. No text, letters, numbers, logos, watermarks, UI, borders or captions.
+
+## b09-fireball-2
+
+- background: black
+
+SISO Background effect sprite: one isolated visual effect, shot as real practical pyrotechnics and light at the largest native resolution your tool offers, square 1:1, centred with a clear margin, nothing touching an edge. The subject: a tall rising fireball with a smoke cap. BACKGROUND: pure black #000000 everywhere around the subject: no stars, haze, floor or glow beyond the subject itself. The subject is self-luminous and will be screen-blended over the scene, so anything that is not the subject must be exactly black. No cartoon, illustration, video-game render, toy scale, plastic or clay look, and no outlines. No text, letters, numbers, logos, watermarks, UI, borders or captions.
+
+## b09-fireball-3
+
+- background: black
+
+SISO Background effect sprite: one isolated visual effect, shot as real practical pyrotechnics and light at the largest native resolution your tool offers, square 1:1, centred with a clear margin, nothing touching an edge. The subject: a wide low fireball skimming along. BACKGROUND: pure black #000000 everywhere around the subject: no stars, haze, floor or glow beyond the subject itself. The subject is self-luminous and will be screen-blended over the scene, so anything that is not the subject must be exactly black. No cartoon, illustration, video-game render, toy scale, plastic or clay look, and no outlines. No text, letters, numbers, logos, watermarks, UI, borders or captions.
+
+## b09-flak-1
+
+- background: black
+
+SISO Background effect sprite: one isolated visual effect, shot as real practical pyrotechnics and light at the largest native resolution your tool offers, square 1:1, centred with a clear margin, nothing touching an edge. The subject: a dark grey flak burst with a bright core. BACKGROUND: pure black #000000 everywhere around the subject: no stars, haze, floor or glow beyond the subject itself. The subject is self-luminous and will be screen-blended over the scene, so anything that is not the subject must be exactly black. No cartoon, illustration, video-game render, toy scale, plastic or clay look, and no outlines. No text, letters, numbers, logos, watermarks, UI, borders or captions.
+
+## b09-flak-2
+
+- background: black
+
+SISO Background effect sprite: one isolated visual effect, shot as real practical pyrotechnics and light at the largest native resolution your tool offers, square 1:1, centred with a clear margin, nothing touching an edge. The subject: a black flak puff with fragments. BACKGROUND: pure black #000000 everywhere around the subject: no stars, haze, floor or glow beyond the subject itself. The subject is self-luminous and will be screen-blended over the scene, so anything that is not the subject must be exactly black. No cartoon, illustration, video-game render, toy scale, plastic or clay look, and no outlines. No text, letters, numbers, logos, watermarks, UI, borders or captions.
+
+## b09-smoke-1-day
+
+- background: magenta
+
+SISO Background effect sprite: one isolated visual effect, shot as real practical pyrotechnics and light at the largest native resolution your tool offers, portrait 2:3 or taller, centred with a clear margin, nothing touching an edge. The subject: a tall black war-smoke column. Light: clear midday; warm sun from the upper right, cool blue skylight fill from the left, crisp soft-edged shadows. BACKGROUND: a transparent background if your image tool can output one (best). Otherwise a perfectly flat, uniform pure magenta #FF00FF filling every pixel around the subject: no gradient, texture, floor, cast or contact shadow, reflection, horizon or vignette, and no magenta light spilling onto the subject. No cartoon, illustration, video-game render, toy scale, plastic or clay look, and no outlines. No text, letters, numbers, logos, watermarks, UI, borders or captions.
+
+## b09-smoke-2-day
+
+- background: magenta
+
+SISO Background effect sprite: one isolated visual effect, shot as real practical pyrotechnics and light at the largest native resolution your tool offers, portrait 2:3 or taller, centred with a clear margin, nothing touching an edge. The subject: a leaning grey smoke plume blown right. Light: clear midday; warm sun from the upper right, cool blue skylight fill from the left, crisp soft-edged shadows. BACKGROUND: a transparent background if your image tool can output one (best). Otherwise a perfectly flat, uniform pure magenta #FF00FF filling every pixel around the subject: no gradient, texture, floor, cast or contact shadow, reflection, horizon or vignette, and no magenta light spilling onto the subject. No cartoon, illustration, video-game render, toy scale, plastic or clay look, and no outlines. No text, letters, numbers, logos, watermarks, UI, borders or captions.
+
+## b09-smoke-3-day
+
+- background: magenta
+
+SISO Background effect sprite: one isolated visual effect, shot as real practical pyrotechnics and light at the largest native resolution your tool offers, portrait 2:3 or taller, centred with a clear margin, nothing touching an edge. The subject: a low rolling smoke cloud over rubble. Light: clear midday; warm sun from the upper right, cool blue skylight fill from the left, crisp soft-edged shadows. BACKGROUND: a transparent background if your image tool can output one (best). Otherwise a perfectly flat, uniform pure magenta #FF00FF filling every pixel around the subject: no gradient, texture, floor, cast or contact shadow, reflection, horizon or vignette, and no magenta light spilling onto the subject. No cartoon, illustration, video-game render, toy scale, plastic or clay look, and no outlines. No text, letters, numbers, logos, watermarks, UI, borders or captions.
+
+## b09-flash-1
+
+- background: black
+
+SISO Background effect sprite: one isolated visual effect, shot as real practical pyrotechnics and light at the largest native resolution your tool offers, landscape 3:2, centred with a clear margin, nothing touching an edge. The subject: a cyan plasma muzzle flash, side-on. BACKGROUND: pure black #000000 everywhere around the subject: no stars, haze, floor or glow beyond the subject itself. The subject is self-luminous and will be screen-blended over the scene, so anything that is not the subject must be exactly black. No cartoon, illustration, video-game render, toy scale, plastic or clay look, and no outlines. No text, letters, numbers, logos, watermarks, UI, borders or captions.
+
+## b09-flash-2
+
+- background: black
+
+SISO Background effect sprite: one isolated visual effect, shot as real practical pyrotechnics and light at the largest native resolution your tool offers, landscape 3:2, centred with a clear margin, nothing touching an edge. The subject: a cyan plasma bolt, side-on. BACKGROUND: pure black #000000 everywhere around the subject: no stars, haze, floor or glow beyond the subject itself. The subject is self-luminous and will be screen-blended over the scene, so anything that is not the subject must be exactly black. No cartoon, illustration, video-game render, toy scale, plastic or clay look, and no outlines. No text, letters, numbers, logos, watermarks, UI, borders or captions.
+
+## b09-flash-3
+
+- background: black
+
+SISO Background effect sprite: one isolated visual effect, shot as real practical pyrotechnics and light at the largest native resolution your tool offers, landscape 3:2, centred with a clear margin, nothing touching an edge. The subject: an orange gun muzzle flash, side-on. BACKGROUND: pure black #000000 everywhere around the subject: no stars, haze, floor or glow beyond the subject itself. The subject is self-luminous and will be screen-blended over the scene, so anything that is not the subject must be exactly black. No cartoon, illustration, video-game render, toy scale, plastic or clay look, and no outlines. No text, letters, numbers, logos, watermarks, UI, borders or captions.
+
+## b09-flash-4
+
+- background: black
+
+SISO Background effect sprite: one isolated visual effect, shot as real practical pyrotechnics and light at the largest native resolution your tool offers, landscape 3:2, centred with a clear margin, nothing touching an edge. The subject: a white-hot missile motor flame, side-on. BACKGROUND: pure black #000000 everywhere around the subject: no stars, haze, floor or glow beyond the subject itself. The subject is self-luminous and will be screen-blended over the scene, so anything that is not the subject must be exactly black. No cartoon, illustration, video-game render, toy scale, plastic or clay look, and no outlines. No text, letters, numbers, logos, watermarks, UI, borders or captions.
+
+## b09-shield-hit-1
+
+- background: black
+
+SISO Background effect sprite: one isolated visual effect, shot as real practical pyrotechnics and light at the largest native resolution your tool offers, square 1:1, centred with a clear margin, nothing touching an edge. The subject: a bright cyan energy-shield impact ripple spreading from a point. BACKGROUND: pure black #000000 everywhere around the subject: no stars, haze, floor or glow beyond the subject itself. The subject is self-luminous and will be screen-blended over the scene, so anything that is not the subject must be exactly black. No cartoon, illustration, video-game render, toy scale, plastic or clay look, and no outlines. No text, letters, numbers, logos, watermarks, UI, borders or captions.
+
+## b09-shield-hit-2
+
+- background: black
+
+SISO Background effect sprite: one isolated visual effect, shot as real practical pyrotechnics and light at the largest native resolution your tool offers, square 1:1, centred with a clear margin, nothing touching an edge. The subject: a cyan hexagonal shield flare. BACKGROUND: pure black #000000 everywhere around the subject: no stars, haze, floor or glow beyond the subject itself. The subject is self-luminous and will be screen-blended over the scene, so anything that is not the subject must be exactly black. No cartoon, illustration, video-game render, toy scale, plastic or clay look, and no outlines. No text, letters, numbers, logos, watermarks, UI, borders or captions.
+
+## b09-lightning-1
+
+- background: black
+
+SISO Background effect sprite: one isolated visual effect, shot as real practical pyrotechnics and light at the largest native resolution your tool offers, portrait 2:3 or taller, centred with a clear margin, nothing touching an edge. The subject: one real forked lightning bolt, shape 1 of 3, top to bottom. BACKGROUND: pure black #000000 everywhere around the subject: no stars, haze, floor or glow beyond the subject itself. The subject is self-luminous and will be screen-blended over the scene, so anything that is not the subject must be exactly black. No cartoon, illustration, video-game render, toy scale, plastic or clay look, and no outlines. No text, letters, numbers, logos, watermarks, UI, borders or captions.
+
+## b09-lightning-2
+
+- background: black
+
+SISO Background effect sprite: one isolated visual effect, shot as real practical pyrotechnics and light at the largest native resolution your tool offers, portrait 2:3 or taller, centred with a clear margin, nothing touching an edge. The subject: one real forked lightning bolt, shape 2 of 3, top to bottom. BACKGROUND: pure black #000000 everywhere around the subject: no stars, haze, floor or glow beyond the subject itself. The subject is self-luminous and will be screen-blended over the scene, so anything that is not the subject must be exactly black. No cartoon, illustration, video-game render, toy scale, plastic or clay look, and no outlines. No text, letters, numbers, logos, watermarks, UI, borders or captions.
+
+## b09-lightning-3
+
+- background: black
+
+SISO Background effect sprite: one isolated visual effect, shot as real practical pyrotechnics and light at the largest native resolution your tool offers, portrait 2:3 or taller, centred with a clear margin, nothing touching an edge. The subject: one real forked lightning bolt, shape 3 of 3, top to bottom. BACKGROUND: pure black #000000 everywhere around the subject: no stars, haze, floor or glow beyond the subject itself. The subject is self-luminous and will be screen-blended over the scene, so anything that is not the subject must be exactly black. No cartoon, illustration, video-game render, toy scale, plastic or clay look, and no outlines. No text, letters, numbers, logos, watermarks, UI, borders or captions.
+
+## b09-splash-1-day
+
+- background: magenta
+
+SISO Background effect sprite: one isolated visual effect, shot as real practical pyrotechnics and light at the largest native resolution your tool offers, portrait 2:3 or taller, centred with a clear margin, nothing touching an edge. The subject: a tall white splash column of a shell hitting the sea, cut cleanly at the waterline. Light: clear midday; warm sun from the upper right, cool blue skylight fill from the left, crisp soft-edged shadows. BACKGROUND: a transparent background if your image tool can output one (best). Otherwise a perfectly flat, uniform pure magenta #FF00FF filling every pixel around the subject: no gradient, texture, floor, cast or contact shadow, reflection, horizon or vignette, and no magenta light spilling onto the subject. No cartoon, illustration, video-game render, toy scale, plastic or clay look, and no outlines. No text, letters, numbers, logos, watermarks, UI, borders or captions.
+
+## b09-splash-2-day
+
+- background: magenta
+
+SISO Background effect sprite: one isolated visual effect, shot as real practical pyrotechnics and light at the largest native resolution your tool offers, portrait 2:3 or taller, centred with a clear margin, nothing touching an edge. The subject: a wide crown splash, cut cleanly at the waterline. Light: clear midday; warm sun from the upper right, cool blue skylight fill from the left, crisp soft-edged shadows. BACKGROUND: a transparent background if your image tool can output one (best). Otherwise a perfectly flat, uniform pure magenta #FF00FF filling every pixel around the subject: no gradient, texture, floor, cast or contact shadow, reflection, horizon or vignette, and no magenta light spilling onto the subject. No cartoon, illustration, video-game render, toy scale, plastic or clay look, and no outlines. No text, letters, numbers, logos, watermarks, UI, borders or captions.
+
+## b09-splash-3-day
+
+- background: magenta
+
+SISO Background effect sprite: one isolated visual effect, shot as real practical pyrotechnics and light at the largest native resolution your tool offers, portrait 2:3 or taller, centred with a clear margin, nothing touching an edge. The subject: a small splash with spray, cut cleanly at the waterline. Light: clear midday; warm sun from the upper right, cool blue skylight fill from the left, crisp soft-edged shadows. BACKGROUND: a transparent background if your image tool can output one (best). Otherwise a perfectly flat, uniform pure magenta #FF00FF filling every pixel around the subject: no gradient, texture, floor, cast or contact shadow, reflection, horizon or vignette, and no magenta light spilling onto the subject. No cartoon, illustration, video-game render, toy scale, plastic or clay look, and no outlines. No text, letters, numbers, logos, watermarks, UI, borders or captions.
+
+## b09-firework-1
+
+- background: black
+
+SISO Background effect sprite: one isolated visual effect, shot as real practical pyrotechnics and light at the largest native resolution your tool offers, square 1:1, centred with a clear margin, nothing touching an edge. The subject: one real firework shell burst in gold, a full round peony. BACKGROUND: pure black #000000 everywhere around the subject: no stars, haze, floor or glow beyond the subject itself. The subject is self-luminous and will be screen-blended over the scene, so anything that is not the subject must be exactly black. No cartoon, illustration, video-game render, toy scale, plastic or clay look, and no outlines. No text, letters, numbers, logos, watermarks, UI, borders or captions.
+
+## b09-firework-2
+
+- background: black
+
+SISO Background effect sprite: one isolated visual effect, shot as real practical pyrotechnics and light at the largest native resolution your tool offers, square 1:1, centred with a clear margin, nothing touching an edge. The subject: one real firework shell burst in cyan, a full round peony. BACKGROUND: pure black #000000 everywhere around the subject: no stars, haze, floor or glow beyond the subject itself. The subject is self-luminous and will be screen-blended over the scene, so anything that is not the subject must be exactly black. No cartoon, illustration, video-game render, toy scale, plastic or clay look, and no outlines. No text, letters, numbers, logos, watermarks, UI, borders or captions.
+
+## b09-firework-3
+
+- background: black
+
+SISO Background effect sprite: one isolated visual effect, shot as real practical pyrotechnics and light at the largest native resolution your tool offers, square 1:1, centred with a clear margin, nothing touching an edge. The subject: one real firework shell burst in white and silver, a full round peony. BACKGROUND: pure black #000000 everywhere around the subject: no stars, haze, floor or glow beyond the subject itself. The subject is self-luminous and will be screen-blended over the scene, so anything that is not the subject must be exactly black. No cartoon, illustration, video-game render, toy scale, plastic or clay look, and no outlines. No text, letters, numbers, logos, watermarks, UI, borders or captions.
+
+## b09-firework-4
+
+- background: black
+
+SISO Background effect sprite: one isolated visual effect, shot as real practical pyrotechnics and light at the largest native resolution your tool offers, square 1:1, centred with a clear margin, nothing touching an edge. The subject: one real firework shell burst in ember red and gold, a full round peony. BACKGROUND: pure black #000000 everywhere around the subject: no stars, haze, floor or glow beyond the subject itself. The subject is self-luminous and will be screen-blended over the scene, so anything that is not the subject must be exactly black. No cartoon, illustration, video-game render, toy scale, plastic or clay look, and no outlines. No text, letters, numbers, logos, watermarks, UI, borders or captions.

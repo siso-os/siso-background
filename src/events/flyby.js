@@ -14,7 +14,7 @@ export default {
     return {
       dir, n, enemy,
       z: r.range(0.82, 0.95),
-      y: -r.range(760, 940),
+      y: -r.range(430, 600),             // high, but inside the frame at the 1.25 zoom (760 to 940 went off the top)
       v: r.range(480, 560),
       start: x0 - dir * 2600,
       climb: r.range(-12, 12),          // u/s, a gentle climb or descent

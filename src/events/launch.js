@@ -42,6 +42,27 @@ function when(h) {
   return LAUNCH + (a + b) / 2;
 }
 
+// The path of the tail at ul seconds after ignition: points every SP units, straight up and then turning downrange,
+// and where the tail is now (tx, ty), its heading (rot) and whether it has left the top of the world.
+function track(ev, ul) {
+  const h = climb(ul);
+  const head = (hh) => ev.pitch * smooth(1000, 8000, hh) ** 1.2;
+  const xs = [ev.x + RX * S], ys = [BOT * S];
+  let k = 0;
+  while ((k + 1) * SP <= h && ys[k] > TOP) { const a = head((k + 0.5) * SP); xs.push(xs[k] + Math.sin(a) * SP); ys.push(ys[k] - Math.cos(a) * SP); k++; }
+  const d = h - k * SP, rot = head(h);
+  const tx = xs[k] + Math.sin(head(k * SP + d / 2)) * d, ty = ys[k] - Math.cos(head(k * SP + d / 2)) * d;
+  return { h, xs, ys, k, tx, ty, rot, gone: ys[k] <= TOP };
+}
+
+// Where the rocket is at t (its tail, in world units at the pad's depth), for a camera that follows it up.
+export function rocketAt(ev, t) {
+  const ul = t - ev.t0 - IGNITE;
+  if (ul < 0) return { x: ev.x + RX * S, y: BOT * S, z: ev.z, rot: 0, gone: false };
+  const tr = track(ev, ul);
+  return { x: tr.tx, y: tr.ty, z: ev.z, rot: tr.rot, gone: tr.gone };
+}
+
 export default {
   id: 'launch',
   title: 'Rocket launch',
@@ -50,8 +71,8 @@ export default {
   weight: 1.5,
   // every third ground slot at most (90 s apart): one launch is over before the next can start
   where: (place, at) => ((at.slot % 3) + 3) % 3 === 0,
-  plan(r, { t0, seed, autoX }) {
-    const x = autoX(t0) + 1000;                     // just off the right edge: it drifts in rather than appearing
+  plan(r, { t0, seed, autoX, opts }) {
+    const x = opts?.x ?? autoX(t0) + 1000;          // just off the right edge: it drifts in rather than appearing
     const quay = cityNear(seed, x, 40, 40);
     return { x, z: quay ? 1.036 : 1.06, pitch: r.range(0.5, 0.65), wind: r.range(1.5, 4), seed: r.int(0, 9) };
   },
@@ -62,15 +83,8 @@ export default {
       lights.push({ x: ev.x, y: -40, z, r: 120, c: [255, 236, 200], a: 0.25 });
       return flush(out, lights, null);
     }
-    const p = ul / LAUNCH, burn = smooth(0, 0.05, p), h = climb(ul);
-    // the path of the tail, every SP units: straight up, then turning downrange
-    const head = (hh) => ev.pitch * smooth(1000, 8000, hh) ** 1.2;
-    const xs = [ev.x + RX * S], ys = [BOT * S];
-    let k = 0;
-    while ((k + 1) * SP <= h && ys[k] > TOP) { const a = head((k + 0.5) * SP); xs.push(xs[k] + Math.sin(a) * SP); ys.push(ys[k] - Math.cos(a) * SP); k++; }
-    const gone = ys[k] <= TOP;
-    const d = h - k * SP, rot = head(h);
-    const tx = xs[k] + Math.sin(head(k * SP + d / 2)) * d, ty = ys[k] - Math.cos(head(k * SP + d / 2)) * d;
+    const p = ul / LAUNCH, burn = smooth(0, 0.05, p);
+    const { h, xs, ys, k, tx, ty, rot, gone } = track(ev, ul);
 
     if (p < 1) out.push({ id: 'air.rocket-ship', x: ev.x, y: 0, z, s: S, state: 'launch', p, seed: ev.seed, kind: 'air' });
     else {

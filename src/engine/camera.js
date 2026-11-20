@@ -5,6 +5,9 @@
 //
 // The camera is the one thing driven by input, so it is stepped (step(dt)) rather than drawn from t; with no input it
 // sits exactly on the auto path autoX(t), which is what the director plans events along.
+//
+// In story mode it has a path instead (path(t) -> { x, y }, from src/story/director.js): untouched it sits on the path,
+// x and y; touched, the keys and the pointer drive it as above; 15 s after the last input it eases back onto the path.
 
 import { LEVELS } from './view.js';
 
@@ -13,8 +16,8 @@ const MAX_V = 1500;        // world units per second at full speed
 const W_SPRING = 2.4;      // the level move's spring: settles in about 3 s
 
 export class Camera {
-  constructor({ x0 = 0, t0 = 0, drift = 40, level = 0, y = null } = {}) {
-    this.x0 = x0; this.drift = drift;
+  constructor({ x0 = 0, t0 = 0, drift = 40, level = 0, y = null, path = null } = {}) {
+    this.x0 = x0; this.drift = drift; this.path = path;
     this.x = x0 + drift * t0;
     this.vx = drift;
     this.level = level;
@@ -25,7 +28,9 @@ export class Camera {
     this.idle = Infinity;   // seconds since the last input (Infinity: never touched, so on the auto path)
     this.drag = null;       // { px, py, x, moved } while a pointer is down
   }
-  autoX(t) { return this.x0 + this.drift * t; }
+  autoX(t) { return this.path ? this.path(t).x : this.x0 + this.drift * t; }
+  // the level nearest a y
+  static nearest(y) { let n = 0; LEVELS.forEach((ly, i) => { if (Math.abs(ly - y) < Math.abs(LEVELS[n] - y)) n = i; }); return n; }
   get target() { return LEVELS[this.level]; }
   get touched() { return this.idle !== Infinity; }
 
@@ -68,6 +73,21 @@ export class Camera {
   step(dt, t) {
     dt = Math.min(dt, 0.1);
     const k = this.keys;
+    if (this.path && t !== undefined) {
+      const busy = this.drag || k.left || k.right || k.up || k.down;
+      if (this.idle === Infinity && !busy) {           // on the story's path
+        const p = this.path(t);
+        this.x = p.x; this.y = p.y; this.vx = 0; this.vy = 0; this.level = Camera.nearest(p.y);
+        return;
+      }
+      if (!busy && this.idle >= IDLE_RETURN) {          // easing back onto it
+        this.idle += dt;
+        const p = this.path(t), a = 1 - Math.exp(-dt / 1.1);
+        this.x += (p.x - this.x) * a; this.y += (p.y - this.y) * a; this.vx = 0; this.vy = 0;
+        if (Math.abs(p.x - this.x) < 4 && Math.abs(p.y - this.y) < 4) this.idle = Infinity;
+        return;
+      }
+    }
     const dir = (k.right ? 1 : 0) - (k.left ? 1 : 0);
     if (!this.drag) {
       let target, tau;
@@ -75,7 +95,7 @@ export class Camera {
         this.held += dt; this.idle = 0;
         target = dir * Math.min(MAX_V, 260 + 620 * this.held);   // the longer it is held, the faster
         tau = 0.35;
-      } else if (this.idle < IDLE_RETURN) { target = 0; tau = 0.9; }           // coast to a stop
+      } else if (this.idle < IDLE_RETURN || this.path) { target = 0; tau = 0.9; }   // coast to a stop
       else { target = this.drift; tau = 2.2; }                                   // back into the drift
       this.vx += (target - this.vx) * (1 - Math.exp(-dt / tau));
       this.x += this.vx * dt;
