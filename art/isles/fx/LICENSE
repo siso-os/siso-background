@@ -1,0 +1,28 @@
+Dust photo from ALJ-HERDR-WEB-UI, (c) 2026 devswha, MIT
+fx/city-dust.webp is brand/city-dust.webp from github.com/alj04ofm-svg/ALJ-HERDR-WEB-UI (commit 227ae3e), unchanged.
+fx/city-dust-224.webp is the same photo resized to 224x112 with ImageMagick (Lanczos, webp quality 38, alpha quality
+25). The scene also regrades it at build time for each plate's light (scene/backdrop.py dust_uri).
+
+-----
+
+MIT License
+
+Copyright (c) 2026 devswha
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

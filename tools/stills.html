@@ -1,0 +1,48 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>stills</title>
+<!-- tools/stills.html?family=<id>: paints every asset of one family, every state, by day and by night, on black, and
+     writes them as webp data URLs into the result block below. tools/stills.mjs runs it and saves the files for index.html.
+     ?family=sky paints the engine's sky entries instead. -->
+<pre id="result">running</pre>
+<script type="module">
+import { ASSETS, FAMILIES } from '../src/assets/registry.js';
+import { drawScene, restFrame } from '../src/gallery/draw.js';
+
+const W = 1280, H = 800;
+const HOURS = { day: 13, night: 21.5 };
+const q = new URLSearchParams(location.search);
+const fam = q.get('family');
+const out = { family: fam, assets: [], problems: [] };
+const canvas = document.createElement('canvas');
+canvas.width = W; canvas.height = H;
+const shot = () => canvas.toDataURL('image/webp', 0.86);
+
+try {
+  if (fam === 'sky') {
+    const m = await import('../src/engine/backdrop.js');
+    for (const e of m.SKY_ENTRIES) {
+      m.renderBackdrop(canvas, { ...e, altitude: e.altitude ?? 0, t: 6 });
+      out.assets.push({ id: e.id, family: 'sky', title: e.title, about: e.about, file: 'src/engine/backdrop.js', ref: e.ref ?? null,
+        states: ['idle'], once: {}, loop: 0, stills: { idle: { day: shot() } } });
+    }
+  } else {
+    for (const a of ASSETS.filter((x) => x.family === fam)) {
+      const stills = {};
+      for (const state of a.states) {
+        stills[state] = {};
+        for (const [k, hour] of Object.entries(HOURS)) {
+          const ok = drawScene(canvas, a, { hour, state, back: 'black', seed: 0, ...restFrame(a, state) });
+          if (!ok) out.problems.push(`${a.id} ${state} ${k} did not draw`);
+          stills[state][k] = shot();
+        }
+      }
+      out.assets.push({ id: a.id, family: a.family, title: a.title, about: a.about, w: a.w, h: a.h, ref: a.ref ?? null,
+        file: `src/assets/${a.family}/${a.id.split('.').slice(1).join('.')}.js`, states: a.states, once: a.once || {},
+        loop: a.loop || 0, stills });
+    }
+  }
+  out.familyTitle = (FAMILIES.find((f) => f.id === fam) || {}).title || fam;
+} catch (e) { out.problems.push('stills failed: ' + e.message); }
+document.getElementById('result').textContent = JSON.stringify(out);
+</script>

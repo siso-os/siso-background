@@ -1,0 +1,84 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>machines lineup</title>
+<style>html,body{margin:0;background:#000;color:#ddd;font:12px/1.3 ui-monospace,monospace}canvas{display:block}#result{display:none}</style>
+</head><body>
+<canvas id="c"></canvas><pre id="result"></pre>
+<script type="module">
+// Every machine at one world scale, side by side as they would stand in a scene: the shield dome over an island with the
+// air defences under it, the rocket on its pad, the boats on the water, the aircraft in the sky. One row per hour.
+// lineup.html?hours=18.5,22&t=2  (the last row plays the action states: chase, fire, hit, sweep)
+import { byId, drawAsset, misses } from '../../src/assets/registry.js';
+import { lightAt } from '../../src/core/light.js';
+import { vgrad, css } from '../../src/core/paint.js';
+
+const q = new URLSearchParams(location.search);
+const hours = (q.get('hours') || '18.5,22').split(',').map(Number);
+const t = q.has('t') ? Number(q.get('t')) : 2;
+const W = innerWidth, H = innerHeight;
+const cv = document.getElementById('c'); cv.width = W * devicePixelRatio; cv.height = H * devicePixelRatio;
+cv.style.width = W + 'px'; cv.style.height = H + 'px';
+const ctx = cv.getContext('2d'); ctx.scale(devicePixelRatio, devicePixelRatio);
+const out = { errors: [], ms: {} };
+addEventListener('error', (e) => out.errors.push(String(e.message)));
+
+const SPAN = 1350, S = W / SPAN; // world units across the page, px per unit
+const ISLAND = [0, 610], GROUND = -6; // the island strip the defences stand on, its top above the water
+// [id, x, y (anchor, 0 = waterline), calm state, action state, extra, flip]
+const PLACE = [
+  ['defence.radar', 70, GROUND, 'idle', 'track'],
+  ['defence.sam-launcher', 140, GROUND, 'idle', 'fire', { p: 0.12 }],
+  ['defence.silo', 215, GROUND, 'idle', 'open', { p: 0.9 }],
+  ['defence.ciws', 290, GROUND, 'idle', 'fire', { aim: 0.5 }],
+  ['defence.artillery', 360, GROUND, 'idle', 'fire', { p: 0.06 }],
+  ['defence.searchlight', 440, GROUND, 'sweep', 'lock', { aim: 1.0 }],
+  ['defence.shield-dome', 270, GROUND, 'idle', 'hit', { p: 0.18, hitX: 180, hitY: -222 }],
+  ['air.rocket-ship', 565, GROUND, 'idle', 'idle'],
+  ['sea.cargo', 765, 0, 'idle', 'idle'],
+  ['sea.warship', 990, 0, 'idle', 'fire', { p: 0.05 }],
+  ['sea.ferry', 1125, 0, 'idle', 'idle'],
+  ['sea.yacht', 1205, 0, 'idle', 'idle'],
+  ['sea.police-boat', 1262, 0, 'idle', 'chase'],
+  ['sea.smuggler', 1300, 0, 'idle', 'flee'],
+  ['sea.speedboat', 1335, 0, 'idle', 'run'],
+  ['air.airliner', 980, -275, 'idle', 'idle'],
+  ['air.jet-siso', 640, -215, 'idle', 'fire', { p: 0.3 }],
+  ['air.jet-enemy', 1120, -205, 'idle', 'idle', {}, -1],
+  ['air.missile', 720, -180, 'siso', 'siso'],
+  ['air.missile', 470, -268, 'enemy', 'enemy', {}, -1],
+  ['air.drone', 1255, -150, 'idle', 'idle', {}, 1],
+  ['air.helicopter', 1180, -105, 'idle', 'idle', { seed: 0 }],
+];
+
+function row(y0, h, hour, action) {
+  const L = lightAt(hour), horizon = y0 + h * 0.88;
+  ctx.save(); ctx.beginPath(); ctx.rect(0, y0, W, h); ctx.clip();
+  ctx.fillStyle = vgrad(ctx, y0, horizon, [[0, L.sky.top], [1, L.sky.horizon]]); ctx.fillRect(0, y0, W, horizon - y0);
+  ctx.fillStyle = vgrad(ctx, horizon, y0 + h, [[0, L.haze], [1, L.ambient]]); ctx.fillRect(0, horizon, W, y0 + h - horizon);
+  // a plain island strip: a stand-in for the islands family, only so the defences have ground to stand on
+  ctx.fillStyle = vgrad(ctx, horizon + GROUND * S, horizon + 2 * S, [[0, L.ambient.map((v) => v * 0.9)], [1, L.ambient.map((v) => v * 0.45)]]);
+  ctx.fillRect(ISLAND[0] * S, horizon + GROUND * S, (ISLAND[1] - ISLAND[0]) * S, (2 - GROUND) * S);
+  for (const [id, x, y, calm, act, extra = {}, flip = 1] of PLACE) {
+    const a = byId.get(id);
+    if (!a) { out.errors.push('missing ' + id); continue; }
+    ctx.save(); ctx.translate(x * S, horizon + y * S); ctx.scale(S * flip, S);
+    const t0 = performance.now();
+    drawAsset(ctx, a, { t, p: 0.5, seed: 0, L, lit: L.side * flip, scale: S, state: action ? act : calm, ...(action ? extra : { seed: extra.seed || 0 }) });
+    if (bench) { const d = performance.now() - t0; sum[id] = (sum[id] || 0) + d; cnt[id] = (cnt[id] || 0) + 1; }
+    ctx.restore();
+  }
+  ctx.restore();
+  ctx.fillStyle = 'rgba(0,0,0,.55)'; ctx.fillRect(0, y0, 330, 18); ctx.fillStyle = '#ddd';
+  ctx.fillText(`${hour} h · ${action ? 'action states' : 'calm states'} · ${S.toFixed(2)} px per unit`, 6, y0 + 13);
+}
+
+const rows = hours.map((h, i) => ({ h, action: i === hours.length - 1 && hours.length > 1 }));
+// frames=N (default 1): the first frame bakes the static bodies; the rest are timed, ms per piece per draw, both rows
+const frames = q.has('frames') ? Number(q.get('frames')) : 1, sum = {}, cnt = {};
+let bench = false;
+for (let f = 0; f < frames; f++) { bench = frames === 1 || f > 0; rows.forEach((r, i) => row((i * H) / rows.length, H / rows.length, r.h, r.action)); }
+for (const id in sum) out.ms[id] = +(sum[id] / cnt[id]).toFixed(3);
+out.misses = [...misses.keys()];
+document.getElementById('result').textContent = JSON.stringify(out);
+document.title = 'done';
+</script>
+</body></html>

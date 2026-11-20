@@ -1,0 +1,86 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Ground assets</title>
+<style>body{margin:0;background:#101723}canvas{display:block}</style>
+<canvas></canvas>
+<script type="module">
+import { byId, drawAsset } from '../../src/assets/registry.js';
+import { lightAt } from '../../src/core/light.js';
+import { vgrad } from '../../src/core/paint.js';
+
+const groups = {
+  launchers: ['defence.sam-launcher', 'defence.silo', 'defence.radar'],
+  guns: ['defence.ciws', 'defence.artillery', 'defence.searchlight'],
+  dome: ['defence.shield-dome'],
+  'islands-siso': ['islands.siso-home', 'islands.siso-small'],
+  'islands-enemy': ['islands.enemy', 'islands.enemy-small'],
+};
+const q = new URLSearchParams(location.search);
+const ids = groups[q.get('group')];
+const cv = document.querySelector('canvas');
+const small = !ids && q.has('small');
+const w = cv.width = small ? 400 : innerWidth;
+const h = cv.height = small ? 250 : innerHeight;
+const ctx = cv.getContext('2d');
+
+function sky(x, y, width, height, L) {
+  ctx.fillStyle = vgrad(ctx, y, y + height, [[0, L.sky.top], [0.55, L.sky.horizon], [1, L.haze]]);
+  ctx.fillRect(x, y, width, height);
+}
+
+function asset(id, x, y, scale, L, options = {}) {
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.scale(scale, scale);
+  drawAsset(ctx, id, { L, scale, t: 1.25, ...options });
+  ctx.restore();
+}
+
+function label(text, x, y) {
+  ctx.fillStyle = '#f1f3f7';
+  ctx.font = '13px system-ui';
+  ctx.fillText(text, x, y);
+}
+
+if (ids) {
+  for (const [col, id] of ids.entries()) {
+    const a = byId.get(id), width = w / ids.length, height = h / a.states.length;
+    a.states.forEach((state, row) => {
+      const x = col * width, y = row * height;
+      const L = lightAt(row % 2 ? 22 : 16);
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(x, y, width, height);
+      ctx.clip();
+      sky(x, y, width, height, L);
+      const zoom = Math.min(width * 0.72 / a.w, height * 0.68 / a.h) * (state === 'fire' && id === 'defence.silo' ? 0.75 : 1);
+      asset(id, x + width * 0.5, y + height * 0.86, zoom, L, { state, p: state === 'fire' ? 0.12 : 0.34 });
+      label(a.title + ' / ' + state, x + 12, y + 20);
+      ctx.restore();
+    });
+  }
+} else {
+  const L = lightAt(Number(q.get('h') || 17.8));
+  sky(0, 0, w, h, L);
+  const scale = small ? 0.3 : Math.min(w / 1600, h / 1080);
+  const positions = small
+    ? [[0.23, 0.64], [0.15, 0.98], [0.77, 0.54], [0.81, 0.91]]
+    : [[0.20, 0.82], [0.43, 0.57], [0.66, 0.76], [0.88, 0.43]];
+  const islandIds = [...groups['islands-siso'], ...groups['islands-enemy']];
+  islandIds.forEach((id, i) => {
+    const [xf, yf] = positions[i];
+    asset(id, w * xf, h * yf, scale, L);
+  });
+  const [x, y] = [w * positions[0][0], h * positions[0][1]];
+  const home = byId.get('islands.siso-home');
+  const tower = byId.get('city.tower-siso'), shell = byId.get('defence.shield-dome');
+  const carried = (a, [sx, sy], fit) => asset(a.id, x + sx * scale, y + sy * scale, fit * scale, L);
+  const deck = y + home.slots.dome[1] * scale;
+  carried(tower, home.slots.tower, 0.5 * home.w / tower.h);
+  [...groups.launchers, ...groups.guns].forEach((id, i) => {
+    asset(id, x + [-189, -111, -64, 55, 124, 187][i] * scale, deck - 3 * scale, scale, L);
+  });
+  carried(shell, home.slots.dome, 1.05 * home.w / shell.w);
+}
+document.title = 'done';
+</script>

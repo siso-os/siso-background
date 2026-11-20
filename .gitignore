@@ -1,0 +1,6 @@
+.chrome-*/
+node_modules/
+*.log
+.DS_Store
+stills/
+site/

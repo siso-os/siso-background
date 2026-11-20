@@ -1,0 +1,134 @@
+<!doctype html>
+<!-- uihub: siso:kit-shell-side
+     SISO Background's asset page: every asset drawn in code, playing live, and every image, with where each lives.
+     Built on the kit's side shell (shells/side.html): the frame is the kit's; data-hub, the nav rows and <main> are ours.
+     The grid comes from src/assets/registry.js at load, so new assets show with no change here; images come from
+     src/gallery/catalog.json (written by node tools/index.mjs). assets.html#<id> or #<image path> opens one.
+     ?fixture=1 adds the page's three sample assets; ?selftest=1 runs the page's own tests into <pre id="selftest">. -->
+<html lang="en" data-hub="people">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SISO Background · Assets</title>
+<script>
+  // Count every error from the first moment, for the self-test's no-console-errors.
+  window.__galleryErrors = [];
+  addEventListener('error', (e) => __galleryErrors.push(String(e.message || (e.target && (e.target.src || e.target.href)) || 'error')), true);
+  addEventListener('unhandledrejection', (e) => __galleryErrors.push('unhandled: ' + String((e.reason && e.reason.message) || e.reason)));
+  (() => { const ce = console.error.bind(console); console.error = (...a) => { __galleryErrors.push(a.map(String).join(' ')); ce(...a); }; })();
+</script>
+<link rel="icon" href="kit/assets/siso-lion.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="kit/siso.css">
+<link rel="stylesheet" href="src/gallery/gallery.css">
+<script defer src="kit/siso.js"></script>
+</head>
+<body class="k">
+<a class="k-skip" href="#main">Skip to the page</a>
+<div class="k-app" data-nav="hub">
+  <aside class="k-nav" aria-label="SISO Background">
+    <div class="k-brand">
+      <svg class="lion" aria-hidden="true"><use href="#i-lion"/></svg>
+      <b>SISO Background</b>
+      <button class="k-icon-btn k-only-wide" type="button" data-fold aria-label="Fold the side nav (Ctrl+B)" aria-expanded="true"><svg class="i"><use href="#i-panel-left"/></svg></button>
+    </div>
+    <a class="k-search" href="#find" data-search><svg class="i"><use href="#i-search"/></svg><span>Find an asset</span><kbd>⌘K</kbd></a>
+    <nav class="k-nav-body" id="g-nav">
+      <span class="k-nav-label">Assets</span>
+      <a class="k-nav-row" href="#in=all" data-view="all" aria-current="page"><svg class="i"><use href="#i-layout-grid"/></svg><span>All</span></a>
+      <span class="k-nav-label">Images</span>
+      <a class="k-nav-row" href="#in=art" data-view="art"><svg class="i"><use href="#i-folder"/></svg><span>Photo art</span></a>
+      <a class="k-nav-row" href="#in=refs" data-view="refs"><svg class="i"><use href="#i-book-open"/></svg><span>References</span></a>
+      <span class="k-nav-label">Scene</span>
+      <a class="k-nav-row" href="index.html"><svg class="i"><use href="#i-play"/></svg><span>The scene</span></a>
+    </nav>
+    <div class="k-nav-foot">
+      <span class="k-label">v0.1</span>
+      <button class="k-icon-btn" type="button" data-theme-toggle aria-label="Light or dark"><svg class="i"><use href="#i-sun"/></svg></button>
+    </div>
+  </aside>
+  <button class="k-scrim" type="button" aria-label="Close the menu" tabindex="-1"></button>
+
+  <header class="k-top">
+    <button class="k-icon-btn k-only-phone" type="button" data-nav-open aria-label="Open the menu" aria-expanded="false"><svg class="i"><use href="#i-menu"/></svg></button>
+    <nav class="k-crumbs" aria-label="Where you are"><a href="#in=all">SISO Background</a><svg class="i"><use href="#i-chevron-right"/></svg><span aria-current="page" id="g-crumb">Assets</span></nav>
+    <div class="k-top-end">
+      <a class="k-icon-btn" href="index.html" aria-label="Open the scene"><svg class="i"><use href="#i-play"/></svg></a>
+    </div>
+  </header>
+
+  <div class="k-sheet">
+    <main class="k-main" id="main">
+      <div class="k-page-head" data-band="head">
+        <div>
+          <h1>Everything we've built</h1>
+          <p>Every asset drawn in code, playing live, and every image we made. Hover a tile to play it; open one for its states, its hour, its painting and the file it lives in.</p>
+        </div>
+      </div>
+
+      <div class="g-tools" data-band="tools">
+        <label class="g-find">
+          <svg class="i" aria-hidden="true"><use href="#i-search"/></svg>
+          <input class="k-input" id="g-q" type="search" data-find="assets" data-search placeholder="Find by name, id, file or folder" aria-label="Find an asset or an image" autocomplete="off" spellcheck="false">
+        </label>
+        <div class="g-light">
+          <span class="k-label" id="g-light-label">Tiles lit at</span>
+          <div class="k-seg" role="group" aria-labelledby="g-light-label" id="g-light">
+            <button type="button" data-value="6" aria-pressed="false">Dawn</button>
+            <button type="button" data-value="12" aria-pressed="false">Day</button>
+            <button type="button" data-value="17.8" aria-pressed="true">Dusk</button>
+            <button type="button" data-value="22" aria-pressed="false">Night</button>
+          </div>
+        </div>
+      </div>
+
+      <p class="k-note" id="g-alert" data-tone="warn" hidden></p>
+      <div class="g-groups" id="g-groups" data-find-list="assets" data-mode="shelf">
+        <p class="k-empty" id="g-loading"><svg class="i"><use href="#i-clock"/></svg>Loading the registry and the images.</p>
+      </div>
+      <p class="k-empty" id="g-none" aria-live="polite" hidden></p>
+      <pre id="selftest" hidden></pre>
+    </main>
+  </div>
+  <div class="k-rim" aria-hidden="true"></div>
+
+  <nav class="k-dock" aria-label="Places">
+    <a href="#in=all" data-view="all" aria-current="page"><svg class="i"><use href="#i-layout-grid"/></svg>All</a>
+    <a href="#in=art" data-view="art"><svg class="i"><use href="#i-folder"/></svg>Photo art</a>
+    <a href="#in=refs" data-view="refs"><svg class="i"><use href="#i-book-open"/></svg>References</a>
+    <a href="index.html"><svg class="i"><use href="#i-play"/></svg>Scene</a>
+  </nav>
+</div>
+
+<dialog class="k-drawer g-detail" id="g-detail" aria-labelledby="d-title">
+  <div class="k-drawer-head">
+    <div class="g-d-titles"><h2 id="d-title" tabindex="-1" autofocus>Asset</h2><code id="d-id"></code></div>
+    <div class="g-d-actions">
+      <a class="k-btn k-only-wide" data-kind="ghost" data-size="s" id="d-probe" href="tools/probe.html" target="_blank" rel="noopener" hidden><svg class="i"><use href="#i-external-link"/></svg>Probe</a>
+      <button class="k-btn" data-kind="ghost" data-size="s" type="button" id="d-link"><svg class="i"><use href="#i-copy"/></svg><span>Copy link</span></button>
+      <button class="k-icon-btn" type="button" data-close aria-label="Close"><svg class="i"><use href="#i-x"/></svg></button>
+    </div>
+  </div>
+  <div class="k-drawer-body g-d-body" id="d-body">
+    <div class="g-d-main">
+      <div class="g-stage" id="d-stage"><canvas id="d-canvas" aria-label="Live preview"></canvas><img id="d-img" alt="" hidden></div>
+      <div class="g-ctls" id="d-ctls"></div>
+    </div>
+    <aside class="g-d-side" aria-label="Facts">
+      <figure class="g-ref" id="d-ref" hidden>
+        <a class="g-ref-pic" id="d-ref-link" href="#"><img id="d-ref-img" alt=""></a>
+        <figcaption><span>Painting it is matched to</span><a class="k-link" id="d-ref-path" href="#"></a></figcaption>
+      </figure>
+      <div class="g-path"><svg class="i" aria-hidden="true"><use href="#i-folder"/></svg><code id="d-path"></code><button class="k-icon-btn" type="button" id="d-copy" aria-label="Copy the path"><svg class="i"><use href="#i-copy"/></svg></button></div>
+      <p class="k-item-desc" id="d-about"></p>
+      <dl class="k-facts" id="d-facts"></dl>
+      <div class="g-prompt" id="d-prompt" hidden></div>
+    </aside>
+  </div>
+</dialog>
+
+<script type="module" src="src/gallery/main.js"></script>
+</body>
+</html>

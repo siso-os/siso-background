@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<title>Space and alien assets</title>
+<style>
+  html,body{margin:0;background:#070910;color:#eee;font:13px ui-monospace,monospace}
+  canvas{display:block}
+  pre{display:none}
+</style>
+<canvas id="view"></canvas>
+<pre id="result"></pre>
+<script type="module">
+import { byId, drawAsset, misses } from '../../src/assets/registry.js';
+import { lightAt } from '../../src/core/light.js';
+import { css, vgrad } from '../../src/core/paint.js';
+import { rng } from '../../src/core/rng.js';
+
+const q = new URLSearchParams(location.search);
+const groups = {
+  palace: ['space.palace'],
+  moon: ['space.moon', 'space.moon-city'],
+  ships: ['space.attack-ship', 'space.satellite'],
+  aliens: ['aliens.flyer', 'aliens.craft', 'aliens.walker', 'aliens.drifter'],
+  portal: ['aliens.portal'],
+};
+const id = q.get('id');
+const group = q.get('group');
+const ids = id ? [id] : groups[group] ?? Object.values(groups).flat();
+const width = id ? Math.min(400, innerWidth) : innerWidth, height = innerHeight;
+const canvas = document.getElementById('view');
+canvas.width = width * devicePixelRatio;
+canvas.height = height * devicePixelRatio;
+canvas.style.width = width + 'px';
+canvas.style.height = height + 'px';
+const ctx = canvas.getContext('2d');
+ctx.scale(devicePixelRatio, devicePixelRatio);
+const ref = q.get('ref');
+const area = ref ? width / 2 : width;
+const result = {};
+const closeToActual = !group;
+const hour = Number(q.get('h') || 18.5);
+const scale = Number(q.get('s') || (width <= 400 ? 0.3 : 0.42));
+const star = rng(430);
+
+function background(x, y, w, h, L, vacuum) {
+  ctx.fillStyle = vgrad(ctx, y, y + h, [[0, L.sky.top], [1, L.sky.horizon]]);
+  ctx.fillRect(x, y, w, h);
+  if (vacuum || L.night > 0.4) {
+    for (let i = 0; i < w * h / 2700; i++) {
+      const a = star(), b = star(), c = star();
+      ctx.fillStyle = css([195, 209, 241], c * 0.47);
+      ctx.fillRect(x + a * w, y + b * h, 0.75 + c * 0.5, 0.75 + c * 0.5);
+    }
+  }
+}
+
+function cell(asset, state, x, y, w, h, hOfDay, p, sharedSky = false) {
+  const vacuum = asset.family === 'space' && !(group === 'palace' && hOfDay === 12);
+  const L = lightAt(hOfDay, { altitude: vacuum ? 1 : 0 });
+  if (!sharedSky) background(x, y, w, h, L, vacuum);
+  ctx.save();
+  if (!sharedSky) {
+    ctx.beginPath(); ctx.rect(x, y, w, h); ctx.clip();
+  }
+  const s = closeToActual ? scale : Math.min(w * 0.88 / asset.w, (h - 22) * 0.85 / asset.h, 3);
+  const o = { L, state, p, scale: s, t: group === 'ships' ? 1.98 : 1.7, seed: 0, reflect: false };
+  ctx.translate(x + w / 2, y + h / 2 + asset.h * s * 0.48 + 9);
+  ctx.scale(s, s);
+  drawAsset(ctx, asset, o);
+  ctx.restore();
+  if (closeToActual && q.has('timing')) {
+    const scratch = document.createElement('canvas');
+    scratch.width = Math.ceil(asset.w * s * 2);
+    scratch.height = Math.ceil(asset.h * s * 2);
+    const g = scratch.getContext('2d');
+    g.translate(scratch.width / 2, scratch.height / 2);
+    g.scale(s, s);
+    const samples = 18;
+    const draw = (t) => drawAsset(g, asset, { ...o, t });
+    for (let i = 0; i < 6; i++) draw(o.t + i / 9);
+    const start = performance.now();
+    for (let i = 0; i < samples; i++) draw(o.t + i / 60);
+    result[asset.id] = +((performance.now() - start) / samples).toFixed(3);
+  }
+  ctx.fillStyle = '#e2e5ef';
+  ctx.font = width <= 400 ? '9px ui-monospace, monospace' : '13px ui-monospace, monospace';
+  ctx.fillText(closeToActual ? asset.title : `${asset.title} · ${state} · ${hOfDay}h`, x + 6, y + (width <= 400 ? 12 : 17));
+}
+
+if (closeToActual && width > 400) {
+  const band = height * 0.48;
+  background(0, 0, area, band, lightAt(hour, { altitude: 1 }), true);
+  background(0, band, area, height - band, lightAt(hour), false);
+  // Fractional placement keeps both bands in the same order at any viewport size.
+  const positions = [
+    [0.01, 0.02, 0.23, 0.44], [0.24, 0.02, 0.23, 0.44], [0.47, 0.02, 0.23, 0.44],
+    [0.70, 0.02, 0.15, 0.44], [0.85, 0.02, 0.15, 0.44],
+    [0.42, 0.50, 0.14, 0.46], [0.56, 0.50, 0.21, 0.46], [0.79, 0.62, 0.20, 0.38],
+    [0.19, 0.50, 0.15, 0.46], [0.01, 0.50, 0.22, 0.46],
+  ];
+  const states = ['attack', 'gibbous', 'idle', 'fire', 'idle', 'fly', 'fire', 'walk', 'idle', 'hold'];
+  ids.forEach((assetId, i) => {
+    const asset = byId.get(assetId);
+    const [x, y, w, h] = positions[i];
+    cell(asset, states[i], x * area, y * height, w * area, h * height, hour, 0.42, true);
+  });
+} else if (id) {
+  const asset = byId.get(id);
+  cell(asset, q.get('state') || (id === 'aliens.portal' ? 'hold' : asset.states[0]), 0, 0, area, height, hour, 0.42);
+} else if (group === 'moon') {
+  const h = height / 4;
+  ids.forEach((assetId, i) => {
+    const asset = byId.get(assetId);
+    const w = area / asset.states.length;
+    asset.states.forEach((state, j) => {
+      cell(asset, state, j * w, 2 * i * h, w, h, hour, 0);
+      cell(asset, state, j * w, (2 * i + 1) * h, w, h, 22, 0);
+    });
+  });
+} else if (group === 'palace' || group === 'portal') {
+  const asset = byId.get(ids[0]);
+  const w = area / asset.states.length, h = height / 2;
+  asset.states.forEach((state, i) => {
+    cell(asset, state, i * w, 0, w, h, group === 'palace' ? 12 : hour, 0.42);
+    cell(asset, state, i * w, h, w, h, 22, 0.60);
+  });
+} else {
+  const rows = Math.max(...ids.map(assetId => byId.get(assetId).states.length)) * 2;
+  const w = area / ids.length, h = height / rows;
+  ids.forEach((assetId, i) => {
+    const asset = byId.get(assetId);
+    asset.states.forEach((state, j) => {
+      cell(asset, state, i * w, j * 2 * h, w, h, hour, 0.42);
+      cell(asset, state, i * w, (j * 2 + 1) * h, w, h, 22, 0.60);
+    });
+  });
+}
+
+if (ref) {
+  const example = new Image();
+  example.src = '../../' + ref;
+  await example.decode();
+  const s = Math.min(area / example.width, height / example.height);
+  ctx.drawImage(example, area + (area - example.width * s) / 2, (height - example.height * s) / 2, example.width * s, example.height * s);
+}
+document.getElementById('result').textContent = JSON.stringify({ ms: result, errors: [...misses] });
+if (closeToActual && !id) {
+  ctx.fillStyle = '#c7cad8';
+  ctx.fillText(`${hour}h · ${scale} px per world unit`, 12, height * 0.48 - 12);
+}
+document.title = 'done';
+</script>
+</html>

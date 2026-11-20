@@ -1,0 +1,10 @@
+import patrol from './patrol.js';
+import flyby from './flyby.js';
+import raid from './raid.js';
+import hellfire from './hellfire.js';
+import barrage from './barrage.js';
+import islandFall from './island-fall.js';
+import portal from './portal.js';
+import palaceAttack from './palace-attack.js';
+import launch from './launch.js';
+export const EVENTS = [patrol, flyby, raid, hellfire, barrage, islandFall, portal, palaceAttack, launch];

@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Effects probes</title>
+<style>
+html,body{margin:0;background:#111722}
+body{display:grid;grid-template-columns:repeat(2,1fr);grid-auto-rows:minmax(0,1fr);height:100vh}
+iframe{border:0;width:100%;height:100%;min-height:0}
+</style></head>
+<body><script type="module">
+import { byId } from '../../src/assets/registry.js';
+
+const samples = {
+  explosions: [['explosion', 0.16], ['fireball', 0.23], ['flash', 0.1]],
+  'fire-smoke': [['fire'], ['smoke'], ['dust', 0.38], ['embers']],
+  trails: [['trail'], ['tracer']],
+  water: [['wake'], ['splash', 0.26]],
+  hits: [['shield-hit', 0.23], ['intercept', 0.13], ['debris', 0.22]],
+};
+
+const options = new URLSearchParams(location.search);
+const target = options.get('target');
+const small = options.has('small');
+const comparing = options.has('refs');
+if (small) {
+  document.body.style.width = '400px';
+  document.body.style.height = '250px';
+} else if (options.has('height')) {
+  document.body.style.height = Number(options.get('height')) + 'px';
+}
+const refs = { trail: 'refs/elements/hellfire-swarm.webp' };
+for (const [name, p = 0.5] of samples[target]) {
+  const asset = byId.get('fx.' + name);
+  if (small && options.has('asset') && name !== options.get('asset')) continue;
+  for (const bg of small ? ['grey', 'sky'] : ['sky']) {
+    const query = new URLSearchParams({ asset: asset.id, p, t: 2.1, bg });
+    if (small) {
+      query.set('state', name === 'splash' ? 'big' : 'fast');
+      query.set('h', 22);
+      query.set('extra', '{"scale":0.3}');
+    } else {
+      query.set('mode', 'grid');
+      query.set('hours', '12,22');
+      if (comparing) query.set('ref', refs[name] || asset.ref);
+    }
+    const frame = document.createElement('iframe');
+    frame.title = asset.title + ' · ' + bg;
+    frame.src = '../../tools/probe.html?' + query;
+    if (!small && samples[target].length % 2 && asset.id === 'fx.' + samples[target].at(-1)[0]) {
+      frame.style.gridColumn = '1 / -1';
+    }
+    document.body.append(frame);
+  }
+}
+</script></body></html>

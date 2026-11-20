@@ -1,0 +1,25 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>sprites</title>
+<style>html,body{margin:0;background:#6b6e73}canvas{display:block}</style></head><body><canvas id="c"></canvas>
+<script type="module">
+// The baked fx material up close: six puff shapes lit at noon and at dusk, their fire-lit and hot versions, and flames.
+import { puffTinted, puffGlow, smokeTint, flameSprite, put } from '../../src/assets/fx/_lib.js';
+import { lightAt } from '../../src/core/light.js';
+const cv = document.getElementById('c'); cv.width = innerWidth; cv.height = innerHeight;
+const g = cv.getContext('2d');
+const rows = [['black', 12], ['white', 12], ['dust', 18.5], ['black', 22]];
+rows.forEach(([tone, h], j) => {
+  const L = lightAt(h), tint = smokeTint(L, tone, 1);
+  g.fillStyle = `rgb(${L.sky.horizon.map(Math.round)})`; g.fillRect(0, j * 150, innerWidth, 150);
+  for (let i = 0; i < 6; i++) {
+    put(g, puffTinted(i, tint), 80 + i * 150, 75 + j * 150, 70, 1);
+    if (h === 22) { g.globalCompositeOperation = 'lighter'; put(g, puffGlow(i, 'under'), 80 + i * 150, 75 + j * 150, 70, 0.9); g.globalCompositeOperation = 'source-over'; }
+  }
+  g.globalAlpha = 1;
+});
+for (let i = 0; i < 6; i++) put(g, puffGlow(i, 'hot', [1, 0.8, 0.6, 0.4, 0.3, 0.2][i]), 80 + i * 150, 680, 70, 1);
+g.globalAlpha = 1;
+g.globalCompositeOperation = 'lighter';
+for (let i = 0; i < 5; i++) g.drawImage(flameSprite(i), 960 + i * 110, 600, 96, 256);
+document.title = 'done';
+</script></body></html>

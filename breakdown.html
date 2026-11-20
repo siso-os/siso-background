@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SISO Background: everything we've built</title>
+<style>
+  :root { color-scheme: dark; --ink: #f2f2ef; --soft: #a3a39d; --faint: #6c6c67; --line: #1d1d1b; --hi: #ffb347; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: #000; color: var(--ink); font: 14px/1.45 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; }
+  a { color: inherit; }
+  button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+  button:focus-visible, a:focus-visible { outline: 2px solid var(--hi); outline-offset: 2px; border-radius: 6px; }
+  header { padding: 40px 24px 8px; max-width: 1600px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 16px; align-items: end; justify-content: space-between; }
+  h1 { margin: 0; font-size: 28px; font-weight: 600; letter-spacing: -0.01em; }
+  header p { margin: 6px 0 0; color: var(--soft); }
+  .live { display: inline-flex; gap: 8px; align-items: center; padding: 9px 14px; border: 1px solid #333; border-radius: 999px; text-decoration: none; }
+  .live:hover { border-color: #666; }
+  nav { position: sticky; top: 0; z-index: 5; background: rgba(0,0,0,.88); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+  nav .in { max-width: 1600px; margin: 0 auto; padding: 10px 24px; display: flex; gap: 6px; align-items: center; overflow-x: auto; scrollbar-width: none; }
+  nav a { white-space: nowrap; padding: 6px 11px; border-radius: 999px; color: var(--soft); text-decoration: none; }
+  nav a:hover { color: var(--ink); background: #141413; }
+  nav a span { color: var(--faint); margin-left: 4px; }
+  .seg { margin-left: auto; display: inline-flex; border: 1px solid #2a2a28; border-radius: 999px; padding: 2px; flex: none; }
+  .seg button { padding: 5px 12px; border-radius: 999px; color: var(--soft); }
+  .seg button[aria-pressed="true"] { background: #242422; color: var(--ink); }
+  main { max-width: 1600px; margin: 0 auto; padding: 8px 24px 80px; }
+  section { padding-top: 28px; scroll-margin-top: 56px; }
+  h2 { margin: 0; font-size: 18px; font-weight: 600; }
+  h2 span { color: var(--faint); font-weight: 400; margin-left: 8px; font-size: 14px; }
+  section > p { margin: 2px 0 14px; color: var(--soft); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
+  .tile { display: block; width: 100%; text-align: left; border-radius: 10px; overflow: hidden; background: #070707; border: 1px solid var(--line); }
+  .tile:hover { border-color: #3a3a37; }
+  .tile img { display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: cover; background: #000; }
+  .tile.img img { object-fit: contain; }
+  .tile div { padding: 8px 10px 10px; }
+  .tile b { display: block; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .tile code { color: var(--faint); font: 12px ui-monospace, monospace; }
+  .note { color: var(--faint); padding: 40px 0; }
+
+  /* the viewer */
+  #view { position: fixed; inset: 0; z-index: 10; background: #000; display: grid; grid-template-rows: auto 1fr auto; }
+  #view[hidden] { display: none; }
+  .vbar { display: flex; gap: 12px; align-items: center; padding: 12px 16px; padding-top: max(12px, env(safe-area-inset-top)); }
+  .vbar .count { color: var(--faint); font-variant-numeric: tabular-nums; }
+  .vbar .sp { flex: 1; }
+  .icon { width: 40px; height: 40px; display: inline-grid; place-items: center; border-radius: 999px; border: 1px solid #2a2a28; }
+  .icon:hover { border-color: #555; }
+  .stage { position: relative; min-height: 0; overflow: hidden; }
+  /* the picture fills the space between the bars and keeps its shape; nothing it draws can cover the text below */
+  .stage img, .stage canvas { position: absolute; top: 0; bottom: 0; left: 64px; right: 64px; width: calc(100% - 128px); height: 100%; object-fit: contain; display: block; }
+  .stage .nav { z-index: 1; }
+  .stage .nav { position: absolute; top: 50%; transform: translateY(-50%); }
+  .stage .prev { left: 12px; } .stage .next { right: 12px; }
+  .info { padding: 12px 24px 18px; padding-bottom: max(18px, env(safe-area-inset-bottom)); display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px 24px; align-items: start; max-width: 1600px; width: 100%; margin: 0 auto; }
+  .info h3 { margin: 0; font-size: 20px; font-weight: 600; }
+  .info p { margin: 4px 0 0; color: var(--soft); max-width: 70ch; }
+  .info code { color: var(--faint); font: 12px ui-monospace, monospace; }
+  .ctl { display: flex; flex-wrap: wrap; gap: 8px; justify-content: end; align-items: center; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; grid-column: 1 / -1; }
+  .chips button { padding: 5px 11px; border-radius: 999px; border: 1px solid #2a2a28; color: var(--soft); }
+  .chips button[aria-pressed="true"] { border-color: var(--hi); color: var(--ink); }
+  .play { padding: 8px 14px; border-radius: 999px; background: var(--ink); color: #000; font-weight: 500; }
+  .play[aria-pressed="true"] { background: var(--hi); }
+  @media (max-width: 700px) {
+    header { padding-top: 24px; } main, header, nav .in { padding-left: 16px; padding-right: 16px; }
+    .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    .stage img, .stage canvas { left: 8px; right: 8px; width: calc(100% - 16px); } .stage .nav { display: none; }
+    .info { grid-template-columns: 1fr; } .ctl { justify-content: start; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>SISO Background</h1>
+    <p id="sub">Everything we've built, one piece at a time.</p>
+  </div>
+  <a class="live" href="index.html" id="scene-link">Watch the live scene &rarr;</a>
+</header>
+<nav><div class="in" id="jump"></div></nav>
+<main id="main"><p class="note">Loading&hellip;</p></main>
+
+<div id="view" hidden role="dialog" aria-modal="true" aria-labelledby="v-title">
+  <div class="vbar">
+    <span class="count" id="v-count"></span>
+    <span class="sp"></span>
+    <button class="icon" id="v-close" aria-label="Close (Esc)">&#x2715;</button>
+  </div>
+  <div class="stage" id="v-stage">
+    <button class="icon nav prev" id="v-prev" aria-label="Previous (left arrow)">&#x2039;</button>
+    <img id="v-img" alt="">
+    <canvas id="v-live" hidden></canvas>
+    <button class="icon nav next" id="v-next" aria-label="Next (right arrow)">&#x203a;</button>
+  </div>
+  <div class="info">
+    <div>
+      <h3 id="v-title"></h3>
+      <p id="v-about"></p>
+      <code id="v-file"></code>
+    </div>
+    <div class="ctl">
+      <div class="seg" id="v-hour" role="group" aria-label="Light">
+        <button type="button" data-h="day" aria-pressed="true">Day</button><button type="button" data-h="night" aria-pressed="false">Night</button>
+      </div>
+      <button class="play" id="v-play" aria-pressed="false">Play live</button>
+    </div>
+    <div class="chips" id="v-states" role="group" aria-label="States"></div>
+  </div>
+</div>
+
+<script type="module">
+const $ = (id) => document.getElementById(id);
+// In the repo this page is breakdown.html beside the scene's index.html; on the site it is the root and the scene is scene.html.
+$('scene-link').href = /breakdown(\.html)?$/.test(location.pathname) ? 'index.html' : 'scene.html';
+const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+let data, items = [], hour = 'day', cur = -1, state = null, live = null;
+try { hour = localStorage.getItem('bd-hour') || 'day'; } catch {}
+
+try { data = await (await fetch('stills/index.json')).json(); }
+catch { $('main').innerHTML = '<p class="note">No stills yet. Run <code>node tools/stills.mjs</code>, then reload.</p>'; throw new Error('no stills'); }
+
+// Every viewable thing in one list, so the viewer can flip through all of it in page order.
+for (const f of data.families) {
+  for (const a of data.assets.filter((x) => x.family === f.id)) items.push({ kind: 'asset', fam: f.id, a });
+}
+const groups = [];
+for (const im of data.images) {
+  const key = `${im.group}:${im.sub || ''}`;
+  let g = groups.find((x) => x.key === key);
+  if (!g) groups.push(g = { key, title: im.group === 'refs' ? `References${im.sub ? ': ' + im.sub : ''}` : `Photo art${im.sub ? ': ' + im.sub : ''}`, list: [] });
+  g.list.push(im);
+}
+for (const g of groups) for (const im of g.list) items.push({ kind: 'image', fam: g.key, im });
+
+const still = (a, st, h, thumb) => {
+  const f = a.files[st] || a.files[a.states[0]];
+  const p = f[h] || f.day || Object.values(f)[0];
+  return `stills/${p}${thumb ? '.thumb' : ''}.webp`;
+};
+
+function render() {
+  const nA = data.assets.length, nI = data.images.length;
+  $('sub').textContent = `Everything we've built: ${nA} pieces drawn in code, ${nI} pictures. Click any to flip through them all.`;
+  const jumps = [], out = [];
+  for (const f of data.families) {
+    const list = items.filter((x) => x.kind === 'asset' && x.fam === f.id);
+    if (!list.length) continue;
+    jumps.push(`<a href="#f-${f.id}">${esc(f.title)}<span>${list.length}</span></a>`);
+    out.push(`<section id="f-${f.id}"><h2>${esc(f.title)}<span>${list.length}</span></h2><p>${esc((f.what || '').replace(/\s*\([^)]*\)\s*$/, ''))}</p><div class="grid">${
+      list.map((x) => `<button class="tile" data-i="${items.indexOf(x)}"><img loading="lazy" decoding="async" alt="" src="${still(x.a, x.a.states[0], hour, true)}"><div><b>${esc(x.a.title)}</b><code>${esc(x.a.id)}</code></div></button>`).join('')
+    }</div></section>`);
+  }
+  for (const g of groups) {
+    const id = 'g-' + g.key.replace(/[^a-z0-9]+/gi, '-');
+    jumps.push(`<a href="#${id}">${esc(g.title)}<span>${g.list.length}</span></a>`);
+    out.push(`<section id="${id}"><h2>${esc(g.title)}<span>${g.list.length}</span></h2><div class="grid">${
+      g.list.map((im) => { const i = items.findIndex((x) => x.im === im); return `<button class="tile img" data-i="${i}"><img loading="lazy" decoding="async" alt="" src="${esc(im.path)}"><div><b>${esc(im.title)}</b><code>${esc(im.path.split('/').pop())}</code></div></button>`; }).join('')
+    }</div></section>`);
+  }
+  $('jump').innerHTML = jumps.join('') + `<div class="seg" role="group" aria-label="Light for the stills"><button type="button" data-h="day" aria-pressed="${hour === 'day'}">Day</button><button type="button" data-h="night" aria-pressed="${hour === 'night'}">Night</button></div>`;
+  $('main').innerHTML = out.join('');
+}
+render();
+
+function setHour(h) {
+  hour = h; try { localStorage.setItem('bd-hour', h); } catch {}
+  for (const b of document.querySelectorAll('[data-h]')) b.setAttribute('aria-pressed', String(b.dataset.h === h));
+  for (const t of document.querySelectorAll('.tile:not(.img)')) { const x = items[t.dataset.i]; t.querySelector('img').src = still(x.a, x.a.states[0], hour, true); }
+  if (cur >= 0) show();
+}
+document.addEventListener('click', (e) => {
+  const hb = e.target.closest('[data-h]'); if (hb) return setHour(hb.dataset.h);
+  const t = e.target.closest('.tile'); if (t) open(Number(t.dataset.i));
+});
+
+// The viewer
+function open(i) { cur = (i + items.length) % items.length; state = null; stopLive(); $('view').hidden = false; document.body.style.overflow = 'hidden'; show(); history.replaceState(null, '', '#' + key(items[cur])); }
+function close() { stopLive(); $('view').hidden = true; document.body.style.overflow = ''; history.replaceState(null, '', location.pathname + location.search); const t = document.querySelector(`.tile[data-i="${cur}"]`); if (t) t.focus(); cur = -1; }
+const key = (x) => x.kind === 'asset' ? x.a.id : x.im.path;
+function show() {
+  const x = items[cur];
+  $('v-count').textContent = `${cur + 1} / ${items.length}`;
+  const img = $('v-img');
+  if (x.kind === 'asset') {
+    const a = x.a; if (!state || !a.states.includes(state)) state = a.states[0];
+    img.src = still(a, state, hour, false); img.alt = a.title;
+    $('v-title').textContent = a.title; $('v-about').textContent = a.about || '';
+    $('v-file').textContent = `${a.id} · ${a.file}${a.w ? ` · ${a.w}×${a.h} units` : ''}`;
+    const night = a.files[state] && a.files[state].night;
+    $('v-hour').hidden = !night;
+    $('v-play').hidden = false;
+    $('v-states').innerHTML = a.states.length > 1 ? a.states.map((s) => `<button type="button" data-s="${esc(s)}" aria-pressed="${s === state}">${esc(s)}${a.once && a.once[s] ? ' ▸' : ''}</button>`).join('') : '';
+    // warm the neighbours so flipping is instant
+    for (const d of [1, -1]) { const n = items[(cur + d + items.length) % items.length]; if (n.kind === 'asset') new Image().src = still(n.a, n.a.states[0], hour, false); }
+  } else {
+    img.src = x.im.path; img.alt = x.im.title;
+    $('v-title').textContent = x.im.title; $('v-about').textContent = x.im.what || ''; $('v-file').textContent = x.im.path;
+    $('v-hour').hidden = true; $('v-play').hidden = true; $('v-states').innerHTML = '';
+  }
+  if (live) startLive();
+}
+$('v-states').addEventListener('click', (e) => { const b = e.target.closest('[data-s]'); if (b) { state = b.dataset.s; show(); } });
+$('v-close').onclick = close;
+$('v-prev').onclick = () => { stopLive(); state = null; cur = (cur - 1 + items.length) % items.length; show(); history.replaceState(null, '', '#' + key(items[cur])); };
+$('v-next').onclick = () => { stopLive(); state = null; cur = (cur + 1) % items.length; show(); history.replaceState(null, '', '#' + key(items[cur])); };
+addEventListener('keydown', (e) => {
+  if ($('view').hidden) return;
+  if (e.key === 'Escape') close();
+  else if (e.key === 'ArrowRight') $('v-next').click();
+  else if (e.key === 'ArrowLeft') $('v-prev').click();
+  else if (e.key === ' ' && !$('v-play').hidden) { e.preventDefault(); $('v-play').click(); }
+});
+let sx = null;
+$('v-stage').addEventListener('touchstart', (e) => { sx = e.touches[0].clientX; }, { passive: true });
+$('v-stage').addEventListener('touchend', (e) => { if (sx === null) return; const dx = e.changedTouches[0].clientX - sx; sx = null; if (Math.abs(dx) > 50) (dx < 0 ? $('v-next') : $('v-prev')).click(); });
+
+// Live playback: one canvas, only while asked for, drawn by the same code as the scene.
+let engine = null;
+async function startLive() {
+  const x = items[cur]; if (x.kind !== 'asset') return stopLive();
+  engine = engine || await Promise.all([import('./src/assets/registry.js'), import('./src/gallery/draw.js'), import('./src/engine/backdrop.js')]);
+  const [reg, draw, back] = engine;
+  const c = $('v-live'), img = $('v-img');
+  const r = img.getBoundingClientRect();   // the whole picture box; drawScene fits the asset inside it
+  const dpr = Math.min(1.5, devicePixelRatio || 1);
+  c.width = Math.round((r.width || 960) * dpr); c.height = Math.round((r.height || 600) * dpr);
+  c.hidden = false; img.hidden = true;
+  $('v-play').setAttribute('aria-pressed', 'true'); $('v-play').textContent = 'Stop';
+  const a = reg.byId.get(x.a.id), h = hour === 'night' ? 21.5 : 13, st = state, start = performance.now();
+  const once = a && a.once && a.once[st];
+  cancelAnimationFrame(live || 0);
+  const step = (now) => {
+    const el = (now - start) / 1000;
+    if (x.fam === 'sky') { const e = back.SKY_ENTRIES.find((s) => s.id === x.a.id); back.renderBackdrop(c, { ...e, altitude: e.altitude ?? 0, t: el }); }
+    else if (a) {
+      const p = once ? Math.min(1, (el % (once + 0.8)) / once) : 0;
+      draw.drawScene(c, a, { hour: h, state: st, back: 'black', t: once ? p * once : el, p });
+    }
+    live = requestAnimationFrame(step);
+  };
+  live = requestAnimationFrame(step);
+}
+function stopLive() {
+  if (live) cancelAnimationFrame(live); live = null;
+  $('v-live').hidden = true; $('v-img').hidden = false;
+  $('v-play').setAttribute('aria-pressed', 'false'); $('v-play').textContent = 'Play live';
+}
+$('v-play').onclick = () => (live ? stopLive() : startLive());
+
+// a deep link opens the viewer on that piece
+if (location.hash.length > 1) {
+  const k = decodeURIComponent(location.hash.slice(1));
+  const i = items.findIndex((x) => key(x) === k);
+  if (i >= 0) open(i);
+}
+</script>
+</body>
+</html>

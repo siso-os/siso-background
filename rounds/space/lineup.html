@@ -1,0 +1,63 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>space lineup</title>
+<style>html,body{margin:0;background:#000;color:#ccc;font:12px/1.3 ui-monospace,monospace}canvas{display:block}#result{display:none}</style>
+</head><body>
+<canvas id="c"></canvas><pre id="result"></pre>
+<script type="module">
+// lineup.html?h=18.5 &s=0.42 &t=1.7 &timing=1
+// The whole space family (fx, space, aliens) side by side at their real relative sizes: one scale for every piece,
+// so a walker is a walker beside the palace. Top band: what lives in the sky; bottom band: what stands on the ground.
+// Each label carries the piece's warm draw time (ms, mean of 12 draws after the first, which bakes its caches).
+import { byId, drawAsset } from '../../src/assets/registry.js';
+import { lightAt } from '../../src/core/light.js';
+import { vgrad, css } from '../../src/core/paint.js';
+const q = new URLSearchParams(location.search);
+const hour = Number(q.get('h') || 18.5), s = Number(q.get('s') || 0.42), t = Number(q.get('t') || 1.7);
+const out = { errors: [], ms: {}, worst: 0 };
+addEventListener('error', (e) => out.errors.push(String(e.message)));
+const W = innerWidth, H = innerHeight;
+const cv = document.getElementById('c'); cv.width = W; cv.height = H;
+const ctx = cv.getContext('2d');
+const L = lightAt(hour);
+// world units; y is the anchor (bottom centre). Sky band anchors near 1000, ground band on 2050.
+const SKY = 1000, GROUND = 2050;
+const ITEMS = [
+  ['space.moon', 'gibbous', 300, SKY], ['space.palace', 'attack', 900, SKY], ['space.station', 'idle', 1460, SKY - 80],
+  ['space.satellite', 'idle', 1720, SKY - 160], ['space.attack-ship', 'fire', 1980, SKY - 40],
+  ['aliens.portal', 'hold', 2430, SKY], ['aliens.flyer', 'fly', 2700, SKY - 330, { seed: 1 }], ['aliens.flyer', 'fly', 2770, SKY - 250, { seed: 2 }],
+  ['aliens.flyer', 'fly', 2660, SKY - 190, { seed: 3 }], ['aliens.craft', 'fire', 3000, SKY - 160], ['aliens.drifter', 'idle', 3250, SKY - 60],
+  ['fx.fireball', 'burn', 3440, SKY - 120], ['fx.intercept', 'pop', 3640, SKY - 40, { p: 0.25 }],
+  ['space.moon-city', 'idle', 230, GROUND], ['aliens.walker', 'walk', 500, GROUND], ['fx.fire', 'burn', 660, GROUND],
+  ['fx.explosion', 'ground', 900, GROUND, { p: 0.3 }], ['fx.smoke', 'plume', 1230, GROUND], ['fx.debris', 'burst', 1520, GROUND, { p: 0.3 }],
+  ['fx.dust', 'billow', 1860, GROUND, { p: 0.4 }], ['fx.splash', 'shell', 2200, GROUND, { p: 0.35 }], ['fx.wake', null, 2420, GROUND],
+  ['fx.trail', 'enemy', 2700, GROUND - 260], ['fx.tracer', 'fire', 3010, GROUND - 200], ['fx.shield-hit', 'hit', 3290, GROUND - 120, { p: 0.3 }],
+  ['fx.flash', 'flash', 3520, GROUND - 160, { p: 0.15 }], ['fx.embers', 'rise', 3720, GROUND - 40],
+];
+// backdrop: the hour's sky over the top, its ground below the ground line
+ctx.fillStyle = vgrad(ctx, 0, GROUND * s, [[0, L.sky.top], [1, L.sky.horizon]]); ctx.fillRect(0, 0, W, GROUND * s);
+ctx.fillStyle = vgrad(ctx, GROUND * s, H, [[0, L.haze], [1, L.ambient]]); ctx.fillRect(0, GROUND * s, W, H - GROUND * s);
+for (const [id, state, x, y, extra = {}] of ITEMS) {
+  const a = byId.get(id);
+  if (!a) { out.errors.push('missing ' + id); continue; }
+  const o = { t, p: 0.5, state: state || a.states[0], seed: 0, L, lit: L.side, scale: s, ...extra };
+  const draw = () => { ctx.save(); ctx.translate(x * s, y * s); ctx.scale(s, s); drawAsset(ctx, a, o); ctx.restore(); };
+  draw();
+  let ms = 0;
+  if (q.get('timing') !== '0') {
+    // time on a scratch canvas so the shot holds one drawing of each piece
+    const sc = document.createElement('canvas'); sc.width = Math.ceil(a.w * s * 1.6) + 4; sc.height = Math.ceil(a.h * s * 1.6) + 4;
+    const g = sc.getContext('2d');
+    const one = () => { g.save(); g.translate(sc.width / 2, sc.height * 0.8); g.scale(s, s); drawAsset(g, a, o); g.restore(); };
+    one();
+    const t0 = performance.now(); for (let i = 0; i < 12; i++) one(); ms = (performance.now() - t0) / 12;
+    out.ms[id] = Math.max(out.ms[id] || 0, +ms.toFixed(3)); out.worst = Math.max(out.worst, ms);
+  }
+  ctx.fillStyle = 'rgba(0,0,0,.55)'; const label = `${id.split('.')[1]} ${o.state}${ms ? ' ' + ms.toFixed(2) + 'ms' : ''}`;
+  const lw = ctx.measureText(label).width + 8; ctx.fillRect(x * s - lw / 2, y * s + 4, lw, 15);
+  ctx.fillStyle = '#ddd'; ctx.textAlign = 'center'; ctx.fillText(label, x * s, y * s + 15); ctx.textAlign = 'left';
+}
+ctx.fillStyle = 'rgba(0,0,0,.6)'; ctx.fillRect(0, 0, 330, 18); ctx.fillStyle = '#eee';
+ctx.fillText(`space family lineup  ${hour}h  scale ${s}  t ${t}  worst ${out.worst.toFixed(2)} ms`, 6, 13);
+document.getElementById('result').textContent = JSON.stringify(out);
+document.title = 'done';
+</script></body></html>

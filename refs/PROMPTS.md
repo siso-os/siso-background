@@ -1,0 +1,142 @@
+# SISO Background image prompts
+
+Generated with the built-in image generation tool. Reference paths are relative to this folder unless shown as absolute paths.
+
+## Options
+
+### `options/option-a-golden.webp`
+
+Use case: lighting-weather / composition correction. Edit this exact ultra-wide 3:1 golden-hour film photograph at largest native resolution. Preserve this SAME desert coastal bay, city landmark identities, two small floating islands, tiny three boats, golden haze and authentic photographic materials. One adjustment: move the entire shoreline and city band upward by 8 percent of total frame height, placing the sea horizon at exactly TWO THIRDS down the image, so the full bottom THIRD is finely rippling open blue-green sea. Keep the city at its current height, roughly one fifth of frame height. Move both entire floating islands upward only 3 percent, preserving their small scale, whole silhouettes, underside engines, SISO research compound, slim dark glass ring-crowned spire with glowing "SISO", faint transparent cyan dome, and red fortress island with red booster flames. Keep lots of open sky above them. Extend the foreground with matching natural sea ripples and tiny warm glints. All boats stay small and within sea, police patrol boat has restrained red-blue lights and a natural wake. No redesign, no added objects, no game art, no plastic, no UI, no text except the SISO crown. Photographic color, atmospheric depth and long-lens detail. Output 3:1 panorama.
+
+Reference images
+
+- `source/options--option-a-golden-try2.png`
+
+### `options/option-d-storm.webp`
+
+Edit the supplied golden-hour panorama into another moment in the SAME SISO Background world. Keep the exact 3:1 panoramic framing at maximum native resolution, distant small city, exact skyline landmark identities and positions, low mountain ranges behind in haze, both SMALL floating islands and their proportions and locations, home island rock and blue levitation engines, research buildings, slim dark glass spire with sculpted shoulders and cyan ring crown showing the single small word "SISO", transparent blue force-field dome, dark red fortress island with red booster engines, two tiny speedboats, and white/navy police launch on the foreground sea. Sea is the foreground third; add natural open water at bottom if needed. Big open sky above. Real weathered materials, photographed on a long lens with feature-film realism. No game art, plastic, toy scale, UI, borders, collage, captions or text except SISO on the tower crown. Change weather and action to OVERCAST WAR. Slate thunderclouds, rain haze, cold grey choppy bay. Three tiny jet fighters streak across the wide sky; enemy fortress gun batteries visibly fire at the SISO island and city. About FIFTY distinct fine missiles with small bright descending tips and thin smoke/ember trails rain diagonally down from the upper right like a dense shower, into only part of the city and onto the home island shield. The shield flares with three localized bright blue impact ripples, while staying transparent so the tower remains visible. Fires and rising black smoke in a localized waterfront quarter, small distant explosions, believable scale, no people injured or gore. Keep much of the sky open and the skyline small and legible. Authentic live-action disaster-film photography, turbulence and natural smoke, not a laser poster or game screenshot.
+
+Reference images
+
+- `source/options--option-a-golden-try3.png`
+
+### `options/option-c-painted.webp`
+
+Edit the supplied golden-hour panorama into another moment in the SAME SISO Background world. Keep the exact 3:1 panoramic framing at maximum native resolution, distant small city, exact skyline landmark identities and positions, low mountain ranges behind in haze, both SMALL floating islands and their proportions and locations, home island rock and blue levitation engines, research buildings, slim dark glass spire with sculpted shoulders and cyan ring crown showing the single small word "SISO", transparent blue force-field dome, dark red fortress island with red booster engines, two tiny speedboats, and white/navy police launch on the foreground sea. Sea is the foreground third; add natural open water at bottom if needed. Big open sky above. Real weathered materials, photographed on a long lens with feature-film realism. No game art, plastic, toy scale, UI, borders, collage, captions or text except SISO on the tower crown. Change the moment to luminous painted DUSK, the atmosphere of a finely crafted atmospheric worldport lock-screen painting: burnt-orange and coral cloud edges at sunset, amber city lights, violet shadow masses, richly luminous but physical water reflections. A cinematic fine-art matte painting with extremely realistic finely textured rock, steel, glass, small inhabited architecture and rippled sea, only a subtle painterly handling in clouds and light. Soft golden sun partly screened by cloud near the far right horizon, never oversized. Preserve ample open sky and the small skyline. No cartoon outlines, flat fills, simplified geometry, brush-smear buildings, or game illustration.
+
+Reference images
+
+- `source/options--option-a-golden-try3.png`
+
+### `options/option-b-neon.webp`
+
+Edit the supplied golden-hour panorama into another moment in the SAME SISO Background world. Keep the exact 3:1 panoramic framing at maximum native resolution, distant small city, exact skyline landmark identities and positions, low mountain ranges behind in haze, both SMALL floating islands and their proportions and locations, home island rock and blue levitation engines, research buildings, slim dark glass spire with sculpted shoulders and cyan ring crown showing the single small word "SISO", transparent blue force-field dome, dark red fortress island with red booster engines, two tiny speedboats, and white/navy police launch on the foreground sea. Sea is the foreground third; add natural open water at bottom if needed. Big open sky above. Real weathered materials, photographed on a long lens with feature-film realism. No game art, plastic, toy scale, UI, borders, collage, captions or text except SISO on the tower crown. Change only time and lighting to deep NIGHT. The inhabited city glows with restrained cyan and magenta neon architectural trims and diverse warm occupied windows, not luminous solid blocks. Wet black sea holds exquisitely irregular broken pink, cyan and amber reflections in real wavelets. Deep navy sky with naturally fine stars above the mountains. The transparent blue shield is faint and credible; blue SISO crown light and red enemy thrusters stay restrained. Police boat has tiny red-blue navigation flashes. Dark photographic blacks with readable surfaces, no excessive bloom, no battle.
+
+Reference images
+
+- `source/options--option-a-golden-try3.png`
+
+## Slice
+
+### `slice/vertical-slice.webp`
+
+Edit this tall 1:3 sea-to-space SISO Background reference at maximum native resolution. Preserve the photographic style, sea and small coastal city at bottom, floating blue-thruster SISO island, clouds, continuous altitude transition, curved Earth with thin blue limb, black star field, Moon city, and white-and-gold palace being attacked by small ships. Correct only the UPPER THIRD composition: shrink the Moon with its small glowing lunar surface city so its complete circular disc fits at x=7%-40%, y=5%-23%; shrink the white-and-gold orbital palace with rings and spires so the WHOLE palace fits at x=47%-94%, y=3%-24%, with clear black space around every tip and ring edge. Nothing touches or crosses image edges. Retain several tiny attacking ships with fine tracer fire and localized palace impacts. Buildings on the Moon must visibly sit on the cratered Moon surface. Refine the SISO shield at lower altitude into a faint full dome sheltering the tower too, with the tiny word "SISO" on its crown. No other text. Keep all textures hyper-real, real metal, ceramic, clouds, waves and lunar rock. No game art or plastic. No panels or diagram labels.
+
+Reference images
+
+- `source/slice--vertical-slice-try1.png`
+
+## Elements
+
+### `elements/sea-day.webp`
+
+Use case: photorealistic-natural. Asset: SISO Background material reference, physically convincing live-action cinema photography at the largest available native resolution. Landscape 3:2 framing, ideally 3072x2048; no lettering, logos, UI, borders or watermarks. No cartoon, illustration, video game art, oversmoothed plastic or synthetic toy render. OPEN SEA SURFACE ONLY in clear daylight, camera extremely low just above water, flat distant sea horizon at top 8 percent with a tiny plain pale-blue sky strip; absolutely NO land, city, boats, islands or objects. Full frame studies small irregular overlapping wind wavelets, delicate capillary wrinkles, tiny physically accurate silver sunlight glints, teal-blue translucent shallow crests, deep indigo troughs, realistic light scattering and warm subtle golden side light. Not huge breaking surf, no foam blanket, no decorative repeating texture. Water is sharply readable near camera and compresses naturally toward distance. Natural sea color and scale suitable for matching ripples in code.
+
+### `elements/sea-night.webp`
+
+Use case: photorealistic-natural. Asset: SISO Background material reference, physically convincing live-action cinema photography at the largest available native resolution. Landscape 3:2 framing, ideally 3072x2048; no lettering, logos, UI, borders or watermarks. No cartoon, illustration, video game art, oversmoothed plastic or synthetic toy render. OPEN SEA SURFACE ONLY at night, camera extremely low just above water, flat distant sea horizon at top 8 percent, tiny deep navy sky strip. Absolutely NO land, city, boats, islands, skyline or objects. Full frame of finely detailed irregular black-blue waves, subtle cyan, magenta and warm amber broken light reflections entering from distant off-screen city lights, small silver moonlit wave facets, textured dark troughs still readable. The reflected colors fragment and shimmer naturally across capillary waves, never straight solid neon stripes. Photographic black water with intricate physical ripples and restrained highlights, no bloom or oily rainbow wash. Natural horizon and long-lens surface compression.
+
+### `elements/sky-dusk.webp`
+
+Use case: photorealistic-natural. SISO Background atmospheric material reference. Maximum native resolution, landscape 3:2, ideally 3072x2048. SKY ONLY above a very LOW perfectly flat atmospheric horizon at the bottom 3 percent. No buildings, landforms, islands, boats, vehicles, people or ground. Entire photograph is sky and a thin hazy horizon band. Real cinema sky plate with naturally detailed multi-scale cloud filaments, atmospheric light scattering, smooth high-bit-depth gradients and subtle photographic texture. No UI, watermarks, text, illustration, cartoon, game render, artificial rainbow colors or excessive glow. Luminous DUSK: deep muted indigo zenith, violet and lavender middle atmosphere, low coral and amber horizon glow strongest at the far RIGHT. A small low natural sun partly veiled by thin cloud near the right horizon. Real fine thin clouds with orange edges and smoky blue shadows, intricate stratocumulus filaments and open sky between. Natural warm-cool cinematic palette, no mountains or scenery.
+
+### `elements/sky-night.webp`
+
+Use case: photorealistic-natural. SISO Background atmospheric material reference. Maximum native resolution, landscape 3:2, ideally 3072x2048. SKY ONLY above a very LOW perfectly flat atmospheric horizon at the bottom 3 percent. No buildings, landforms, islands, boats, vehicles, people or ground. Entire photograph is sky and a thin hazy horizon band. Real cinema sky plate with naturally detailed multi-scale cloud filaments, atmospheric light scattering, smooth high-bit-depth gradients and subtle photographic texture. No UI, watermarks, text, illustration, cartoon, game render, artificial rainbow colors or excessive glow. NIGHT sky plate: deep blue-black overhead graduating to dark navy along the horizon. Many finely resolved pinprick stars with authentic varied brightness, not evenly spaced dots; faint subtle Milky Way star clouds, wispy thin moonlit cirrus. A small physically detailed waxing gibbous Moon in the upper right quadrant, subdued halo, craters and grey maria visible. Preserve dark photographic blacks and enough subtle cloud texture to study realistic scattering; no artificial starbursts, giant nebulae or planets.
+
+### `elements/sky-day.webp`
+
+Use case: photorealistic-natural. SISO Background atmospheric material reference. Maximum native resolution, landscape 3:2, ideally 3072x2048. SKY ONLY above a very LOW perfectly flat atmospheric horizon at the bottom 3 percent. No buildings, landforms, islands, boats, vehicles, people or ground. Entire photograph is sky and a thin hazy horizon band. Real cinema sky plate with naturally detailed multi-scale cloud filaments, atmospheric light scattering, smooth high-bit-depth gradients and subtle photographic texture. No UI, watermarks, text, illustration, cartoon, game render, artificial rainbow colors or excessive glow. Clear natural DAY: rich blue zenith fading through cerulean to pale blue-white at the low flat horizon; airy scattered small cumulus with extraordinary physical cotton-like microtexture and wispy cirrus above, crisp silver sunlit edges, cool grey-blue cloud undersides. Sun is out of frame to upper right; naturally graduated daylight, no visible solar disc, no overdramatic thunderclouds.
+
+### `elements/sky-dawn.webp`
+
+Use case: photorealistic-natural. SISO Background atmospheric material reference. Maximum native resolution, landscape 3:2, ideally 3072x2048. SKY ONLY above a very LOW perfectly flat atmospheric horizon at the bottom 3 percent. No buildings, landforms, islands, boats, vehicles, people or ground. Entire photograph is sky and a thin hazy horizon band. Real cinema sky plate with naturally detailed multi-scale cloud filaments, atmospheric light scattering, smooth high-bit-depth gradients and subtle photographic texture. No UI, watermarks, text, illustration, cartoon, game render, artificial rainbow colors or excessive glow. Early DAWN: from dark desaturated cobalt blue at the zenith, through lilac and pale cool blue, to a very narrow warm peach-pink glow low at the far LEFT horizon. Faint low sun just below horizon, no visible sun disc. Thin detailed cirrus streaks, scattered soft-edged altocumulus lit coral underneath. A calm physically plausible coastal dawn, quiet broad open space between natural clouds.
+
+### `elements/enemy-island.webp`
+
+SISO Background single-element photographic reference, landscape 3:2 at maximum native resolution, ideally 3072x2048. Full subject centered, entire silhouette visible with generous clear margin. True side elevation with only a slight glimpse of the top, long-lens perspective and believable full-scale real materials, fine weathering and physical light. No UI, diagram, pedestal, labels, watermark, game art, toy appearance, plastic or cartoon. Edit this exact enemy floating island into a very high detail photographic isolated plate on a completely PLAIN MID-GREY background. Keep the exact identity: broad weathered dark volcanic rock tapering underneath, dark red masonry fortress city with layered crenellated turrets, dense inhabited skyline, tiny warm amber windows, black metal spike finials. Rusted red booster engines below the rock fire short red-orange flames, with heat shimmer, dark soot and machined engine nozzles. Entire fortress, whole rock and complete underside and flames visible, nothing cropped. Nearly side-on, a slight glimpse of flat top, warm dusk side light and cool blue fill, real chipped masonry and fissured heavy basalt. No cartoon outlines, no game castle, no molded toy surfaces. Repaint clean natural contours: ignore colored straight glitch bars outside the reference silhouette. No floor, shadow, horizon, sea, land or other objects, only the whole floating island on uniform mid-grey. No lettering.
+
+Reference images
+
+- `art/isles/cutouts/isle-enemy-dusk.webp`
+
+### `elements/moon-city.webp`
+
+SISO Background single-element photographic reference, landscape 3:2 at maximum native resolution, ideally 3072x2048. Full subject centered, entire silhouette visible with generous clear margin. True side elevation with only a slight glimpse of the top, long-lens perspective and believable full-scale real materials, fine weathering and physical light. No UI, diagram, pedestal, labels, watermark, game art, toy appearance, plastic or cartoon. A SMALL glowing city ON THE MOON, side view against black space, full composition centered. Foreground is a broad curved ledge of lunar cratered grey regolith with fine dust, fractured rocks, impact craters and a very low lunar horizon. On that real solid surface sits an inhabited near-future settlement: small transparent pressurized domes with amber interior lights, connected low white ceramic buildings, a few slender glass-and-metal towers, tiny warm illuminated roadways and landing pads. Settlement only about one quarter of frame height; lunar terrain texture and black space remain prominent. Black star field above, harsh low solar sidelight and deep physically accurate lunar shadows. Real space-program engineering, airlocks, cables and radiation-shielded bases, no floating balcony, no plants outside domes, no atmosphere or clouds. Cinematic hyper-real lunar photograph; no Earth or oversized planet behind, no text.
+
+### `elements/mountains.webp`
+
+SISO Background single-element photographic reference, landscape 3:2 at maximum native resolution, ideally 3072x2048. Full subject centered, entire silhouette visible with generous clear margin. True side elevation with only a slight glimpse of the top, long-lens perspective and believable full-scale real materials, fine weathering and physical light. No UI, diagram, pedestal, labels, watermark, game art, toy appearance, plastic or cartoon. Three distinct mountain ranges stepping back into natural haze across a wide side view, flat horizontal baseline. Front range of desert-grey fractured rock with subtle warm evening edges, medium range dusty mauve with less contrast, farthest range soft cool lavender silhouettes melting into peach atmospheric haze. Three overlapping ridgelines, meaningful gaps and valleys, varied natural peaks, physically believable aerial perspective. Mountains occupy lower half, clean pale hazy sky above, no buildings, city, water, forest foreground or artificial objects. Real remote desert coastal mountains photographed with a long lens.
+
+### `elements/siso-island.webp`
+
+SISO Background single-element photographic reference, landscape 3:2 at maximum native resolution, ideally 3072x2048. Full subject centered, entire silhouette visible with generous clear margin. True side elevation with only a slight glimpse of the top, long-lens perspective and believable full-scale real materials, fine weathering and physical light. No UI, diagram, pedestal, labels, watermark, game art, toy appearance, plastic or cartoon. Composite these two provided photographic references into ONE SISO floating home island plate on a completely PLAIN MID-GREY background. Reference 1 is the island identity: preserve its wide flat grassy top, weathered stratified volcanic rock, inhabited low concrete-and-cedar research compound, radome and beacon mast, bolted industrial blue levitation thrusters tucked underneath overhangs. Reference 2 is the tower identity: put this tall SLIM dark glass spire on the island, preserve its sculpted asymmetric silver shoulders, 3.6:1 height-to-width silhouette, cyan circular ring crown between twin upward fins and circular enamel disc under the crown. Add the small word "SISO" glowing on the ring crown, no other lettering. Tower is slender, not a broad pyramid. Faint transparent blue hemispherical force-field dome encloses the entire island top and tower. Whole floating rock and tapered rocky underside visible from broadside, all engines visible, nothing cropped. Dusk light: warm amber from right, cool lilac fill, physically credible dark glass, chipped rock, metal fasteners, tiny occupied windows. Repaint clean contours: ignore any colored straight glitch bars outside reference silhouettes. Grey background has no horizon, floor, scenery or cast shadow. No extra islands.
+
+Reference images
+
+- `art/isles/cutouts/isle-home-dusk.webp`
+- `art/isles/cutouts/tower-dusk.webp`
+
+### `elements/space-palace.webp`
+
+SISO Background single-element photographic reference, landscape 3:2 at maximum native resolution, ideally 3072x2048. Full subject centered, entire silhouette visible with generous clear margin. True side elevation with only a slight glimpse of the top, long-lens perspective and believable full-scale real materials, fine weathering and physical light. No UI, diagram, pedestal, labels, watermark, game art, toy appearance, plastic or cartoon. ONE floating white-and-gold SPACE PALACE, side elevation isolated against BLACK SPACE with a restrained fine star field. Complete palace centered with margin around every spire and orbital ring. Magnificent inhabited orbital palace with slender white ceramic spires, polished but weathered gold structural ribs, luminous warm windows, three elegant concentric orbital rings around its central axis, a hanging tapered gold-and-ceramic underside with support trusses and docking details. Architecture plausibly built at enormous scale; restrained practical illumination, delicate tiny blue attitude thrusters. Sunlit rim at upper right, rich dark interior shadows, believable ceramic seams and micrometeorite marks. Film still captured in orbit, exquisite real material texture. No Moon, Earth, other spacecraft, explosions or objects; study the palace alone. No text.
+
+### `elements/portal-aliens.webp`
+
+SISO Background single-element photographic reference, landscape 3:2 at maximum native resolution. Repaint the supplied dusk sea and central upright green-violet portal as a cinematic live-action still, preserving the dark ocean, low flat horizon, burnt-orange clouds and broken light on real water. A continuous flow of small, recognizably living bioluminescent aliens is emerging through the ring into open air. Several nearby creatures have clear soft translucent jellyfish-like bells and dangling organic tendrils lit faintly cyan. Three distinct small alien craft interspersed among them have opaque weathered metal hulls and little practical lights. Preserve the roughly circular green-violet filament ring, believable depth and room around the whole group. Keep all activity above water, with no land, lettering, logos or extra scenery. Subtle painterly handling in clouds and light with convincing photographic textures and restrained bloom.
+
+Reference images
+
+- `source/elements--portal-aliens-try1.png`
+
+### `elements/jet-fighter.webp`
+
+SISO Background single-element photographic reference, landscape 3:2 at maximum native resolution. Repaint the supplied fictional unarmed light-grey fighter jet with cobalt-blue accents, true orthographic left-side silhouette with nose pointing right, camera perpendicular to the fuselage and exactly level with its centerline. The wings project toward and away from camera and appear edge-on, with no broad top surface visible. Preserve the silhouette of the pointed nose, swept vertical tail and dark canopy, light weathered metal, blue markings, warm rim light and cool fill. Keep the aircraft centered with at least 8 percent clear space beside the nose and tail. Plain uniform mid-grey backdrop. No horizon, lettering, logos, contrails or ground. Believable live-action film materials, no illustration or game render.
+
+Reference images
+
+- `source/elements--jet-fighter-try1.png`
+
+### `elements/rocket-ship.webp`
+
+Create a single landscape 3:2 photorealistic SISO Background reference at maximum native resolution. Use the supplied square spacecraft launch image as a style and composition reference only. Repaint the same tall ivory-and-graphite space exploration rocket in true broadside profile with one bright white-orange exhaust flame and a complete compact turbulent smoke plume. Place the nose at 11 percent of image height and the lowest completely dissipated wisps at 87 percent. A clearly empty strip of background must remain below the smoke. The rocket rises vertically, centered in the frame with ample space on both sides. Plain, even mid-grey backdrop. Physically convincing live-action cinema photography, subtle warm edge lighting, cooled shadows and believable weathered metal. No ground, pad, text, logos or borders.
+
+Reference images
+
+- `source/elements--rocket-ship-try1.png`
+
+### `elements/air-defence.webp`
+
+SISO Background single-element photographic reference, landscape 3:2 at maximum native resolution, ideally 3072x2048. Full subject centered, entire silhouette visible with generous clear margin. One isolated futuristic skyscraper rooftop, shown from level true side elevation, with two distinct fictional film props on the roof: a closed compact missile launcher pod and a separate compact enclosed gun turret. Both are idle and clearly silhouetted, one on each side of the rooftop. Only the upper two or three stories of the steel and dark-glass skyscraper crown are visible, with a clean straight bottom edge, warm occupied windows and a broad readable roofline. No other buildings, people, firing, exposed mechanisms, labels, diagrams or annotations. Uniform plain mid-grey background, no horizon. Use the supplied island image as a reference for photographic material detail, grey backdrop and restrained cool fill with warm side light only. Real weathered materials, photographed on a long lens with feature-film realism. No game art, plastic, toy scale, UI, borders, collage, captions, logos, watermark or text.
+
+Reference images
+
+- `elements/siso-island.webp`
+
+### `elements/hellfire-swarm.webp`
+
+SISO Background single-element photographic reference, landscape 3:2 at maximum native resolution, ideally 3072x2048. Full subject centered, entire silhouette visible with generous clear margin. An isolated, fictional storm-sky visual effect, seen broadside. Match the supplied storm panorama's slate-blue thunderclouds, rain haze, cold shadows and very fine warm moving lights. Dark sky fills the entire frame. About FIFTY distinct fine missile trails with small warm descending tips and thin smoke/ember trails rain diagonally down from the upper right toward the lower left like a dense shower. The loose swarm is centered, with tips scattered and staggered across different depths; fine atmospheric trails have uneven lengths and opacity and dissipate into the clouds. Make the streaks close to parallel with natural irregularity. No foreground projectiles, land, city, vehicles, islands, impacts or explosions. Authentic live-action disaster-film photography, turbulence and natural smoke. Real weathered materials, photographed on a long lens with feature-film realism. No game art, plastic, toy scale, UI, borders, collage, captions, logos, watermark or text.
+
+Reference images
+
+- `options/option-d-storm.webp`

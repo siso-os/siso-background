@@ -1,0 +1,55 @@
+{
+ "plates": {
+  "marina-night": {
+   "file": "plates/marina-night.webp",
+   "light": "night"
+  }
+ },
+ "cutouts": {
+  "bld-glass-day": {
+   "file": "cutouts/city-glass.webp",
+   "light": "day",
+   "anchor": [
+    72,
+    438
+   ],
+   "display_w": 80
+  },
+  "bld-deco-day": {
+   "file": "cutouts/city-deco.webp",
+   "light": "day",
+   "anchor": [
+    72,
+    286
+   ],
+   "display_w": 80
+  },
+  "bld-brick-day": {
+   "file": "cutouts/city-brick.webp",
+   "light": "day",
+   "anchor": [
+    72,
+    224
+   ],
+   "display_w": 80
+  },
+  "bld-stone-day": {
+   "file": "cutouts/city-stone.webp",
+   "light": "day",
+   "anchor": [
+    72,
+    188
+   ],
+   "display_w": 80
+  },
+  "bld-modern-day": {
+   "file": "cutouts/city-glass.webp",
+   "light": "day",
+   "anchor": [
+    72,
+    438
+   ],
+   "display_w": 80
+  }
+ }
+}

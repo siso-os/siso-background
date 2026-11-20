@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Effects lineup</title>
+<style>html,body{margin:0;background:#111722}canvas{display:block}#result{display:none}</style></head>
+<body><canvas id="frame"></canvas><pre id="result"></pre>
+<script type="module">
+import { byId, drawAsset, misses } from '../../src/assets/registry.js';
+import { lightAt } from '../../src/core/light.js';
+import { vgrad } from '../../src/core/paint.js';
+import { renderBackdrop } from '../../src/engine/backdrop.js';
+
+const groups = {
+  explosions: [['explosion', 'ground', 0.16], ['explosion', 'air', 0.34], ['fireball', 'burn'], ['flash', 'flash', 0.1]],
+  'fire-smoke': [['fire', 'burn'], ['smoke', 'plume'], ['dust', 'billow', 0.38], ['embers', 'storm']],
+  trails: [['trail', 'enemy'], ['trail', 'siso'], ['trail', 'contrail'], ['tracer', 'fire']],
+  water: [['wake', 'fast'], ['splash', 'big', 0.26]],
+  hits: [['shield-hit', 'hit', 0.23], ['intercept', 'pop', 0.095], ['intercept', 'blue', 0.22], ['debris', 'burst', 0.22]],
+};
+
+const query = new URLSearchParams(location.search);
+const target = query.get('target');
+const frames = target && query.has('actual') ? groups[target].filter(([name]) => !query.has('asset') || name === query.get('asset')) : target ? groups[target] : Object.values(groups).flat();
+const actual = query.has('actual');
+const compare = target && !actual;
+const hours = compare ? [12, 22] : [Number(query.get('h') || 18.5)];
+const small = innerWidth <= 640;
+const cv = document.querySelector('#frame');
+cv.width = Number(query.get('w')) || innerWidth;
+cv.height = Number(query.get('height')) || innerHeight;
+const ctx = cv.getContext('2d');
+const sea = document.createElement('canvas');
+const ms = {};
+const columns = compare ? hours.length : actual ? Math.min(frames.length, 2) : 6;
+const width = cv.width / columns;
+const height = cv.height / (compare ? frames.length : Math.ceil(frames.length / columns));
+
+function cell([name, state, p = 0.5], hour, x, y) {
+  const a = byId.get('fx.' + name);
+  const L = lightAt(hour);
+  const water = name === 'wake' || name === 'splash';
+  const anchor = height * (water ? 0.69 : 0.85);
+  const scale = small || actual ? 0.3 : compare ? Math.min(width * 0.76 / a.w, (anchor - 17) / a.h)
+    : Number(query.get('s')) || 0.36;
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.beginPath();
+  ctx.rect(0, 0, width, height);
+  ctx.clip();
+  if (water) {
+    sea.width = Math.round(width);
+    sea.height = Math.round(height);
+    renderBackdrop(sea, { h: hour, horizon: 0.22, t: 2.1, overcast: 0.45 });
+    ctx.drawImage(sea, 0, 0, width, height);
+  } else {
+    ctx.fillStyle = vgrad(ctx, 0, height, [[0, L.sky.top], [1, L.sky.horizon]]);
+    ctx.fillRect(0, 0, width, height);
+  }
+  const options = { state, p, t: 2.1, seed: 0, L, lit: L.side, scale };
+  ctx.save();
+  ctx.translate(width / 2, anchor);
+  ctx.scale(scale, scale);
+  drawAsset(ctx, a, options);
+  ctx.restore();
+  ctx.font = '12px monospace';
+  ctx.fillStyle = '#111722c9';
+  ctx.fillRect(0, 0, width, 18);
+  ctx.fillStyle = '#edf1f8';
+  ctx.fillText(`${name} · ${state}${compare ? ' · ' + hour + 'h' : ''}`, 7, 13);
+  ctx.restore();
+  if (query.has('timing')) {
+    const scratch = document.createElement('canvas');
+    scratch.width = Math.ceil(width);
+    scratch.height = Math.ceil(height);
+    const g = scratch.getContext('2d');
+    g.translate(width / 2, anchor);
+    g.scale(scale, scale);
+    drawAsset(g, a, options);
+    const start = performance.now();
+    for (let i = 0; i < 32; i++) {
+      g.clearRect(-width / scale, -height / scale, 2 * width / scale, 2 * height / scale);
+      drawAsset(g, a, { ...options, t: options.t + i / 60 });
+    }
+    ms[name + ' ' + state] = +((performance.now() - start) / 32).toFixed(3);
+  }
+}
+
+frames.forEach((frame, i) => {
+  if (compare) hours.forEach((hour, j) => cell(frame, hour, j * width, i * height));
+  else cell(frame, hours[0], (i % columns) * width, Math.floor(i / columns) * height);
+});
+document.querySelector('#result').textContent = JSON.stringify({ errors: [...misses], ms });
+document.title = 'done';
+</script></body></html>

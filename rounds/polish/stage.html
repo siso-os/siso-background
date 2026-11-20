@@ -1,0 +1,134 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>polish stage</title>
+<style>html,body{margin:0;background:#000;color:#ccc;font:12px/1.3 ui-monospace,monospace}canvas{display:block}#result{display:none}</style>
+</head><body>
+<canvas id="c"></canvas><pre id="result"></pre>
+<script type="module">
+// The polish round's fixed views, so a before and an after shot are the same picture of different code.
+// stage.html?show=mountains | boats | station   (&h=<hour> &t=<sec> override the defaults)
+//   mountains: the four ranges at golden hour (left) and at night (right), on the sky over the sea.
+//   boats: the five boats large at dusk, each on its own strip of sea.
+//   station: the station large in hard sunlight, and small at about the size the scene draws it.
+import { byId, drawAsset } from '../../src/assets/registry.js';
+import { lightAt } from '../../src/core/light.js';
+import { css, vgrad, mix } from '../../src/core/paint.js';
+
+const q = new URLSearchParams(location.search);
+const show = q.get('show') || 'mountains';
+const num = (k, d) => (q.has(k) ? Number(q.get(k)) : d);
+const out = { show, errors: [], ms: {} };
+addEventListener('error', (e) => out.errors.push(String(e.message)));
+const W = innerWidth, H = innerHeight, DPR = devicePixelRatio || 1;
+const cv = document.getElementById('c'); cv.width = W * DPR; cv.height = H * DPR;
+cv.style.width = W + 'px'; cv.style.height = H + 'px';
+const ctx = cv.getContext('2d'); ctx.scale(DPR, DPR);
+
+function sky(x, y, w, h, L, horizon = 0.8) {
+  ctx.fillStyle = vgrad(ctx, y, y + h * horizon, [[0, L.sky.top], [1, L.sky.horizon]]);
+  ctx.fillRect(x, y, w, h * horizon);
+  const sea = mix(mix(L.sky.top, L.haze, 0.35), [10, 24, 34], 0.45);
+  ctx.fillStyle = vgrad(ctx, y + h * horizon, y + h, [[0, mix(L.haze, sea, 0.4)], [1, sea]]);
+  ctx.fillRect(x, y + h * horizon, w, h * (1 - horizon));
+}
+
+function put(id, x, y, s, o) {
+  const a = byId.get(id); if (!a) { out.errors.push('no ' + id); return; }
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
+  const t0 = performance.now();
+  try { drawAsset(ctx, a, { t: 2, p: 0, seed: 0, state: a.states[0], lit: o.L.side, scale: s * DPR, ...o }); } catch (e) { out.errors.push(id + ': ' + e); }
+  const ms = performance.now() - t0; out.ms[id] = Math.max(out.ms[id] || 0, +ms.toFixed(2));
+  ctx.restore();
+}
+const label = (x, y, s) => { ctx.fillStyle = 'rgba(0,0,0,.5)'; ctx.fillRect(x, y, ctx.measureText(s).width + 12, 17); ctx.fillStyle = '#ddd'; ctx.fillText(s, x + 6, y + 12); };
+
+function mountains() {
+  const ids = ['alpine', 'desert', 'volcanic', 'arctic'];
+  const hours = [num('h', 17.4), num('h2', 21.5)];
+  const cw = W / 2, rh = H / 4;
+  hours.forEach((h, c) => {
+    const L = lightAt(h);
+    ids.forEach((n, r) => {
+      const id = 'nature.mountains-' + n, a = byId.get(id), x = c * cw, y = r * rh;
+      ctx.save(); ctx.beginPath(); ctx.rect(x, y, cw, rh); ctx.clip();
+      sky(x, y, cw, rh, L, 0.86);
+      const s = Math.min((cw * 0.98) / a.w, (rh * 0.8) / a.h);
+      put(id, x + cw / 2, y + rh * 0.86, s, { L, t: num('t', 6), seed: 0 });
+      ctx.restore();
+      label(x + 4, y + 4, `${n} ${h}h`);
+    });
+  });
+}
+
+function boats() {
+  const L = lightAt(num('h', 18.6));
+  const cells = [
+    ['sea.cargo', 0, 0, W, H * 0.36],
+    ['sea.ferry', 0, H * 0.36, W / 2, H * 0.32], ['sea.yacht', W / 2, H * 0.36, W / 2, H * 0.32],
+    ['sea.police-boat', 0, H * 0.68, W / 2, H * 0.32], ['sea.speedboat', W / 2, H * 0.68, W / 2, H * 0.32],
+  ];
+  for (const [id, x, y, w, h] of cells) {
+    const a = byId.get(id);
+    ctx.save(); ctx.beginPath(); ctx.rect(x, y, w, h); ctx.clip();
+    sky(x, y, w, h, L, 0.8);
+    const s = Math.min((w * 0.9) / a.w, (h * 0.72) / a.h);
+    put(id, x + w / 2, y + h * 0.8, s, { L, t: num('t', 2), seed: 0, state: id === 'sea.speedboat' ? 'idle' : a.states[0] });
+    ctx.restore();
+    label(x + 4, y + 4, id + ' ' + L.hour + 'h');
+  }
+}
+
+function station() {
+  const L = lightAt(num('h', 12), { altitude: 1 });
+  ctx.fillStyle = '#020308'; ctx.fillRect(0, 0, W, H);
+  // a few stars, seeded
+  let s0 = 7; const r = () => ((s0 = (s0 * 16807) % 2147483647) / 2147483647);
+  for (let i = 0; i < 260; i++) { ctx.fillStyle = `rgba(230,236,255,${0.2 + 0.6 * r()})`; const z = r() < 0.9 ? 1 : 2; ctx.fillRect(r() * W, r() * H, z, z); }
+  const a = byId.get('space.station');
+  const s = Math.min((W * 0.8) / a.w, (H * 0.78) / a.h);
+  put('space.station', W * 0.46, H * 0.5 + (a.h * s) / 2, s, { L, t: num('t', 14), seed: 0 });
+  put('space.station', W * 0.9, H * 0.92, 0.42, { L, t: num('t', 14), seed: 0 });
+  label(4, 4, `space.station ${L.hour}h t${num('t', 14)}  (right: about scene size)`);
+}
+
+function clouds() {
+  const hours = (q.get('hours') || '12,17.4,18.5,21.5').split(',').map(Number);
+  const rh = H / hours.length;
+  hours.forEach((h, r) => {
+    const L = lightAt(h);
+    [['nature.cloud-bank', 0, W * 0.62], ['nature.cloud-cumulus', W * 0.62, W * 0.2], ['nature.cloud-streak', W * 0.82, W * 0.18]].forEach(([id, x, w]) => {
+      const a = byId.get(id), y = r * rh;
+      ctx.save(); ctx.beginPath(); ctx.rect(x, y, w, rh); ctx.clip();
+      sky(x, y, w, rh, L, 0.95);
+      const s = Math.min((w * 0.96) / a.w, (rh * 0.86) / a.h);
+      put(id, x + w / 2, y + rh * 0.93, s, { L, t: 2, seed: num('seed', 0) });
+      ctx.restore();
+    });
+    label(4, r * rh + 4, `clouds ${h}h`);
+  });
+}
+
+function city() {
+  // top: every tower large at night; middle: a skyline at about the scene's size at night; bottom: the same by day
+  const Ln = lightAt(num('h', 21.5)), Ld = lightAt(num('h2', 12));
+  const big = ['city.skyscraper-glass', 'city.skyscraper-deco', 'city.skyscraper-twist', 'city.office', 'city.residential', 'city.neon-block', 'city.spire', 'city.tower-siso'];
+  ctx.save(); ctx.beginPath(); ctx.rect(0, 0, W, H * 0.5); ctx.clip(); sky(0, 0, W, H * 0.5, Ln, 0.9);
+  let x = 30; const sb = (H * 0.5 * 0.86) / 300;
+  for (const id of big) { const a = byId.get(id); put(id, x + (a.w * sb) / 2, H * 0.45, sb, { L: Ln, t: num('t', 30), seed: num('seed', 0) }); x += a.w * sb * 1.02; }
+  ctx.restore(); label(4, 4, `city ${Ln.hour}h large`);
+  const line = (y0, h, L, tag) => {
+    ctx.save(); ctx.beginPath(); ctx.rect(0, y0, W, h); ctx.clip(); sky(0, y0, W, h, L, 0.8);
+    const s = 0.33, base = y0 + h * 0.8, ids = ['city.residential', 'city.office', 'city.skyscraper-glass', 'city.neon-block', 'city.skyscraper-deco', 'city.skyscraper-twist', 'city.spire', 'city.office', 'city.skyscraper-glass', 'city.residential', 'city.neon-block', 'city.skyscraper-twist'];
+    put('city.bridge', W * 0.8, base, s, { L, t: num('t', 30), seed: 0 });
+    let xx = 20;
+    for (let k = 0; k < 26; k++) { const id = ids[k % ids.length], a = byId.get(id); put(id, xx + (a.w * s) / 2, base, s, { L, t: num('t', 30), seed: k + 1 }); xx += a.w * s * 0.62; if (k === 12) { put('city.tower-siso', xx + 20, base, s, { L, t: num('t', 30) }); xx += 40; } }
+    ctx.restore(); label(4, y0 + 4, `skyline ${tag} ${L.hour}h at scale ${s}`);
+  };
+  line(H * 0.5, H * 0.25, Ln, 'night');
+  line(H * 0.75, H * 0.25, Ld, 'day');
+}
+
+({ mountains, boats, station, clouds, city })[show]?.();
+document.getElementById('result').textContent = JSON.stringify(out);
+document.title = 'done';
+</script>
+</body></html>

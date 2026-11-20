@@ -1,0 +1,141 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>eventscheck</title></head><body><pre id="result">pending</pre>
+<script type="module">
+// Plays every war event through the real director and reports whether each does what it is for. Read by
+// tools/events-check.mjs. Each event is found on the auto path (the first time it runs in the first two hours), then
+// sampled four times a second: what it puts on screen, the building marks it leaves, and any state it gives to things
+// the world already placed (director.states(t), if the director has it).
+import { EVENTS } from '../src/events/index.js';
+import { Director } from '../src/engine/director.js';
+import { makeView, LEVELS } from '../src/engine/view.js';
+import { byId } from '../src/assets/registry.js';
+import { lightAt } from '../src/core/light.js';
+import { HOME_X } from '../src/main.js';
+
+const W = 1600, H = 900, DRIFT = 40;
+const autoX = (t) => HOME_X + DRIFT * t;
+const errors = [];
+const realError = console.error;
+console.error = (...a) => { errors.push(a.map(String).join(' ').slice(0, 200)); realError(...a); };
+
+const ISLES = ['islands.enemy', 'islands.enemy-small'];
+const ALIENS = ['aliens.flyer', 'aliens.craft', 'aliens.walker', 'aliens.drifter'];
+const BLAST = ['fx.explosion', 'fx.fireball'];
+const id = (...ids) => (it) => ids.includes(it.id);
+const st = (ids, ...states) => (it) => ids.includes(it.id) && states.includes(it.state);
+const shooting = (it) => (it.id.startsWith('defence.') && it.state === 'fire') || it.id === 'fx.tracer' || it.id === 'fx.intercept' ||
+  (it.id === 'air.missile' && it.state === 'siso') || (['sea.warship', 'air.jet-siso'].includes(it.id) && it.state === 'fire');
+
+// peak: [what, test, at least this many at one moment]. ever: [what, test] seen at some moment (an item or a state).
+const NEED = {
+  raid: {
+    peak: [['enemy missiles in the air at once', st(['air.missile'], 'enemy'), 6], ['explosions at once', id(...BLAST), 2]],
+    ever: [['an enemy island in its fire state', st(ISLES, 'fire')], ['the defences shooting back', shooting]],
+    marks: true,
+  },
+  hellfire: {
+    peak: [['missiles in the air at once', id('air.missile'), 50], ['explosions at once', id(...BLAST), 4]],
+    ever: [['missile trails', id('fx.trail')]],
+    marks: true,
+  },
+  barrage: {
+    peak: [['SISO missiles in the air at once', st(['air.missile'], 'siso'), 12]],
+    ever: [['the SISO tower in its barrage state', st(['city.tower-siso'], 'barrage')], ['the shield taking a hit', (it) => it.id === 'fx.shield-hit' || (it.id === 'defence.shield-dome' && it.state === 'hit')]],
+  },
+  'island-fall': {
+    ever: [['an enemy island in its fall state', st(ISLES, 'fall')], ['an impact (explosion, dust or debris)', id(...BLAST, 'fx.dust', 'fx.debris')]],
+    marks: true,
+  },
+  portal: {
+    peak: [['aliens out at once', id(...ALIENS), 6]],
+    ever: [['aliens dying', st(ALIENS, 'die')], ['everyone shooting at them', shooting]],
+    order: ['aliens.portal', ['open', 'hold', 'close']],
+  },
+  'palace-attack': {
+    space: true,
+    peak: [['attack ships at once', id('space.attack-ship'), 3]],
+    ever: [['attack ships firing', st(['space.attack-ship'], 'fire')], ['the palace attacked or hit', (it) => st(['space.palace'], 'attack', 'hit')(it) || it.id === 'fx.shield-hit']],
+    above: -4000,
+  },
+  launch: {
+    ever: [['a rocket ship in its launch state', st(['air.rocket-ship'], 'launch')]],
+    rise: ['air.rocket-ship', 1500],
+  },
+};
+
+const report = { events: [], problems: [] };
+const plain = (items) => JSON.stringify(items.filter((it) => !it.overlay), (k, v) => (typeof v === 'function' ? undefined : v));
+
+for (const [eid, need] of Object.entries(NEED)) {
+  const row = { id: eid, ok: false, problems: [], space: !!need.space };
+  report.events.push(row);
+  const bad = (s) => row.problems.push(s);
+  const mod = EVENTS.find((e) => e.id === eid);
+  if (!mod) { bad('no such event in src/events/index.js'); continue; }
+  for (const k of ['title', 'about']) if (!mod[k]) bad(`no ${k}`);
+  if (!(mod.dur > 0)) bad('no dur');
+  if (!(mod.weight > 0)) bad('no weight: the director would never pick it');
+  if (typeof mod.plan !== 'function' || typeof mod.items !== 'function') { bad('plan() and items() are required'); continue; }
+
+  const director = new Director({ seed: 0, autoX, only: [eid] });
+  let ev = null;
+  for (let t = 0; t < 7200 && !ev; t += 2) ev = director.active(t).find((e) => e.id === eid) || null;
+  if (!ev) { bad('never runs on the auto path in the first two hours (seed 0)'); continue; }
+  row.t0 = ev.t0; row.dur = ev.dur;
+
+  const camY = need.space ? LEVELS[2] : LEVELS[0];
+  const L = lightAt(20, { altitude: need.space ? 1 : 0 });
+  const peaks = (need.peak || []).map(() => 0), ever = (need.ever || []).map(() => false);
+  const seenStates = [], ys = [];
+  let best = -1, most = 0, unknown = new Set(), top = Infinity, bottom = -Infinity;
+  for (let u = 0; u <= ev.dur; u += 0.25) {
+    const t = ev.t0 + u;
+    const view = makeView(W, H, autoX(t), camY);
+    const items = director.items(t, L, view).filter((it) => !it.overlay);
+    if (u % 2 === 0 && plain(director.items(t, L, view)) !== plain(items)) bad(`not a pure function of time: two calls at t0+${u} differ`);
+    for (const it of items) { if (!byId.has(it.id)) unknown.add(it.id); it.state = it.state || (byId.get(it.id)?.states || [])[0]; }
+    const over = typeof director.states === 'function' ? (director.states(t) || []).map((s) => ({ id: s.id, state: s.state })) : [];
+    const all = items.concat(over);
+    (need.peak || []).forEach(([, test], i) => { peaks[i] = Math.max(peaks[i], items.filter(test).length); });
+    (need.ever || []).forEach(([, test], i) => { if (all.some(test)) ever[i] = true; });
+    if (need.order) for (const it of all) if (it.id === need.order[0] && seenStates.at(-1) !== it.state) seenStates.push(it.state);
+    if (need.rise) { const r = items.find((it) => it.id === need.rise[0] && it.state === 'launch'); if (r) ys.push(r.y); }
+    for (const it of items) { top = Math.min(top, it.y); bottom = Math.max(bottom, it.y); }
+    most = Math.max(most, items.length);
+    const on = items.filter((it) => { const x = view.sx(it.x, it.z || 1), y = view.sy(it.y, it.z || 1); return x >= 0 && x <= W && y >= 0 && y <= H; }).length;
+    if (on > best) { best = on; row.peakT = t; }
+  }
+  row.most = most; row.onScreen = best;
+  if (unknown.size) bad(`draws ids that are not in the registry: ${[...unknown].join(', ')}`);
+  if (most > 700) bad(`${most} items at once; keep it to 700 or fewer`);
+  if (best < 1) bad('nothing it draws is ever on screen on the auto path');
+  (need.peak || []).forEach(([what, , n], i) => { if (peaks[i] < n) bad(`${what}: ${peaks[i]}, want ${n} or more`); });
+  (need.ever || []).forEach(([what], i) => { if (!ever[i]) bad(`never shows ${what}`); });
+  if (need.order) {
+    const want = need.order[1]; let i = 0;
+    for (const s of seenStates) if (s === want[i]) i++;
+    if (i < want.length) bad(`${need.order[0]} must go ${want.join(' then ')}; saw ${seenStates.join(', ') || 'nothing'}`);
+  }
+  if (need.rise) { const d = ys.length ? ys[0] - Math.min(...ys) : 0; if (d < need.rise[1]) bad(`the rocket climbs ${Math.round(d)} units; want ${need.rise[1]} or more`); }
+  if (need.above !== undefined && bottom > need.above) bad(`it must play up in space (every item above y ${need.above}); lowest item is at y ${Math.round(bottom)}`);
+  if (need.marks) {
+    // buildings must fall, lie in ruin and be rebuilt: follow one building in the middle of the first mark
+    const span = Math.max(ev.dur, mod.span || 0);
+    let mark = null;
+    for (let u = 0; u <= span && !mark; u += 1) mark = director.marks(ev.t0 + u)[0] || null;
+    if (!mark) bad('leaves no building marks (marks(ev)): nothing falls');
+    else {
+      const b = { x: (mark.x0 + mark.x1) / 2, z: ((mark.z0 ?? 0.95) + (mark.z1 ?? 1.01)) / 2 };
+      const seq = [];
+      for (let u = 0; u <= span + 2; u += 0.5) { const t = ev.t0 + u; const s = Director.stateFrom(director.marks(t), b, t); const name = s ? s.state : 'idle'; if (seq.at(-1) !== name) seq.push(name); }
+      const want = ['collapse', 'ruin', 'construct', 'idle']; let i = 0;
+      for (const s of seq) if (s === want[i]) i++;
+      if (i < want.length) bad(`a marked building must go collapse, ruin, construct, then idle; it went ${seq.join(', ')} (is span long enough?)`);
+    }
+  }
+  row.ok = row.problems.length === 0;
+}
+for (const e of errors) report.problems.push('console.error: ' + e);
+document.getElementById('result').textContent = JSON.stringify(report);
+document.title = 'done';
+</script></body></html>

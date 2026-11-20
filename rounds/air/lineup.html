@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<title>Air family lineup</title>
+<style>
+  html, body { margin: 0; background: #111; color: #ddd; font: 12px system-ui, sans-serif; }
+  canvas { display: block; }
+  #result { display: none; }
+</style>
+<canvas id="scene"></canvas>
+<pre id="result"></pre>
+<script type="module">
+  import { byId, drawAsset, misses } from '../../src/assets/registry.js';
+  import { lightAt } from '../../src/core/light.js';
+  import { vgrad } from '../../src/core/paint.js';
+  import { rng } from '../../src/core/rng.js';
+
+  const q = new URLSearchParams(location.search);
+  const W = innerWidth, H = Math.min(innerHeight, W <= 400 ? 250 : 900);
+  const S = Number(q.get('scale') || W / 1110);
+  const canvas = document.getElementById('scene'), g = canvas.getContext('2d');
+  canvas.width = W;
+  canvas.height = H;
+  // [asset, distance along the airstrip, altitude, night state, seed, facing]
+  const positions = [
+    ['rocket-ship', 140, 0, 'launch', 0, 1],
+    ['airliner', 405, 180, 'idle', 0, 1],
+    ['jet-siso', 545, 133, 'fire', 0, 1],
+    ['jet-enemy', 692, 149, 'fire', 0, -1],
+    ['drone', 790, 95, 'idle', 0, 1],
+    ['helicopter', 921, 79, 'idle', 0, 1],
+    ['missile', 631, 112, 'siso', 0, 1],
+    ['missile', 603, 161, 'enemy', 0, -1],
+  ];
+
+  const swarm = q.has('swarm'), count = Number(q.get('frames') || 1), sum = {};
+  const rows = swarm ? [22] : [18.5, 22];
+  for (let f = 0; f < count; f++) {
+    for (const [row, hour] of rows.entries()) {
+      const height = H / rows.length, y = row * height, horizon = y + height * 0.86;
+      const L = lightAt(hour, { overcast: swarm ? 0.6 : 0 });
+      g.save();
+      g.beginPath(); g.rect(0, y, W, height); g.clip();
+      g.fillStyle = vgrad(g, y, horizon, [[0, L.sky.top], [1, L.sky.horizon]]);
+      g.fillRect(0, y, W, horizon - y);
+      g.fillStyle = vgrad(g, horizon, y + height, [[0, L.haze], [1, L.ambient]]);
+      g.fillRect(0, horizon, W, y + height - horizon);
+      const draw = (id, state, seed, flip, x, py, angle = 0) => {
+        g.save();
+        g.translate(x, py); g.rotate(angle); g.scale(flip * S, S);
+        const t0 = performance.now();
+        drawAsset(g, byId.get('air.' + id), { L, lit: L.side * flip, scale: S, seed, t: 1.33 + f / 60, p: 0.35, state });
+        if (f > 0) sum[id] = (sum[id] || 0) + performance.now() - t0;
+        g.restore();
+      };
+      if (swarm) {
+        const r = rng(701);
+        for (let i = 0; i < 50; i++) {
+          draw('missile', i % 3 ? 'enemy' : 'siso', i, 1, 7 + r() * (W - 14), 20 + r() * (horizon - 24), 2.38 + r() * 0.14);
+        }
+      } else {
+        for (const [id, x, altitude, active, seed, flip] of positions) {
+          draw(id, row || id === 'missile' ? active : 'idle', seed, flip, (W - 1080 * S) / 2 + x * S, horizon - altitude * S);
+        }
+      }
+      g.restore();
+      g.fillStyle = '#e1e6ef'; g.font = '12px system-ui';
+      g.fillText(swarm ? '50 missiles · 0.3 px/unit' : `${hour}h · ${S.toFixed(2)} px/unit`, 9, y + 17);
+    }
+  }
+  const ms = {};
+  for (const id of Object.keys(sum)) {
+    const perFrame = swarm ? 50 : rows.length * positions.filter(([placed]) => placed === id).length;
+    ms[id] = +(sum[id] / ((count - 1) * perFrame)).toFixed(4);
+  }
+  document.getElementById('result').textContent = JSON.stringify({ ms, misses: [...misses] });
+  document.title = 'done';
+</script>
+</html>

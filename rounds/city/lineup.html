@@ -1,0 +1,105 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>City soul lineup</title>
+<style>html,body{margin:0;background:#000;overflow:hidden}canvas{display:block}</style>
+<canvas id="c"></canvas>
+<script type="module">
+// Every nature, island and city piece side by side at one scale (1 unit = 1 m, the world is 2400 units wide), on the
+// sky of one hour. ?h=18.5 (dusk) | 21 (night). ?rows=1,2,3,4,5 picks rows; the page fits them to the window.
+// Each label carries the piece's steady-state draw time: caches warm, then the mean of 30 draws at the same scale.
+import { byId, drawAsset, misses } from '../../src/assets/registry.js';
+import { lightAt } from '../../src/core/light.js';
+import { css, mix } from '../../src/core/paint.js';
+import { rng } from '../../src/core/rng.js';
+
+const q = new URLSearchParams(location.search);
+const h = Number(q.get('h') || 18.5), L = lightAt(h);
+const pick = (q.get('rows') || '1,2,3,4,5').split(',').map(Number);
+const T = 1.7, SEED = 1;
+// the volcanic range's cone sits off centre (same rule as mountains-volcanic.js): centre that crop on it
+const CONE = (rng(SEED * 31 + 9)() - 0.5) * 2400 * 0.4;
+
+// rows: [height in units, items]; item: [id, x centre, {state, crop: width, dy, seed}]
+const ROWS = {
+  1: [460, [['nature.cloud-streak', 800, { dy: -330 }], ['nature.cloud-bank', 820, {}], ['nature.cloud-cumulus', 2020, {}]]],
+  2: [440, [['nature.mountains-alpine', 300, { crop: 590 }], ['nature.mountains-volcanic', 900, { crop: 590, shift: CONE }],
+            ['nature.mountains-desert', 1500, { crop: 590 }], ['nature.mountains-arctic', 2100, { crop: 590 }]]],
+  3: [310, [['islands.siso-home', 270, {}], ['islands.siso-small', 640, {}], ['islands.enemy', 1050, {}], ['islands.enemy-small', 1420, {}],
+            ['city.bridge', 1960, {}]]],
+  4: [330, [['city.tower-siso', 70, {}], ['city.skyscraper-glass', 190, {}], ['city.skyscraper-deco', 320, {}], ['city.skyscraper-twist', 450, {}],
+            ['city.spire', 555, {}], ['city.office', 680, {}], ['city.residential', 830, {}], ['city.neon-block', 970, {}],
+            ['city.crane', 1130, { state: 'build' }], ['city.arena', 1380, {}], ['city.skyscraper-glass', 1600, { seed: 4 }],
+            ['city.skyscraper-glass', 1720, { seed: 7 }], ['city.office', 1860, { seed: 3, state: 'construct' }],
+            ['city.residential', 2010, { seed: 5, state: 'ruin' }], ['city.skyscraper-deco', 2150, { seed: 2 }], ['city.skyscraper-twist', 2290, { seed: 3 }]]],
+  5: [60, [['city.quay', 320, { label: -40 }], ['city.car', 120, { dy: -26, seed: 1 }], ['city.car', 180, { dy: -26, seed: 2 }], ['city.car', 260, { dy: -26, seed: 5 }],
+           ['city.people', 470, { dy: -26, seed: 1 }], ['city.people', 474, { dy: -26, seed: 2, state: 'run' }], ['city.people', 479, { dy: -26, seed: 3, state: 'cheer' }],
+           ['city.people', 540, { dy: -26, seed: 4 }], ['city.people', 543, { dy: -26, seed: 6 }]]],
+};
+const GAP = 44;
+const used = pick.filter((k) => ROWS[k]);
+const totalH = used.reduce((s, k) => s + ROWS[k][0] + GAP, GAP);
+
+const cv = document.getElementById('c'), dpr = devicePixelRatio || 1;
+const VW = innerWidth, VH = innerHeight;
+cv.width = VW * dpr; cv.height = VH * dpr; cv.style.width = VW + 'px'; cv.style.height = VH + 'px';
+const ctx = cv.getContext('2d');
+const P = Math.min(VW / 2400, VH / totalH), ox = (VW - 2400 * P) / 2, oy = (VH - totalH * P) / 2;
+
+// the sky of the hour, one light: top to horizon, haze toward the foot
+const sky = ctx.createLinearGradient(0, 0, 0, cv.height);
+sky.addColorStop(0, css(L.sky.top)); sky.addColorStop(0.62, css(L.sky.horizon)); sky.addColorStop(1, css(mix(L.sky.horizon, L.haze, 0.6)));
+ctx.fillStyle = sky; ctx.fillRect(0, 0, cv.width, cv.height);
+if (L.stars > 0.05) { // a few fixed stars, seeded by position, no Math.random
+  for (let i = 0; i < 260; i++) { const x = (Math.sin(i * 91.3) * 0.5 + 0.5) * cv.width, y = (Math.sin(i * 47.7 + 3) * 0.5 + 0.5) * cv.height * 0.6;
+    ctx.fillStyle = css([255, 255, 255], 0.55 * L.stars * (0.3 + 0.7 * (Math.sin(i * 13.1) * 0.5 + 0.5))); ctx.fillRect(x, y, dpr, dpr); }
+}
+
+const place = []; let y = GAP;
+for (const k of used) { const [rh, items] = ROWS[k]; for (const it of items) place.push([it, y + rh]); y += rh + GAP; }
+
+const optsOf = (a, ex) => ({ t: T, p: 0.5, state: ex.state || a.states[0] || 'idle', seed: ex.seed || SEED, L, lit: L.side, scale: P });
+function drawOne(c, [id, x, ex], base) {
+  const a = byId.get(id); if (!a) return;
+  c.save(); c.setTransform(dpr * P, 0, 0, dpr * P, dpr * ox, dpr * oy);
+  if (ex.crop) { c.beginPath(); c.rect(x - ex.crop / 2, base - 900, ex.crop, 910); c.clip(); } // crop the sides only: plumes may rise
+  c.translate(x - (ex.shift || 0), base + (ex.dy || 0));
+  drawAsset(c, a, optsOf(a, ex));
+  c.restore();
+}
+for (const [it, base] of place) drawOne(ctx, it, base);
+
+// timing: warm, then the mean of 30 draws of each piece into a scratch canvas at the same scale
+const scratch = document.createElement('canvas'); scratch.width = cv.width; scratch.height = cv.height;
+const sx = scratch.getContext('2d'), times = new Map();
+for (const [it, base] of place) {
+  if (times.has(it[0] + (it[2].state || ''))) continue;
+  drawOne(sx, it, base); drawOne(sx, it, base);
+  const n = 30, t0 = performance.now(); for (let i = 0; i < n; i++) drawOne(sx, it, base);
+  times.set(it[0] + (it[2].state || ''), (performance.now() - t0) / n);
+}
+
+// labels: short name and ms per frame, under each piece (people and cars share one label)
+ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+ctx.font = '10px system-ui, sans-serif'; ctx.textAlign = 'center';
+const seen = new Set(); let worst = ['', 0], li = 0;
+for (const [[id, x, ex], base] of place) {
+  const key = id + (ex.state || ''); const ms = times.get(key) || 0;
+  if (ms > worst[1]) worst = [key, ms];
+  if (VW < 700 || seen.has(id === 'city.people' || id === 'city.car' ? id : key + x)) continue;
+  seen.add(id === 'city.people' || id === 'city.car' ? id : key + x);
+  const name = id.split('.')[1] + (ex.state ? ' · ' + ex.state : '');
+  const lx = ox + (x + (ex.label || 0)) * P, ly = oy + (base + (id === 'nature.cloud-streak' ? ex.dy : 0) + 4) * P + 11 + (li++ % 2) * 13; // stagger so neighbours don't collide
+  for (const [txt, dy] of [[name, 0], [`${ms.toFixed(2)} ms`, 11]]) {
+    ctx.fillStyle = 'rgba(0,0,0,0.6)'; ctx.fillText(txt, lx + 1, ly + dy + 1);
+    ctx.fillStyle = ms > 0.5 ? '#ffb4a0' : 'rgba(255,255,255,0.9)'; ctx.fillText(txt, lx, ly + dy);
+  }
+}
+if (VW >= 700) {
+  ctx.textAlign = 'left'; ctx.font = '13px system-ui, sans-serif';
+  const m = [...misses.keys()];
+  const msg = `${h}h · 1 unit = 1 m · ${place.length} pieces · slowest ${worst[0]} ${worst[1].toFixed(2)} ms` + (m.length ? ` · MISSES ${m.join(', ')}` : ' · no misses');
+  ctx.fillStyle = 'rgba(0,0,0,0.6)'; ctx.fillRect(0, 0, ctx.measureText(msg).width + 20, 22);
+  ctx.fillStyle = '#fff'; ctx.fillText(msg, 10, 15);
+}
+document.title = 'lineup ' + JSON.stringify(Object.fromEntries([...times].map(([k, v]) => [k, +v.toFixed(3)])));
+</script>

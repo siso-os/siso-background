@@ -1,0 +1,54 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>perf</title>
+<!-- tools/perf.html?secs=6&t=21.6&h=17&dpr=1&zoom=: draws the scene frame by frame (1/60 s apart, as fast as it can) and
+     writes each frame's time into the result block, with the frames that took far longer than the rest and the light
+     key at that moment. tools/perf.mjs runs it in headless Chromium and says PASS or FAIL. -->
+<style>html,body{margin:0;background:#000}canvas{position:fixed;inset:0;width:100%;height:100%}</style>
+<canvas></canvas><canvas></canvas><canvas></canvas><canvas></canvas><canvas></canvas>
+<pre id="result">running</pre>
+<script type="module">
+import { createScene, params } from '../src/main.js';
+const q = new URLSearchParams(location.search);
+const secs = Number(q.get('secs') || 40);
+const P = params(location.search);
+const [sky, far, mid, main, near] = document.querySelectorAll('canvas');
+const out = { secs, frames: [], slow: [], errors: [] };
+try {
+  const scene = createScene({ sky, far, mid, main, near }, P);
+  scene.renderer.resize(innerWidth, innerHeight);
+  const g = near.getContext('2d');
+  // time each thing drawn, so a slow frame can say what made it slow
+  const R = scene.renderer, paint = R.paint.bind(R), backdrop = R.backdrop.render.bind(R.backdrop);
+  let who = [];
+  R.paint = (gg, it, o) => { const a = performance.now(); paint(gg, it, o); who.push([it.id || (it.fn && it.fn.name) || 'fn', +(performance.now() - a).toFixed(1)]); };
+  R.backdrop.render = (o) => { const a = performance.now(); backdrop(o); who.push(['sky', +(performance.now() - a).toFixed(1)]); };
+  const whos = [], acc = {};
+  const n = Math.round(secs * 60);
+  for (let f = 0; f < n; f++) {
+    const t = P.t + f / 60;
+    scene.cam.step(1 / 60, t);
+    const a = performance.now();
+    who = [];
+    scene.frame(t);
+    const st = R.stats || {};   // where the frame went: the sky, then each layer (its items, haze, water and bloom)
+    const lay = Object.entries(st.layers || {}).map(([k, v]) => [k, +v.ms.toFixed(1)]);
+    if (f) { // the average frame: each layer, and how much of it was the things drawn in it (the rest is haze, water, bloom)
+      for (const [k, ms] of [['sky', st.sky || 0], ...lay]) acc[k] = (acc[k] || 0) + ms / (n - 1);
+      for (const [, ms] of who) acc.items = (acc.items || 0) + ms / (n - 1);
+    }
+    whos.push([...who.sort((x, y) => y[1] - x[1]).slice(0, 4), ['sky', +(st.sky || 0).toFixed(1)], ...lay, ['outside', +(performance.now() - a - (st.total || 0)).toFixed(1)]]);
+    if (q.get('sync') === '1') g.getImageData(0, 0, 1, 1);   // wait for the pixels too, not just the drawing calls
+    out.frames.push(+(performance.now() - a).toFixed(2));
+  }
+  out.first = out.frames.shift();   // the first frame bakes everything on screen; it is not a stall
+  whos.shift();
+  const s = [...out.frames].sort((x, y) => x - y);
+  const at = (p) => s[Math.min(s.length - 1, Math.floor(p * s.length))];
+  out.p50 = at(0.5); out.p90 = at(0.9); out.p99 = at(0.99); out.max = s[s.length - 1];
+  out.avg = Object.fromEntries(Object.entries(acc).map(([k, v]) => [k, +v.toFixed(1)]));
+  out.size = `${scene.renderer.W}x${scene.renderer.H} sky ${scene.renderer.skyW}x${scene.renderer.skyH}`;
+  out.frames.forEach((ms, f) => { if (ms > Math.max(4 * out.p50, out.p50 + 40)) out.slow.push([f + 1, ms, +(P.t + (f + 1) / 60).toFixed(2), whos[f]]); });
+} catch (e) { out.errors.push(String(e && e.stack || e)); }
+document.getElementById('result').textContent = JSON.stringify({ ...out, frames: undefined });
+</script>

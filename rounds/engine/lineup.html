@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Engine lineup</title>
+<style>
+  :root { --bg: #0c0e12; --fg: #e8e6e1; --dim: #8d8a84; --line: #23262d; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; padding: 24px 16px 64px; }
+  main { max-width: 1680px; margin: 0 auto; }
+  h1 { font-size: 22px; margin: 0 0 4px; }
+  h2 { font-size: 17px; margin: 40px 0 6px; border-top: 1px solid var(--line); padding-top: 20px; }
+  p { margin: 0 0 14px; color: var(--dim); max-width: 70ch; }
+  .grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 480px), 1fr)); }
+  .col { display: grid; gap: 14px; }
+  figure { margin: 0; }
+  img { display: block; width: 100%; height: auto; border-radius: 4px; background: #000; }
+  figcaption { font-size: 13px; color: var(--dim); margin-top: 4px; }
+  code { font: 12px ui-monospace, monospace; color: var(--fg); }
+</style>
+</head>
+<body>
+<main>
+  <h1>SISO Background: engine, pass 3</h1>
+  <p>Every frame is the real engine in headless Chromium, frozen with <code>?freeze=1</code>, at the full window with nothing cropped. Assets not drawn yet are stand-ins.</p>
+
+  <h2>The climb at 17.4 h: ground, clouds, space</h2>
+  <p>The same moment at five camera heights (<code>?y=</code>). Pass 3 fixed three things here. The Earth's weather had smeared into vertical beams; it is now laid out in perspective. The cloud banks had hard vertical seams where puffs were cut at the canvas edge. The cirrus left overhead was drawing hard rings along the limb.</p>
+  <div class="col">
+    <figure><img src="pass3-climb-y0.webp" alt="Sea level"><figcaption>y 0: sea level, the home bay</figcaption></figure>
+    <figure><img src="pass3-climb-y950.webp" alt="Halfway to the clouds"><figcaption>y 950: the islands drop below, the cloud banks come in</figcaption></figure>
+    <figure><img src="pass3-climb-y1900.webp" alt="Cloud level"><figcaption>y 1900: the clouds level</figcaption></figure>
+    <figure><img src="pass3-climb-y4400.webp" alt="High altitude"><figcaption>y 4400: the sky darkens and the limb curves; the cirrus thins out</figcaption></figure>
+    <figure><img src="pass3-climb-y6900.webp" alt="Space"><figcaption>y 6900: space, the Earth below with its blue rim</figcaption></figure>
+  </div>
+
+  <h2>60 seconds of auto-scroll</h2>
+  <p>A frame every 10 s at 40 u/s (400 units apart), 1600 by 600. Pass 3 thinned the small far islands, because every frame had three to five.</p>
+  <div class="col">
+    <figure><img src="pass3-strip-t0.webp" alt="t 0"><figcaption>t 0</figcaption></figure>
+    <figure><img src="pass3-strip-t10.webp" alt="t 10"><figcaption>t 10</figcaption></figure>
+    <figure><img src="pass3-strip-t20.webp" alt="t 20"><figcaption>t 20</figcaption></figure>
+    <figure><img src="pass3-strip-t30.webp" alt="t 30"><figcaption>t 30</figcaption></figure>
+    <figure><img src="pass3-strip-t40.webp" alt="t 40"><figcaption>t 40</figcaption></figure>
+    <figure><img src="pass3-strip-t50.webp" alt="t 50"><figcaption>t 50</figcaption></figure>
+    <figure><img src="pass3-strip-t60.webp" alt="t 60"><figcaption>t 60</figcaption></figure>
+  </div>
+
+  <h2>Pass 2: beside the options (option above, engine below)</h2>
+  <p>2172 by 724, at the option's hour.</p>
+  <div class="grid">
+    <figure><img src="pass2-vs-a.webp" alt="Option a against the engine"><figcaption>a: golden hour, 17.4 h</figcaption></figure>
+    <figure><img src="pass2-vs-c.webp" alt="Option c against the engine"><figcaption>c: dusk, 18.3 h</figcaption></figure>
+    <figure><img src="pass2-vs-b.webp" alt="Option b against the engine"><figcaption>b: night, 21.5 h</figcaption></figure>
+  </div>
+
+  <h2>Pass 1: every piece working on stand-ins</h2>
+  <div class="grid">
+    <figure><img src="pass1-noon.webp" alt="Noon"><figcaption>noon</figcaption></figure>
+    <figure><img src="pass1-golden.webp" alt="Golden hour"><figcaption>golden</figcaption></figure>
+    <figure><img src="pass1-dusk.webp" alt="Dusk"><figcaption>dusk</figcaption></figure>
+    <figure><img src="pass1-night.webp" alt="Night"><figcaption>night</figcaption></figure>
+    <figure><img src="pass1-clouds.webp" alt="Clouds level"><figcaption>clouds level</figcaption></figure>
+    <figure><img src="pass1-space.webp" alt="Space"><figcaption>space</figcaption></figure>
+  </div>
+</main>
+</body>
+</html>

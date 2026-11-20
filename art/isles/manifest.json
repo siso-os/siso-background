@@ -1,0 +1,426 @@
+{
+  "plates": {
+    "arctic-night": {
+      "file": "plates/arctic-night.webp",
+      "light": "night",
+      "anchor": [
+        0,
+        0
+      ],
+      "display_w": 2560
+    },
+    "desert-night": {
+      "file": "plates/desert-night.webp",
+      "light": "night",
+      "anchor": [
+        0,
+        0
+      ],
+      "display_w": 2560
+    },
+    "harbor-night": {
+      "file": "plates/harbor-night.webp",
+      "light": "night",
+      "anchor": [
+        0,
+        0
+      ],
+      "display_w": 2560
+    },
+    "neon-night": {
+      "file": "plates/neon-night.webp",
+      "light": "night",
+      "anchor": [
+        0,
+        0
+      ],
+      "display_w": 2560
+    },
+    "harbor-day": {
+      "file": "plates/harbor-day.webp",
+      "light": "day",
+      "anchor": [
+        0,
+        0
+      ],
+      "display_w": 2560
+    },
+    "harbor-dawn": {
+      "file": "plates/harbor-dawn.webp",
+      "light": "dawn",
+      "anchor": [
+        0,
+        0
+      ],
+      "display_w": 2560
+    },
+    "harbor-dusk": {
+      "file": "plates/harbor-dusk.webp",
+      "light": "dusk",
+      "anchor": [
+        0,
+        0
+      ],
+      "display_w": 2560
+    },
+    "arctic-day": {
+      "file": "plates/arctic-day.webp",
+      "light": "day",
+      "anchor": [
+        0,
+        0
+      ],
+      "display_w": 2560
+    },
+    "arctic-dawn": {
+      "file": "plates/arctic-dawn.webp",
+      "light": "dawn",
+      "anchor": [
+        0,
+        0
+      ],
+      "display_w": 2560
+    },
+    "arctic-dusk": {
+      "file": "plates/arctic-dusk.webp",
+      "light": "dusk",
+      "anchor": [
+        0,
+        0
+      ],
+      "display_w": 2560
+    },
+    "desert-day": {
+      "file": "plates/desert-day.webp",
+      "light": "day",
+      "anchor": [
+        0,
+        0
+      ],
+      "display_w": 2560
+    },
+    "desert-dawn": {
+      "file": "plates/desert-dawn.webp",
+      "light": "dawn",
+      "anchor": [
+        0,
+        0
+      ],
+      "display_w": 2560
+    },
+    "desert-dusk": {
+      "file": "plates/desert-dusk.webp",
+      "light": "dusk",
+      "anchor": [
+        0,
+        0
+      ],
+      "display_w": 2560
+    }
+  },
+  "cutouts": {
+    "tower-night": {
+      "file": "cutouts/tower-night.webp",
+      "light": "night",
+      "display_w": 150,
+      "anchor": [
+        233,
+        1628
+      ],
+      "emblem": [
+        240,
+        280,
+        48
+      ]
+    },
+    "tower-day": {
+      "file": "cutouts/tower-day.webp",
+      "light": "day",
+      "display_w": 150,
+      "anchor": [
+        233,
+        1628
+      ],
+      "emblem": [
+        237,
+        280,
+        48
+      ]
+    },
+    "tower-dusk": {
+      "file": "cutouts/tower-dusk.webp",
+      "light": "dusk",
+      "display_w": 150,
+      "anchor": [
+        233,
+        1628
+      ],
+      "emblem": [
+        237,
+        280,
+        48
+      ]
+    },
+    "isle-home-night": {
+      "file": "cutouts/isle-home-night.webp",
+      "light": "night",
+      "display_w": 280,
+      "anchor": [
+        428,
+        181
+      ]
+    },
+    "isle-home-day": {
+      "file": "cutouts/isle-home-day.webp",
+      "light": "day",
+      "display_w": 280,
+      "anchor": [
+        428,
+        181
+      ]
+    },
+    "isle-home-dusk": {
+      "file": "cutouts/isle-home-dusk.webp",
+      "light": "dusk",
+      "display_w": 280,
+      "anchor": [
+        428,
+        181
+      ]
+    },
+    "isle-enemy-night": {
+      "file": "cutouts/isle-enemy-night.webp",
+      "light": "night",
+      "display_w": 180,
+      "anchor": [
+        278,
+        152
+      ]
+    },
+    "isle-enemy-day": {
+      "file": "cutouts/isle-enemy-day.webp",
+      "light": "day",
+      "display_w": 180,
+      "anchor": [
+        278,
+        155
+      ]
+    },
+    "isle-enemy-dusk": {
+      "file": "cutouts/isle-enemy-dusk.webp",
+      "light": "dusk",
+      "display_w": 180,
+      "anchor": [
+        278,
+        155
+      ]
+    },
+    "isle-small-night": {
+      "file": "cutouts/isle-small-night.webp",
+      "light": "night",
+      "display_w": 120,
+      "anchor": [
+        188,
+        36
+      ]
+    },
+    "isle-small-day": {
+      "file": "cutouts/isle-small-day.webp",
+      "light": "day",
+      "display_w": 120,
+      "anchor": [
+        188,
+        36
+      ]
+    },
+    "isle-small-dusk": {
+      "file": "cutouts/isle-small-dusk.webp",
+      "light": "dusk",
+      "display_w": 120,
+      "anchor": [
+        188,
+        36
+      ]
+    },
+    "bld-glass-night": {
+      "file": "cutouts/bld-glass-night.webp",
+      "light": "night",
+      "display_w": 66,
+      "anchor": [
+        122,
+        663
+      ]
+    },
+    "bld-glass-day": {
+      "file": "cutouts/bld-glass-day.webp",
+      "light": "day",
+      "display_w": 66,
+      "anchor": [
+        122,
+        657
+      ]
+    },
+    "bld-deco-night": {
+      "file": "cutouts/bld-deco-night.webp",
+      "light": "night",
+      "display_w": 60,
+      "anchor": [
+        107,
+        636
+      ]
+    },
+    "bld-deco-day": {
+      "file": "cutouts/bld-deco-day.webp",
+      "light": "day",
+      "display_w": 60,
+      "anchor": [
+        107,
+        628
+      ]
+    },
+    "bld-brick-night": {
+      "file": "cutouts/bld-brick-night.webp",
+      "light": "night",
+      "display_w": 92,
+      "anchor": [
+        146,
+        290
+      ]
+    },
+    "bld-brick-day": {
+      "file": "cutouts/bld-brick-day.webp",
+      "light": "day",
+      "display_w": 92,
+      "anchor": [
+        146,
+        291
+      ]
+    },
+    "bld-stone-night": {
+      "file": "cutouts/bld-stone-night.webp",
+      "light": "night",
+      "display_w": 80,
+      "anchor": [
+        128,
+        410
+      ]
+    },
+    "bld-stone-day": {
+      "file": "cutouts/bld-stone-day.webp",
+      "light": "day",
+      "display_w": 80,
+      "anchor": [
+        128,
+        400
+      ]
+    },
+    "bld-modern-night": {
+      "file": "cutouts/bld-modern-night.webp",
+      "light": "night",
+      "display_w": 96,
+      "anchor": [
+        152,
+        397
+      ]
+    },
+    "bld-modern-day": {
+      "file": "cutouts/bld-modern-day.webp",
+      "light": "day",
+      "display_w": 96,
+      "anchor": [
+        152,
+        395
+      ]
+    },
+    "bld-neon-night": {
+      "file": "cutouts/bld-neon-night.webp",
+      "light": "night",
+      "display_w": 72,
+      "anchor": [
+        116,
+        575
+      ]
+    },
+    "bld-neon-day": {
+      "file": "cutouts/bld-neon-day.webp",
+      "light": "day",
+      "display_w": 72,
+      "anchor": [
+        116,
+        572
+      ]
+    },
+    "boat-police-night": {
+      "file": "cutouts/boat-police-night.webp",
+      "light": "night",
+      "display_w": 114,
+      "anchor": [
+        179,
+        120
+      ]
+    },
+    "boat-police-day": {
+      "file": "cutouts/boat-police-day.webp",
+      "light": "day",
+      "display_w": 114,
+      "anchor": [
+        179,
+        128
+      ]
+    },
+    "boat-smuggler-night": {
+      "file": "cutouts/boat-smuggler-night.webp",
+      "light": "night",
+      "display_w": 114,
+      "anchor": [
+        179,
+        55
+      ]
+    },
+    "boat-smuggler-day": {
+      "file": "cutouts/boat-smuggler-day.webp",
+      "light": "day",
+      "display_w": 114,
+      "anchor": [
+        179,
+        60
+      ]
+    },
+    "boat-ferry-night": {
+      "file": "cutouts/boat-ferry-night.webp",
+      "light": "night",
+      "display_w": 114,
+      "anchor": [
+        179,
+        118
+      ]
+    },
+    "boat-ferry-day": {
+      "file": "cutouts/boat-ferry-day.webp",
+      "light": "day",
+      "display_w": 114,
+      "anchor": [
+        179,
+        122
+      ]
+    },
+    "boat-yacht-night": {
+      "file": "cutouts/boat-yacht-night.webp",
+      "light": "night",
+      "display_w": 114,
+      "anchor": [
+        179,
+        117
+      ]
+    },
+    "boat-yacht-day": {
+      "file": "cutouts/boat-yacht-day.webp",
+      "light": "day",
+      "display_w": 114,
+      "anchor": [
+        179,
+        122
+      ]
+    }
+  }
+}

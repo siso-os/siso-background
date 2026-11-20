@@ -1,0 +1,35 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>polish timing</title></head><body>
+<canvas id="c" width="1600" height="900"></canvas><pre id="result"></pre>
+<script type="module">
+// The polish round's cost check: every piece this round touched, drawn at about the scene's scale, once to warm its
+// caches and then for 90 frames across an hour's light and a minute of time. Reports the mean and the worst ms a frame.
+// timing.html?families=nature,city,sea&ids=space.station&s=0.33
+import { ASSETS, drawAsset } from '../../src/assets/registry.js';
+import { lightAt } from '../../src/core/light.js';
+
+const q = new URLSearchParams(location.search);
+const fams = (q.get('families') || 'nature,city,sea').split(',');
+const extra = (q.get('ids') || 'space.station').split(',');
+const s = Number(q.get('s') || 0.33), hours = [17.4, 21.5, 12];
+const ctx = document.getElementById('c').getContext('2d');
+const out = { s, ms: {} };
+for (const a of ASSETS) {
+  if (!fams.includes(a.family) && !extra.includes(a.id)) continue;
+  const runs = [];
+  for (const h of hours) {
+    const L = lightAt(h, a.family === 'space' ? { altitude: 1 } : undefined);
+    const o = (t) => ({ t, p: 0, seed: 1, state: a.states[0], lit: L.side, scale: s, L });
+    ctx.save(); ctx.translate(800, 800); ctx.scale(s, s); drawAsset(ctx, a, o(0)); ctx.restore(); // warm the caches
+    for (let f = 0; f < 30; f++) {
+      ctx.save(); ctx.translate(800, 800); ctx.scale(s, s);
+      const t0 = performance.now(); drawAsset(ctx, a, o(f * 0.7)); runs.push(performance.now() - t0);
+      ctx.restore();
+    }
+  }
+  runs.sort((x, y) => x - y);
+  out.ms[a.id] = { mean: +(runs.reduce((x, y) => x + y, 0) / runs.length).toFixed(3), p90: +runs[Math.floor(runs.length * 0.9)].toFixed(3) };
+}
+document.getElementById('result').textContent = JSON.stringify(out);
+</script>
+</body></html>

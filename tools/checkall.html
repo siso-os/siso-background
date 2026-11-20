@@ -1,0 +1,68 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>checkall</title></head><body><pre id="result">pending</pre>
+<script type="module">
+// Draws every asset in every state at noon and at midnight on a small canvas and reports what it finds.
+// Read by tools/check.mjs. checkall.html?family=<f> limits it to one family.
+import { ASSETS, misses } from '../src/assets/registry.js';
+import { REQUIRED } from '../src/assets/required.js';
+import { lightAt } from '../src/core/light.js';
+
+const famQ = new URLSearchParams(location.search).get('family');
+const fams = famQ ? famQ.split(',') : null;
+const S = 320, report = { assets: [], problems: [] };
+const cv = document.createElement('canvas'); cv.width = cv.height = S;
+const ctx = cv.getContext('2d', { willReadFrequently: true });
+const pts = [[-200, 60], [-120, 30], [-60, 10], [0, 0]];
+
+for (const a of ASSETS) {
+  if (fams && !fams.includes(a.family)) continue;
+  const row = { id: a.id, family: a.family, title: a.title, states: a.states, w: a.w, h: a.h, results: [] };
+  for (const k of ['id', 'family', 'title', 'about', 'w', 'h', 'states', 'draw'])
+    if (a[k] === undefined || a[k] === '') report.problems.push(`${a.id || '?'}: no ${k}`);
+  if (!a.id || !a.id.startsWith(a.family + '.')) report.problems.push(`${a.id}: id must start with its family`);
+  for (const state of a.states || []) {
+    for (const h of [12, 0]) {
+      ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, S, S);
+      const s = Math.min((S * 0.5) / a.w, (S * 0.5) / a.h);
+      ctx.translate(S / 2, S * 0.75); ctx.scale(s, s);
+      const L = lightAt(h); let err = null;
+      const once = a.once && a.once[state];
+      try { a.draw(ctx, { t: 1.7, p: once ? 0.5 : 0, state, seed: 1, L, lit: L.side, scale: s, points: pts }); }
+      catch (e) { err = String(e && e.message || e); }
+      const m = ctx.getTransform();
+      // Chromium hands the matrix back rounded to float32, so compare with a tolerance, not exactly.
+      const off = (got, want) => Math.abs(got - want) > 1e-4 * Math.max(1, Math.abs(want));
+      if (off(m.a, s) || off(m.d, s) || off(m.b, 0) || off(m.c, 0) || off(m.e, S / 2) || off(m.f, S * 0.75)) report.problems.push(`${a.id} ${state}: draw() left the transform changed`);
+      if (ctx.globalAlpha !== 1 || ctx.globalCompositeOperation !== 'source-over') report.problems.push(`${a.id} ${state}: draw() left alpha or composite changed`);
+      ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over';
+      const d = ctx.getImageData(0, 0, S, S).data;
+      const bx0 = S / 2 - (a.w * s) / 2, bx1 = S / 2 + (a.w * s) / 2, by0 = S * 0.75 - a.h * s, by1 = S * 0.75;
+      let painted = 0, outside = 0;
+      for (let y = 0; y < S; y++) for (let x = 0; x < S; x++) {
+        if (d[(y * S + x) * 4 + 3] > 8) {
+          painted++;
+          const mx = a.w * s * 0.15, my = a.h * s * 0.15;
+          if (x < bx0 - mx || x > bx1 + mx || y < by0 - my || y > by1 + my) outside++;
+        }
+      }
+      row.results.push({ state, h, painted, outside, err });
+      if (err) report.problems.push(`${a.id} ${state} ${h}h: threw ${err}`);
+      else if (painted < 30) report.problems.push(`${a.id} ${state} ${h}h: draws nothing (${painted} px)`);
+      else if (outside / painted > 0.3 && !a.free) report.problems.push(`${a.id} ${state} ${h}h: ${Math.round(100 * outside / painted)}% drawn outside its w x h box`);
+    }
+  }
+  report.assets.push(row);
+}
+const have = new Map(ASSETS.map((a) => [a.id, a]));
+for (const [id, states] of Object.entries(REQUIRED)) {
+  if (fams && !fams.includes(id.split('.')[0])) continue;
+  const a = have.get(id);
+  if (!a) { report.problems.push(`missing required asset ${id}`); continue; }
+  for (const st of states) if (!a.states.includes(st)) report.problems.push(`${id}: missing required state ${st}`);
+}
+const seen = new Set();
+for (const a of ASSETS) { if (seen.has(a.id)) report.problems.push(`duplicate id ${a.id}`); seen.add(a.id); }
+for (const [k, n] of misses) report.problems.push(`drawAsset miss: ${k} x${n}`);
+document.getElementById('result').textContent = JSON.stringify(report);
+document.title = 'done';
+</script></body></html>

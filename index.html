@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SISO Background</title>
+<meta name="color-scheme" content="dark">
+<script>
+  // Every error is kept so ?selftest=1 can report it (no-console-errors).
+  window.__errors = [];
+  addEventListener('error', (e) => __errors.push(String(e.message || e.type)));
+  addEventListener('unhandledrejection', (e) => __errors.push(String(e.reason && e.reason.message || e.reason)));
+  (function () { const ce = console.error; console.error = function () { __errors.push([].map.call(arguments, String).join(' ')); return ce.apply(console, arguments); }; })();
+</script>
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #05070d; }
+  body { overscroll-behavior: none; -webkit-user-select: none; user-select: none; }
+  /* 100% of the viewport the page actually has (innerWidth x innerHeight, which the canvases are sized from); 100vh is
+     the large viewport on phones and in headless Chromium, which stretched the frame and pushed the horizon down */
+  canvas { position: fixed; inset: 0; width: 100%; height: 100%; display: block; }
+  #sky { image-rendering: auto; }
+  #near { touch-action: none; cursor: grab; }
+  #near:active { cursor: grabbing; }
+  #hint {
+    position: fixed; left: 50%; bottom: max(28px, env(safe-area-inset-bottom, 0px) + 20px); transform: translate(-50%, 6px);
+    padding: 9px 16px; border-radius: 999px; max-width: calc(100vw - 32px); box-sizing: border-box; text-align: center;
+    font: 500 13px/1.35 ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    letter-spacing: 0.01em; color: rgba(240, 244, 250, 0.92);
+    background: rgba(10, 14, 24, 0.38); -webkit-backdrop-filter: blur(10px) saturate(1.2); backdrop-filter: blur(10px) saturate(1.2);
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.07) inset;
+    opacity: 0; pointer-events: none; transition: opacity 0.9s ease, transform 0.9s ease;
+  }
+  #hint.on { opacity: 1; transform: translate(-50%, 0); }
+  #hint kbd { font: inherit; font-weight: 600; color: #fff; }
+  #stats { position: fixed; left: 8px; top: 8px; font: 11px/1.3 ui-monospace, monospace; color: #cfe; background: rgba(0, 0, 0, 0.5); padding: 4px 6px; border-radius: 4px; white-space: pre; }
+  #selftest { position: fixed; left: 8px; top: 8px; max-width: 90vw; white-space: pre-wrap; font: 11px/1.3 ui-monospace, monospace; color: #cfe; background: rgba(0, 0, 0, 0.6); padding: 6px; margin: 0; }
+  #selftest:empty { display: none; }
+  #assets { position: fixed; right: max(14px, env(safe-area-inset-right, 0px) + 10px); top: max(12px, env(safe-area-inset-top, 0px) + 8px);
+    padding: 7px 13px; border-radius: 999px; font: 500 12px/1.3 ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    color: rgba(240, 244, 250, 0.82); text-decoration: none; background: rgba(10, 14, 24, 0.32);
+    -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.07) inset; }
+  #assets:hover, #assets:focus-visible { color: #fff; background: rgba(10, 14, 24, 0.55); }
+</style>
+</head>
+<body>
+<canvas id="sky"></canvas>
+<canvas id="far"></canvas>
+<canvas id="mid"></canvas>
+<canvas id="main"></canvas>
+<canvas id="near"></canvas>
+<div id="hint" role="note"><kbd>Shift+A</kbd> / <kbd>Shift+D</kbd> move, <kbd>Shift+W</kbd> up, <kbd>Shift+S</kbd> down</div>
+<div id="stats" hidden></div>
+<a id="assets" href="breakdown.html">All assets</a>
+<script>
+  // On the site the breakdown is the root and this page is /scene; in the repo it is breakdown.html beside this one.
+  if (!/(^|\/)(index\.html)?$/.test(location.pathname)) document.getElementById('assets').href = './';
+  if (/[?&](freeze|selftest)=1/.test(location.search)) document.getElementById('assets').hidden = true;
+</script>
+<pre id="selftest"></pre>
+<script type="module" src="src/main.js"></script>
+</body>
+</html>
