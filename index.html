@@ -32,6 +32,7 @@
   }
   #hint.on { opacity: 1; transform: translate(-50%, 0); }
   #hint kbd { font: inherit; font-weight: 600; color: #fff; }
+  body:not(.story) #hint .story-keys { display: none; }
   #stats { position: fixed; left: 8px; top: 8px; font: 11px/1.3 ui-monospace, monospace; color: #cfe; background: rgba(0, 0, 0, 0.5); padding: 4px 6px; border-radius: 4px; white-space: pre; }
   #selftest { position: fixed; left: 8px; top: 8px; max-width: 90vw; white-space: pre-wrap; font: 11px/1.3 ui-monospace, monospace; color: #cfe; background: rgba(0, 0, 0, 0.6); padding: 6px; margin: 0; }
   #selftest:empty { display: none; }
@@ -40,6 +41,28 @@
     color: rgba(240, 244, 250, 0.82); text-decoration: none; background: rgba(10, 14, 24, 0.32);
     -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.07) inset; }
   #assets:hover, #assets:focus-visible { color: #fff; background: rgba(10, 14, 24, 0.55); }
+  /* the story: a fade to black at the loop's seam, and the beat bar along the bottom */
+  #fade { position: fixed; inset: 0; background: #000; opacity: 0; pointer-events: none; }
+  body.story #hint { bottom: max(92px, env(safe-area-inset-bottom, 0px) + 84px); }
+  #story { position: fixed; left: 50%; bottom: max(14px, env(safe-area-inset-bottom, 0px) + 8px); transform: translateX(-50%);
+    width: min(760px, calc(100vw - 32px)); box-sizing: border-box; padding: 9px 14px 4px; border-radius: 14px;
+    font: 500 13px/1.35 ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif; color: rgba(240, 244, 250, 0.92);
+    background: rgba(10, 14, 24, 0.38); -webkit-backdrop-filter: blur(10px) saturate(1.2); backdrop-filter: blur(10px) saturate(1.2);
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.07) inset; opacity: 0.28; transition: opacity 0.6s ease; }
+  #story.on, #story:focus-within { opacity: 1; }
+  #story .now { display: flex; gap: 10px; align-items: baseline; min-width: 0; padding: 0 2px 2px; white-space: nowrap; }
+  #story .title { font-weight: 600; color: #fff; flex: none; }
+  #story .line { color: rgba(240, 244, 250, 0.72); overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+  #story .track { display: flex; gap: 3px; }
+  #story .seg { flex: 1 1 0; min-width: 6px; height: 24px; padding: 0; border: 0; background: none; cursor: pointer; position: relative; border-radius: 2px; }
+  #story .seg::before, #story .seg i { content: ""; position: absolute; left: 0; right: 0; top: 10px; height: 3px; border-radius: 2px; }
+  #story .seg::before { background: rgba(255, 255, 255, 0.22); }
+  #story .seg i { background: rgba(255, 255, 255, 0.92); transform-origin: left; transform: scaleX(0); }
+  #story .seg:hover::before { background: rgba(255, 255, 255, 0.4); }
+  #story .seg:focus-visible { outline: 2px solid rgba(255, 255, 255, 0.85); outline-offset: 1px; }
+  #story:not(.on) .now { visibility: hidden; }
+  @media (max-width: 520px) { #story .line { display: none; } }
+  @media (prefers-reduced-motion: reduce) { #story, #hint { transition: none; } }
 </style>
 </head>
 <body>
@@ -48,7 +71,9 @@
 <canvas id="mid"></canvas>
 <canvas id="main"></canvas>
 <canvas id="near"></canvas>
-<div id="hint" role="note"><kbd>Shift+A</kbd> / <kbd>Shift+D</kbd> move, <kbd>Shift+W</kbd> up, <kbd>Shift+S</kbd> down</div>
+<div id="fade"></div>
+<div id="hint" role="note"><kbd>Shift+A</kbd> / <kbd>Shift+D</kbd> move, <kbd>Shift+W</kbd> up, <kbd>Shift+S</kbd> down<span class="story-keys">, <kbd>[</kbd> / <kbd>]</kbd> beats</span></div>
+<nav id="story" aria-label="Story beats" hidden><div class="now"><span class="title"></span><span class="line"></span></div><div class="track"></div></nav>
 <div id="stats" hidden></div>
 <a id="assets" href="breakdown.html">All assets</a>
 <script>

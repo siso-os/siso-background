@@ -69,7 +69,7 @@ export default {
     return { A, B, dir, ms, far, ciws: [A + 140, (A + B) / 2 + 80].map((x) => ({ x, y: -3, z: qz })), wind: r.range(0.4, 0.9) };
   },
   marks(ev) {
-    return ev.ms.filter((m) => m.fall).map((m) => ({ x0: m.b.x - 2, x1: m.b.x + 2, z0: m.b.z - 0.002, z1: m.b.z + 0.002, at: ev.t0 + m.th + 0.3, fall: 3.2, ruin: 30 + (m.i % 4) * 3, build: 14 }));
+    return ev.ms.filter((m) => m.fall).map((m) => ({ x0: m.b.x - 2, x1: m.b.x + 2, z0: m.b.z - 0.002, z1: m.b.z + 0.002, at: ev.t0 + m.th + 0.3, fall: 3.2, ruin: (ev.ruin ?? 30) + (m.i % 4) * 3, build: 14 }));
   },
   items(ev, t, L, view) {
     const u = t - ev.t0, out = [], lights = [], flashes = [];
@@ -116,7 +116,7 @@ export default {
         const b = m.b;
         collapse(out, lights, { b, at: ev.t0 + th + 0.3, t, seed: m.i, burn: 22, wind: ev.wind, plume: m.plume });
         if (m.crane) {
-          const done = th + 0.3 + 3.2 + 30 + (m.i % 4) * 3;
+          const done = th + 0.3 + 3.2 + (ev.ruin ?? 30) + (m.i % 4) * 3;
           crane(out, { x: b.x + (m.i % 2 ? 1 : -1) * (b.W * 0.5 + 10), z: b.z + 0.003, from: ev.t0 + done - 4, to: ev.t0 + done + 14 + 3, t, h: Math.max(70, b.H), seed: m.i, flip: m.i % 2 === 0 });
         }
       } else if (m.b && m.kind === 'full') {

@@ -83,7 +83,7 @@ export default {
       { id: 'city.tower-siso', x0: ev.hx - 1, x1: ev.hx + 1, from: t0 + BARRAGE[1], to: t0 + ev.dur - 2, state: 'shield' },
       { id: ev.eid, x0: ev.ex - 1, x1: ev.ex + 1, from: t0, to: t0 + Math.min(4.6, ev.first), state: 'fire' },
       // it burns until the camera has long passed it
-      { id: ev.eid, x0: ev.ex - 1, x1: ev.ex + 1, from: t0 + ev.first, to: t0 + SPAN, state: 'hit' },
+      { id: ev.eid, x0: ev.ex - 1, x1: ev.ex + 1, from: t0 + ev.first, to: t0 + (ev.span ?? SPAN), state: 'hit' },
     );
     return out;
   },
@@ -111,7 +111,7 @@ export default {
     // the enemy island burning: fires on its walls and black smoke off it, riding its bob
     const bob = bobAt(ev.E, t);
     ev.fires.forEach((f, k) => {
-      burning(out, lights, { x: ev.ex + f.x, y: ev.E.y + bob + f.y, z: ev.E.z + 0.003, w: f.w, th: ev.t0 + f.at, t, burn: SPAN - f.at - 2, smoke: SPAN - f.at, wind: 0.6, seed: k + 3, big: 0.8, plume: k < 2 });
+      burning(out, lights, { x: ev.ex + f.x, y: ev.E.y + bob + f.y, z: ev.E.z + 0.003, w: f.w, th: ev.t0 + f.at, t, burn: (ev.span ?? SPAN) - f.at - 2, smoke: (ev.span ?? SPAN) - f.at, wind: 0.6, seed: k + 3, big: 0.8, plume: k < 2 });
     });
     return flush(out, lights, flashes);
   },

@@ -75,7 +75,7 @@ export default {
   },
   marks(ev) {
     return ev.ms.filter((m) => m.fate === 'hit' && m.fall).map((m) => ({
-      x0: m.b.x - 2, x1: m.b.x + 2, z0: m.b.z - 0.002, z1: m.b.z + 0.002, at: ev.t0 + m.tl + m.fl + 0.35, fall: 3.5, ruin: 30 + (m.i % 3) * 4, build: 12,
+      x0: m.b.x - 2, x1: m.b.x + 2, z0: m.b.z - 0.002, z1: m.b.z + 0.002, at: ev.t0 + m.tl + m.fl + 0.35, fall: 3.5, ruin: (ev.ruin ?? 30) + (m.i % 3) * 4, build: 12,
     }));
   },
   states(ev) {
@@ -145,7 +145,7 @@ export default {
       if (m.fall) {
         const at = th + 0.35;
         collapse(out, lights, { b, at: ev.t0 + at, t, seed: m.i, burn: 24, wind: ev.wind });
-        const ruin = 30 + (m.i % 3) * 4;
+        const ruin = (ev.ruin ?? 30) + (m.i % 3) * 4;
         crane(out, { x: b.x + (m.i % 2 ? 1 : -1) * (b.W * 0.5 + 10), z: b.z + 0.003, from: ev.t0 + at + 3.5 + ruin - 4, to: ev.t0 + at + 3.5 + ruin + 12 + 3, t, h: Math.max(60, b.H * 0.9), seed: m.i, flip: m.i % 2 === 0 });
       } else {
         burning(out, lights, { x: m.to[0], y: m.to[1] + 12, z: b.z + 0.002, w: b.W * 0.55, th: ev.t0 + th + 0.2, t, burn: 34, smoke: 52, wind: ev.wind, seed: m.i, big: 0.7 });

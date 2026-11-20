@@ -22,6 +22,17 @@ function pick(seed, at) {
   return null;
 }
 
+// The story picks its island and how hard it is thrown (opts: { island: world x near the island, lean, push }): the
+// island is shoved sideways as it drops (push times the usual drift), so it can come down on a city it hangs beside.
+const DRIFT = (push) => 14 + 9 * push * (TI - 7) ** 1.6;
+function forced(seed, at) {
+  const o = at.opts, push = o.push ?? 1, lean = o.lean ?? -1;
+  const isl = enemyIslands(seed, o.island - 900, o.island + 900).filter((i) => i.id === 'islands.enemy').sort((a, b) => Math.abs(a.x - o.island) - Math.abs(b.x - o.island))[0];
+  if (!isl) return null;
+  const camI = at.autoX(at.t0 + TI), zc = 0.955, ix = isl.x + lean * DRIFT(push);
+  return { isl, xc: camI + ((ix - camI) * isl.z) / zc, zc, push, lean };
+}
+
 export default {
   id: 'island-fall',
   title: 'Island fall',
@@ -33,10 +44,10 @@ export default {
   pull: 0.9,             // an island over a city in the right place is rare: take it when it comes
   where: (place, at) => !!pick(at.seed, at),
   plan(r, at) {
-    const p = pick(at.seed, at);
+    const p = at.opts && at.opts.island != null ? forced(at.seed, at) : pick(at.seed, at);
     if (!p) return null;
-    const { isl, xc, zc } = p, s = isl.s || 1;
-    const lean = r() < 0.5 ? -1 : 1;
+    const { isl, xc, zc } = p, s = isl.s || 1, push = p.push ?? 1;
+    const lean = p.lean ?? (r() < 0.5 ? -1 : 1);
     // the blocks the shock flattens: in front of where it lands, spreading out from the middle
     const half = 210 * s * isl.z / zc + 40;
     const bs = buildings(at.seed, xc - half, xc + half).map((b) => ({ ...b, at: TI + 0.5 + Math.abs(b.x - xc) / 350 + r.range(0, 0.3) }));
@@ -47,17 +58,17 @@ export default {
       const j = jets[k % 2], tl = j.fire + (k >> 1) * 0.25, fl = r.range(1.6, 2.1);
       return { tl, fl, from: [j.x0 + j.v * tl + 20, j.y + 6, j.z], e, seed: r.int(0, 3) };
     });
-    return { ix: isl.x, iy: isl.y, iz: isl.z, s, iseed: isl.seed, lean, xc, zc, half, bs, ms, jets, wind: r.range(0.4, 0.8) };
+    return { ix: isl.x, iy: isl.y, iz: isl.z, s, iseed: isl.seed, lean, push, xc, zc, half, bs, ms, jets, wind: r.range(0.4, 0.8) };
   },
   marks(ev) {
-    return ev.bs.map((b) => ({ x0: b.x - 2, x1: b.x + 2, z0: b.z - 0.002, z1: b.z + 0.002, at: ev.t0 + b.at, fall: 2.6, ruin: 40, build: 16 }));
+    return ev.bs.map((b) => ({ x0: b.x - 2, x1: b.x + 2, z0: b.z - 0.002, z1: b.z + 0.002, at: ev.t0 + b.at, fall: 2.6, ruin: ev.ruin ?? 40, build: 16 }));
   },
   // how the island moves: { dx, dy, rot } at u, while it falls
   pose(ev, u) {
     // a sag of 36 as the engines go, then a drop from rest that puts its belly in the water at TI (the anchor is the
     // underside's lowest point plus 78 s, so the anchor ends about 30 under the water line)
     const sag = smooth(3.6, 7, u) * 36, fall = u > 7 ? ((-ev.iy + 30 - 36) / ((TI - 7) ** 2)) * (u - 7) ** 2 : 0;
-    return { dx: ev.lean * (14 * smooth(3.6, 7, u) + 9 * Math.max(0, u - 7) ** 1.6), dy: sag + fall, rot: ev.lean * (0.05 * smooth(2.6, 4.5, u) + 0.3 * smooth(6, TI, u)) };
+    return { dx: ev.lean * (14 * smooth(3.6, 7, u) + 9 * (ev.push ?? 1) * Math.max(0, u - 7) ** 1.6), dy: sag + fall, rot: ev.lean * (0.05 * smooth(2.6, 4.5, u) + 0.3 * smooth(6, TI, u)) };
   },
   states(ev) {
     const t0 = ev.t0, x0 = ev.ix - 1, x1 = ev.ix + 1, id = 'islands.enemy', out = [];
@@ -68,11 +79,12 @@ export default {
       out.push({ id, x0, x1, from: t0 + u, to: t0 + u + dt, state: 'fall', p: (u + dt / 2 - 3.6) / (TI + 0.3 - 3.6), ...ps });
     }
     out.push({ id, x0, x1, from: t0 + 2.2, to: t0 + 3.6, state: 'hit' });
-    out.push({ id, x0, x1, from: t0 + TI + 0.3, to: t0 + SPAN - BACK, hide: true });
+    const span = ev.span ?? SPAN;               // the story brings the new island back sooner
+    out.push({ id, x0, x1, from: t0 + TI + 0.3, to: t0 + span - BACK, hide: true });
     // the new one coming down into place on its engines
     for (let i = 0; i < 10; i++) {
       const f = i / 10, g = (i + 1) / 10;
-      out.push({ id, x0, x1, from: t0 + SPAN - BACK * (1 - f), to: t0 + SPAN - BACK * (1 - g), state: 'boost', dy: -1150 * (1 - smooth(0, 1, (f + g) / 2)) });
+      out.push({ id, x0, x1, from: t0 + span - BACK * (1 - f), to: t0 + span - BACK * (1 - g), state: 'boost', dy: -1150 * (1 - smooth(0, 1, (f + g) / 2)) });
     }
     return out;
   },
@@ -120,7 +132,7 @@ export default {
     // the crash: at its own depth, in the bay behind the city
     const du = u - TI;
     if (du >= 0) {
-      const ix = ev.ix + ev.lean * (14 + 9 * (TI - 7) ** 1.6), iz = ev.iz + 0.004;
+      const ix = ev.ix + ev.lean * DRIFT(ev.push ?? 1), iz = ev.iz + 0.004;
       blast(out, lights, flashes, { x: ix, y: -6, z: iz, th: ev.t0 + TI, t, size: 1.9, seed: 1, sky: 0.8, light: 1.6 });
       for (let k = 0; k < 4; k++) blast(out, lights, null, { x: ix + (k - 1.5) * 120 * s, y: -4, z: iz + 0.001, th: ev.t0 + TI + 0.15 + k * 0.12, t, size: 0.9, seed: k, flash: false, light: 0.5 });
       if (du < 2.8) out.push({ id: 'fx.splash', x: ix + 60 * ev.lean, y: 0, z: iz - 0.001, s: 3.2, state: 'big', p: du / 2.8, seed: 2, kind: 'fx' });
@@ -135,7 +147,7 @@ export default {
     // the blocks in front: down in dust, burning, then rebuilt under cranes
     ev.bs.forEach((b, k) => {
       collapse(out, lights, { b, at: ev.t0 + b.at, t, fall: 2.6, seed: k, burn: 26, wind: ev.wind, plume: k % 3 === 0 });
-      if (k % 2 === 0 && b.H > 30) crane(out, { x: b.x + (k % 4 ? 1 : -1) * (b.W * 0.5 + 9), z: b.z + 0.003, from: ev.t0 + b.at + 2.6 + 40 - 4, to: ev.t0 + b.at + 2.6 + 40 + 16 + 3, t, h: Math.max(60, b.H), seed: k, flip: k % 4 === 0 });
+      if (k % 2 === 0 && b.H > 30) crane(out, { x: b.x + (k % 4 ? 1 : -1) * (b.W * 0.5 + 9), z: b.z + 0.003, from: ev.t0 + b.at + 2.6 + (ev.ruin ?? 40) - 4, to: ev.t0 + b.at + 2.6 + (ev.ruin ?? 40) + 16 + 3, t, h: Math.max(60, b.H), seed: k, flip: k % 4 === 0 });
     });
     return flush(out, lights, flashes);
   },
