@@ -64,8 +64,9 @@ export const CAMERA = [
   // 137 to 182: the camera rides the rocket (FOLLOW below) up to space, holds over the strike, then dives home
   { t: 182, x: 3300, y: -6900, ease: 'io' },
   { t: 196, x: 3420, y: -6900, ease: 'io' },
-  { t: 205, x: 1720, y: 0, ease: 'io' },
-  { t: 215, x: 1850, y: 0, ease: 'io' },
+  { t: 205, x: 1640, y: -540, ease: 'io' },  // the dive stops high: the tower and its barrage's rising stream in shot
+  { t: 211, x: 1760, y: -460, ease: 'io' },
+  { t: 218, x: 1850, y: 0, ease: 'io' },     // down to the city for the island coming down on it
   { t: 227, x: 2010, y: 0, ease: 'io' },
   { t: 248, x: 1940, y: 0, ease: 'io' },
   { t: 266, x: 2060, y: 0, ease: 'io' },

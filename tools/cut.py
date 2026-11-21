@@ -8,7 +8,7 @@
 Writes media/hero.webp and media/beats/*.webp (committed: the README shows them), and chapters/ (not committed; it
 goes on the site at /chapters/ with tools/site.sh): one animated WebP per chapter that plays once, and index.json
 with each one's sha256. The T3 theme plays a chapter in place of a City Wars window and refuses one over 16 MB or that
-moves for more than 300 s, so this fails then too. Needs ffmpeg with libwebp.
+moves for more than 300 s, so this fails then too. Needs ffmpeg and libwebp (libwebp.so.7 and libwebpmux.so.3).
 """
 import hashlib, json, os, shutil, subprocess, sys, tempfile, time
 from pathlib import Path
@@ -53,16 +53,91 @@ class Film:
         return [self.at(a + k / self.fps) for k in range(0, n, step)]
 
 
-def encode(frames, out, fps, size, q, loop, level=6):
-    """level: libwebp effort, 0 to 6. 6 squeezes the README media hardest; the long chapters use 4, which is several
-    times faster for a few percent more bytes."""
+class AnimWebP:
+    """libwebp's animation encoder, called directly so key frames can be forced. ffmpeg's libwebp_anim can't set them,
+    and without them a lossy animation drifts into a mosaic: libwebp keeps every 8x8 block that is close to the frame
+    before it, so a slow change (a dusk sky, a panning camera) is never redrawn and the stale blocks pile up. A key
+    frame every `kmax` frames repaints the whole picture. Only the first fields of each struct are touched; libwebp
+    fills the rest, and the buffers are bigger than any version's structs."""
+    ENC_ABI, MUX_ABI = 0x0210, 0x0109  # libwebp checks the major byte only
+
+    def __init__(self):
+        import ctypes, ctypes.util
+        self.c = ctypes
+        names = {"webp": "libwebp.so.7", "webpmux": "libwebpmux.so.3"}
+        self.webp, self.mux = (ctypes.CDLL(ctypes.util.find_library(k) or v) for k, v in names.items())
+        P, I = ctypes.c_void_p, ctypes.c_int
+        for lib, name, res, args in [
+            (self.webp, "WebPConfigInitInternal", I, [P, I, ctypes.c_float, I]),
+            (self.webp, "WebPPictureInitInternal", I, [P, I]),
+            (self.webp, "WebPPictureImportRGB", I, [P, ctypes.c_char_p, I]),
+            (self.webp, "WebPPictureFree", None, [P]),
+            (self.webp, "WebPFree", None, [P]),
+            (self.mux, "WebPAnimEncoderOptionsInitInternal", I, [P, I]),
+            (self.mux, "WebPAnimEncoderNewInternal", P, [I, I, P, I]),
+            (self.mux, "WebPAnimEncoderAdd", I, [P, P, I, P]),
+            (self.mux, "WebPAnimEncoderAssemble", I, [P, P]),
+            (self.mux, "WebPAnimEncoderGetError", ctypes.c_char_p, [P]),
+            (self.mux, "WebPAnimEncoderDelete", None, [P]),
+        ]:
+            fn = getattr(lib, name)
+            fn.restype, fn.argtypes = res, args
+
+    def encode(self, rgb_frames, out, fps, size, q, loop, level, kmax):
+        c, (w, h) = self.c, size
+        buf = lambda: c.create_string_buffer(4096)
+        ints = lambda b: c.cast(b, c.POINTER(c.c_int))
+        opts, cfg = buf(), buf()
+        if not self.mux.WebPAnimEncoderOptionsInitInternal(opts, self.MUX_ABI):
+            raise SystemExit("libwebpmux refused its own options: version mismatch")
+        o = ints(opts)  # anim_params {bgcolor, loop_count}, minimize_size, kmin, kmax, allow_mixed, verbose
+        o[1], o[2], o[3], o[4], o[5] = loop, 0, kmax // 2 + 1, kmax, 0
+        if not self.webp.WebPConfigInitInternal(cfg, 0, float(q), self.ENC_ABI):
+            raise SystemExit("libwebp refused its own config: version mismatch")
+        ints(cfg)[2] = level  # lossless, quality, method
+        enc = self.mux.WebPAnimEncoderNewInternal(w, h, opts, self.MUX_ABI)
+        ms = lambda i: round(i * 1000 / fps)
+        try:
+            i = 0
+            for i, rgb in enumerate(rgb_frames):
+                pic = buf()
+                self.webp.WebPPictureInitInternal(pic, self.ENC_ABI)
+                p = ints(pic)
+                p[0], p[2], p[3] = 1, w, h  # use_argb, width, height
+                ok = self.webp.WebPPictureImportRGB(pic, rgb, w * 3) and self.mux.WebPAnimEncoderAdd(enc, pic, ms(i), cfg)
+                self.webp.WebPPictureFree(pic)
+                if not ok:
+                    raise SystemExit(f"libwebp failed on frame {i}: {self.mux.WebPAnimEncoderGetError(enc)}")
+            self.mux.WebPAnimEncoderAdd(enc, None, ms(i + 1), None)
+            data = (c.c_void_p * 2)()  # WebPData {bytes, size}
+            if not self.mux.WebPAnimEncoderAssemble(enc, data):
+                raise SystemExit(f"libwebp failed to assemble: {self.mux.WebPAnimEncoderGetError(enc)}")
+            out.write_bytes(c.string_at(data[0], data[1]))
+            self.webp.WebPFree(data[0])
+        finally:
+            self.mux.WebPAnimEncoderDelete(enc)
+
+
+def rgb_frames(frames, size):
+    """Every frame scaled to size, as raw RGB, one at a time through ffmpeg."""
     with tempfile.TemporaryDirectory() as tmp:
         for i, f in enumerate(frames):
             os.symlink(f, Path(tmp) / f"s{i:05d}.jpg")
-        out.parent.mkdir(parents=True, exist_ok=True)
-        subprocess.run(["ffmpeg", "-v", "error", "-y", "-framerate", str(fps), "-i", str(Path(tmp) / "s%05d.jpg"),
-                        "-vf", f"scale={size[0]}:{size[1]}:flags=lanczos", "-c:v", "libwebp_anim", "-q:v", str(q),
-                        "-compression_level", str(level), "-loop", str(loop), str(out)], check=True)
+        n = size[0] * size[1] * 3
+        ff = subprocess.Popen(["ffmpeg", "-v", "error", "-i", str(Path(tmp) / "s%05d.jpg"), "-vf",
+                               f"scale={size[0]}:{size[1]}:flags=lanczos", "-f", "rawvideo", "-pix_fmt", "rgb24", "-"],
+                              stdout=subprocess.PIPE)
+        while len(rgb := ff.stdout.read(n)) == n:
+            yield rgb
+        if ff.wait():
+            raise SystemExit("ffmpeg could not read the film frames")
+
+
+def encode(frames, out, fps, size, q, loop, level=6, kmax=None):
+    """level: libwebp effort, 0 to 6. 6 squeezes the README media hardest; the long chapters use 4, which is several
+    times faster for a few percent more bytes. kmax: the most frames between key frames (default: one a second)."""
+    out.parent.mkdir(parents=True, exist_ok=True)
+    AnimWebP().encode(rgb_frames(frames, size), out, fps, size, q, loop, level, kmax or round(fps))
     return out.stat().st_size
 
 

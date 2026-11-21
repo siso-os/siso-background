@@ -2,7 +2,7 @@
 // always shows the same place. Places repeat in seeded runs of eight that always start at the SISO home bay.
 // Static things come from chunkItems(); moving traffic (boats, cars, planes) from streams(), a pure function of t.
 //
-// An item: { id, x, y, z, s, seed, state, flip, kind, bob, w, h } in world units (x at its own depth's parallax), or
+// An item: { id, x, y, z, s, seed, state, flip, kind, bob, dxAt, w, h } in world units (x at its own depth's parallax), or
 // { screen: true, z, draw(ctx, view, L, t) } for engine-drawn strips that span depths (land, quay, far coast).
 
 import { rng, hash, clamp, lerp } from '../core/rng.js';
@@ -78,8 +78,14 @@ function build(seed, i) {
   // Floating islands. The home bay has the big SISO island with the tower and the shield over the city. They hang in
   // the upper third, as in the options (the home island's underside about a quarter of the way down the frame).
   if (P.type === 'home') {
-    const isl = add({ id: 'islands.siso-home', x: x0 + 1050, y: -470, z: 0.86, seed: 0, kind: 'island', bob: 1, home: true });
-    isl.carry = ['city.tower-siso', 'defence.shield-dome'];
+    // one dominant hero island (the owner's art direction, 20 Nov: "one island clearly bigger than the rest"), with
+    // satellites on their own depths: a pair behind it that drift together, touch and spring apart, and one in front
+    const isl = add({ id: 'islands.siso-home', x: x0 + 1050, y: -430, z: 0.86, s: 1.5, seed: 0, kind: 'island', bob: 0.6, home: true });
+    const pair = (t) => 75 + 150 * Math.abs(Math.sin((t * Math.PI) / 38));   // half the gap: 75 is touching
+    add({ id: 'islands.siso-small', x: x0 + 520, y: -640, z: 0.74, s: 0.75, seed: 1, kind: 'island', bob: 1, dxAt: (t) => -pair(t) });
+    add({ id: 'islands.siso-small', x: x0 + 520, y: -655, z: 0.74, s: 0.75, seed: 3, kind: 'island', bob: 1, dxAt: (t) => pair(t) });
+    add({ id: 'islands.siso-small', x: x0 + 1620, y: -560, z: 0.89, s: 0.62, seed: 5, kind: 'island', bob: 1.2, dxAt: (t) => 40 * Math.sin(t * 0.07) });
+    isl.carry = ['city.lion-ring', 'city.tower-siso', 'defence.shield-dome'];
     add({ id: 'islands.enemy', x: x0 + 2520, y: -520, z: 0.78, seed: 1, kind: 'island', bob: 1 });
   } else if (P.type === 'opensea' || r() < 0.5) {
     const enemy = r() < 0.6;

@@ -1,0 +1,87 @@
+{
+  "_about": "Which painted image draws each asset. tools/art.py turns the art release zips into img/ from this file. Each pool entry is one look, picked by the asset's seed; its keys are states, each a stem whose -day, -dusk and -night files are the lights (a stem with no light suffix is used at every hour). A state with no stem keeps the idle image; idle with no image keeps the coded art. fit: the box side the idle image is scaled to (h height, w width). flip: the image faces left. rot: degrees to turn it. skip: stem-light files left out (a halo or a real landmark). slots: where carried things stand, as fractions of the drawn width and height from the anchor.",
+  "skip": ["b03-needle", "b03-opera"],
+  "files": { "brand-lion": "refs/brand/siso-lion-ember.png" },
+  "_files": "files: images built from the repo itself, always, for assets that draw them by name (city.lion-ring draws brand-lion in its ring).",
+  "assets": {
+    "city.tower-siso": { "fit": "h", "fx": true, "pool": [{ "idle": "b01-tower" }] },
+    "city.skyscraper-glass": { "fit": "h", "pool": [
+      { "idle": "b03-glass-tower", "ruin": "b03-glass-tower-ruin", "construct": "b03-glass-tower-rebuild" },
+      { "idle": "b03-supertall", "ruin": "b03-supertall-ruin", "construct": "b03-supertall-rebuild" },
+      { "idle": "b03-twin-towers", "ruin": "b03-twin-towers-ruin", "construct": "b03-twin-towers-rebuild" },
+      { "idle": "b03-hospital", "ruin": "b03-modern-office-ruin", "construct": "b03-modern-office-rebuild" }
+    ] },
+    "city.skyscraper-deco": { "fit": "h", "pool": [
+      { "idle": "b03-deco-tower", "ruin": "b03-deco-tower-ruin", "construct": "b03-deco-tower-rebuild" },
+      { "idle": "b03-hotel", "ruin": "b03-hotel-ruin", "construct": "b03-hotel-rebuild" },
+      { "idle": "b03-pagoda-tower", "ruin": "b03-hotel-ruin", "construct": "b03-hotel-rebuild" }
+    ] },
+    "city.skyscraper-twist": { "fit": "h", "pool": [
+      { "idle": "b03-twist-tower", "ruin": "b03-twist-tower-ruin", "construct": "b03-twist-tower-rebuild" },
+      { "idle": "b03-helix", "ruin": "b03-twist-tower-ruin", "construct": "b03-twist-tower-rebuild" }
+    ] },
+    "city.spire": { "fit": "h", "pool": [
+      { "idle": "b03-supertall", "ruin": "b03-supertall-ruin", "construct": "b03-supertall-rebuild" }
+    ] },
+    "city.office": { "fit": "h", "pool": [
+      { "idle": "b03-modern-office", "ruin": "b03-modern-office-ruin", "construct": "b03-modern-office-rebuild" },
+      { "idle": "b03-stone-civic", "ruin": "b03-stone-civic-ruin", "construct": "b03-stone-civic-rebuild" },
+      { "idle": "b03-data-centre", "ruin": "b03-modern-office-ruin", "construct": "b03-modern-office-rebuild" },
+      { "idle": "b03-brutalist", "ruin": "b03-residential-ruin", "construct": "b03-residential-rebuild" }
+    ] },
+    "city.residential": { "fit": "h", "pool": [
+      { "idle": "b03-residential", "ruin": "b03-residential-ruin", "construct": "b03-residential-rebuild" },
+      { "idle": "b03-townhouses", "ruin": "b03-townhouses-ruin", "construct": "b03-townhouses-rebuild" },
+      { "idle": "b03-brick-loft", "ruin": "b03-brick-loft-ruin", "construct": "b03-brick-loft-rebuild" }
+    ] },
+    "city.neon-block": { "fit": "h", "pool": [
+      { "idle": "b03-neon-block", "ruin": "b03-siso-annex-ruin", "construct": "b03-siso-annex-rebuild" },
+      { "idle": "b03-screen-block", "ruin": "b03-siso-annex-ruin", "construct": "b03-siso-annex-rebuild" },
+      { "idle": "b03-siso-annex", "ruin": "b03-siso-annex-ruin", "construct": "b03-siso-annex-rebuild" }
+    ] },
+    "city.arena": { "fit": "w", "pool": [{ "idle": "b03-arena" }] },
+
+    "islands.siso-home": { "fit": "w", "pool": [{ "idle": "b01-isle-home" }], "slots": { "tower": [0.02, -0.74], "dome": [0, -0.7], "crest": [0, -0.25] } },
+    "islands.siso-small": { "fit": "w", "pool": [
+      { "idle": "b01-isle-hangar" }, { "idle": "b01-isle-launchpad" }, { "idle": "b01-isle-shipyard" }, { "idle": "b01-isle-observatory" },
+      { "idle": "b01-isle-farm" }, { "idle": "b01-isle-power" }, { "idle": "b01-isle-villas" }, { "idle": "b01-isle-defence" },
+      { "idle": "b01-isle-academy" }, { "idle": "b01-isle-skydock" }, { "idle": "b01-isle-lake" }, { "idle": "b01-isle-garden" }
+    ], "slots": { "tower": [0, -0.72], "dome": [0, -0.7] } },
+    "islands.enemy": { "fit": "w", "pool": [
+      { "idle": "b02-fort-great", "fall": "b02-fort-falling", "hit": "b02-fort-falling" },
+      { "idle": "b02-fort-keep", "fall": "b02-fort-falling", "hit": "b02-fort-falling" },
+      { "idle": "b02-fort-citadel", "fall": "b02-fort-falling", "hit": "b02-fort-falling" },
+      { "idle": "b02-fort-gate", "fall": "b02-fort-falling", "hit": "b02-fort-falling" },
+      { "idle": "b02-fort-reactor", "fall": "b02-fort-falling", "hit": "b02-fort-falling" },
+      { "idle": "b02-fort-volcano", "fall": "b02-fort-falling", "hit": "b02-fort-falling" },
+      { "idle": "b02-fort-barracks", "fall": "b02-fort-falling", "hit": "b02-fort-falling" },
+      { "idle": "b02-fort-forge", "fall": "b02-fort-falling", "hit": "b02-fort-falling" }
+    ] },
+    "islands.enemy-small": { "fit": "w", "pool": [
+      { "idle": "b02-fort-outpost", "fall": "b02-fort-falling" }, { "idle": "b02-fort-artillery", "fall": "b02-fort-falling" },
+      { "idle": "b02-fort-silos", "fall": "b02-fort-falling" }, { "idle": "b02-fort-launcher", "fall": "b02-fort-falling" },
+      { "idle": "b02-fort-radar", "fall": "b02-fort-falling" }, { "idle": "b02-rock-red-a", "fall": "b02-fort-falling" },
+      { "idle": "b02-rock-red-b", "fall": "b02-fort-falling" }
+    ] },
+
+    "sea.speedboat": { "fit": "w", "pool": [{ "idle": "b07-boat-speedboat" }] },
+    "sea.police-boat": { "fit": "w", "pool": [{ "idle": "b07-boat-police" }] },
+    "sea.smuggler": { "fit": "w", "pool": [{ "idle": "b07-boat-smuggler" }] },
+    "sea.ferry": { "fit": "w", "pool": [{ "idle": "b07-boat-ferry" }, { "idle": "b07-boat-hovercraft" }, { "idle": "b07-boat-cruise" }] },
+    "sea.yacht": { "fit": "w", "pool": [{ "idle": "b07-boat-yacht" }, { "idle": "b07-boat-catamaran" }, { "idle": "b07-boat-sailboat" }] },
+    "sea.cargo": { "fit": "w", "pool": [{ "idle": "b07-boat-cargo" }, { "idle": "b07-boat-tanker" }] },
+    "sea.warship": { "fit": "w", "pool": [{ "idle": "b06-frigate" }, { "idle": "b06-carrier" }] },
+
+    "air.jet-siso": { "fit": "w", "pool": [{ "idle": "b06-jet-side", "fire": "b06-jet-gun-4" }] },
+    "air.jet-enemy": { "fit": "w", "flip": true, "pool": [{ "idle": "b07-brute-side", "fire": "b07-brute-afterburner" }] },
+    "air.drone": { "fit": "w", "pool": [{ "idle": "b06-quad-drone" }] },
+    "air.helicopter": { "fit": "w", "pool": [{ "idle": "b06-heli" }] },
+
+    "space.moon": { "fit": "w", "pool": [{ "idle": "b08-moon-gibbous", "gibbous": "b08-moon-gibbous", "full": "b08-moon-full", "half": "b08-moon-half", "crescent": "b08-moon-crescent" }], "slots": { "city": [0, -0.985] } },
+    "space.moon-city": { "fit": "w", "pool": [{ "idle": "b08-moon-city" }] },
+    "space.palace": { "fit": "w", "pool": [{ "idle": "b08-palace", "attack": "b08-palace", "hit": "b08-palace-hit" }] },
+    "space.station": { "fit": "w", "pool": [{ "idle": "b08-station" }] },
+    "space.satellite": { "fit": "w", "pool": [{ "idle": "b08-sat-comms" }, { "idle": "b08-sat-siso" }, { "idle": "b08-sat-scope" }, { "idle": "b08-sat-power" }] },
+    "space.attack-ship": { "fit": "w", "pool": [{ "idle": "b08-enemy-attack-ship" }, { "idle": "b08-enemy-cruiser" }] }
+  }
+}

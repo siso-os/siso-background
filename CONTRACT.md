@@ -17,8 +17,14 @@ where it lives".
 - **Match the references.** `refs/` holds the paintings each asset is matched to (from Sol, `refs/manifest.json`),
   and `art/` holds the earlier photo cut-outs (tower, islands, buildings, boats). Three passes per asset: build, compare
   your render beside the reference, fix the worst difference.
-- **Everything is code.** Canvas 2D for every asset; the engine's WebGL shader for the sky, the sea and the clouds. No
-  image files inside an asset. (Images stay in `art/` and `refs/` as references and in the asset page.)
+- **Painted where we have the art, code underneath.** The owner, 20 Nov 2026: "images replace the coded art", and keep
+  it interactive. Every asset is still code (Canvas 2D; the engine's WebGL shader for the sky, the sea and the clouds),
+  and that code is what draws until an image has loaded, with `?art=0`, on the asset page and in `tools/check.mjs`.
+  Over it, `art/map.json` names painted images (from the art releases) for an asset, per look, state and light;
+  `tools/art.py` builds them into `img/` (not in git, copied to the site), and `src/core/sprites.js` draws them through
+  `drawAsset`. An asset marked `fx` in the map draws its effects over its painting (`o.body === false`); one may also
+  draw a named image itself with `paintedImage()`. Images never decide anything: time, seeds and states still do.
+  (Older references stay in `art/` and `refs/` and in the asset page.)
 
 ## 2. Time is the only state
 

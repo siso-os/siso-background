@@ -95,7 +95,10 @@ export default {
       });
       // the pad: the same picture with that band cut out
       out.push({
+        // its column thins with the long plume (the foot was laid over the asset's 14 s, so about 7 s in), or it would
+        // stand over the pad, unchanged, until the event ends
         id: 'air.rocket-ship', x: ev.x, y: 0, z, s: S, state: 'launch', p: 1, seed: ev.seed, kind: 'air', w: 80, h: 800,
+        extra: { plume: 1 - smooth(FADE[0], FADE[1], ul - LAUNCH / 2) },
         fn(g, o) { g.beginPath(); g.rect(-400, -1200, 800, 1300); g.rect(...BAND); g.clip('evenodd'); drawAsset(g, 'air.rocket-ship', o); },
       });
     }

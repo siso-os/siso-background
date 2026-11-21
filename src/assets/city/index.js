@@ -13,8 +13,9 @@ import people from './people.js';
 import bridge from './bridge.js';
 import arena from './arena.js';
 import quay from './quay.js';
+import lionRing from './lion-ring.js';
 
 export default [
   towerSiso, skyscraperGlass, skyscraperDeco, skyscraperTwist, office, residential, neonBlock, spire,
-  crane, car, people, bridge, arena, quay,
+  crane, car, people, bridge, arena, quay, lionRing,
 ];

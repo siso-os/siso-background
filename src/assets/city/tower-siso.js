@@ -77,9 +77,12 @@ export default {
   slots: { crown: [0, CROWN_Y - CROWN_H / 2], tip: [7, CROWN_Y - CROWN_H - 76], ports: PORTS.map(([s, y]) => [s * 4, y]) },
   draw(ctx, o) {
     const L = o.L, t = o.t || 0, st = o.state || 'idle', lit = o.lit >= 0 ? 1 : -1;
-    nightAir(ctx, o, -CROWN_W / 2, CROWN_W / 2, CROWN_Y - CROWN_H, mix(CYAN, [255, 220, 170], 0.3), 1.2);
-    ctx.drawImage(cached(`city.tower-siso|${L.q}|${lit}`, W, H, o.scale || 1, (g) => withBloom(g, dusk(L), () => body(g, o))), -W / 2, -H, W, H);
-    crownGlow(ctx, o, 0, CROWN_Y - CROWN_H / 2, CROWN_W * 0.8, CYAN, 0.9);
+    const own = o.body !== false;   // false: the painted tower is the body; draw only the effects over it
+    if (own) {
+      nightAir(ctx, o, -CROWN_W / 2, CROWN_W / 2, CROWN_Y - CROWN_H, mix(CYAN, [255, 220, 170], 0.3), 1.2);
+      ctx.drawImage(cached(`city.tower-siso|${L.q}|${lit}`, W, H, o.scale || 1, (g) => withBloom(g, dusk(L), () => body(g, o))), -W / 2, -H, W, H);
+      crownGlow(ctx, o, 0, CROWN_Y - CROWN_H / 2, CROWN_W * 0.8, CYAN, 0.9);
+    }
     let crown = 0.55 + 0.45 * L.windows;
     if (st === 'shield') { // a pulse of blue running up the spine into the crown, the crown breathing
       const ph = (t * 0.9) % 1, y = -ph * -CROWN_Y;
@@ -92,7 +95,7 @@ export default {
       glow(ctx, 0, CROWN_Y - CROWN_H / 2, 60 + 20 * br, BLUE, 0.25 + 0.2 * br);
     }
     if (st === 'hit') crown *= (Math.sin(t * 37) > -0.3 ? 1 : 0.15);
-    crownText(ctx, o, crown);
+    if (own) crownText(ctx, o, crown);
     if (st === 'barrage') PORTS.forEach(([s, y], i) => { // hatches open, a flash, a missile leaving on a trail
       const ph = (t * 1.4 + i / PORTS.length) % 1, x = s > 0 ? 3.6 : -3.6;
       ctx.fillStyle = css([255, 150, 70], 0.8); ctx.fillRect(x - 2, y - 1.2, 4, 2.4);

@@ -5,6 +5,7 @@
 // the layer, lights throw streaks down the night sea, and bright lights bloom.
 
 import { drawAsset, byId } from '../assets/registry.js';
+import { spriteSlot } from '../core/sprites.js';
 import { drawStandin, sizeOf } from './standin.js';
 import { makeView, altitudeOf, horizonAt, zoom } from './view.js';
 import { visibleItems } from './world.js';
@@ -42,6 +43,7 @@ const CARRY = {
   'city.tower-siso': { slot: 'tower', at: [0, -0.62], fit: ['h', 0.5] },
   'defence.shield-dome': { slot: 'dome', at: [0, -0.6], fit: ['w', 1.05] },
   'space.moon-city': { slot: 'city', at: [0, -0.985], fit: ['w', 0.55] },
+  'city.lion-ring': { slot: 'crest', at: [0, -0.3], fit: ['w', 0.17] },   // the home island's crest, on its rock face
 };
 
 export class Renderer {
@@ -188,7 +190,7 @@ export class Renderer {
     if (ov && ov.hide) return false;
     let y = (it.y || 0) + ((ov && ov.dy) || 0);
     if (it.bob) y += Math.sin(t * 0.42 + (it.seed || 0) * 1.7 + it.x * 0.0013) * 5 * it.bob;
-    const X = v.sx(it.x + ((ov && ov.dx) || 0), z), Y = v.sy(y, z);
+    const X = v.sx(it.x + ((ov && ov.dx) || 0) + (it.dxAt ? it.dxAt(t) : 0), z), Y = v.sy(y, z);   // dxAt: a drift in time
     const [w, h] = it.fn ? [it.w, it.h] : sizeOf(it.id);
     const hw = w * sc * (it.carry ? 0.6 : 0.5) + 6;
     const up = h * sc * (it.carry ? 2.2 : 1.05) + 6;
@@ -246,7 +248,8 @@ export class Renderer {
   carry(g, host, id, w, h, o) {
     const c = CARRY[id]; if (!c) return;
     const asset = byId.get(host.id);
-    const slot = (asset && asset.slots && asset.slots[c.slot]) || [c.at[0] * w, c.at[1] * h];
+    // a painted host has its own slots (art/map.json); the coded host's, or a share of its box, otherwise
+    const slot = spriteSlot(asset, host.seed || 0, c.slot) || (asset && asset.slots && asset.slots[c.slot]) || [c.at[0] * w, c.at[1] * h];
     const [cw, ch] = sizeOf(id);
     const k = c.fit[0] === 'h' ? (c.fit[1] * w) / ch : (c.fit[1] * w) / cw;
     g.save();

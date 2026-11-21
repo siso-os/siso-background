@@ -10,6 +10,7 @@ import space from './space/index.js';
 import aliens from './aliens/index.js';
 import { keyedLight } from '../core/light.js';
 import { hash } from '../core/rng.js';
+import { drawSprite, spriteFx } from '../core/sprites.js';
 
 export const FAMILIES = [
   { id: 'sky', title: 'Sky and sea' },
@@ -27,7 +28,9 @@ export const FAMILIES = [
 export const ASSETS = [...nature, ...islands, ...city, ...sea, ...air, ...defence, ...fx, ...space, ...aliens];
 export const byId = new Map(ASSETS.map((a) => [a.id, a]));
 
-// drawAsset(ctx, id, o): draw one asset safely. Unknown ids and throws draw nothing and are counted.
+// drawAsset(ctx, id, o): draw one asset safely. Unknown ids and throws draw nothing and are counted. When the painted art
+// is on (src/core/sprites.js) and has this asset's image, the image is the body; an asset marked fx in art/map.json then
+// draws only its effects over it (o.body is false).
 export const misses = new Map();
 export function drawAsset(ctx, id, o) {
   const a = typeof id === 'string' ? byId.get(id) : id;
@@ -37,7 +40,9 @@ export function drawAsset(ctx, id, o) {
     const state = a.states.includes(o.state) ? o.state : a.states[0];
     // each body re-bakes at its own moment as the light moves (keyedLight), not all of them in one frame
     const L = o.L && keyedLight(o.L, (hash(a.id, o.seed || 0) % 1024) / 1024);
-    a.draw(ctx, { t: 0, p: 0, seed: 0, lit: o.L ? o.L.side : 1, scale: 1, ...o, state, ...(L ? { L } : {}) });
+    const oo = { t: 0, p: 0, seed: 0, lit: o.L ? o.L.side : 1, scale: 1, ...o, state, ...(L ? { L } : {}) };
+    if (!drawSprite(ctx, a, oo, state)) a.draw(ctx, oo);
+    else if (spriteFx(a)) a.draw(ctx, { ...oo, body: false });
   } catch (e) {
     misses.set(a.id + ':' + e.message, (misses.get(a.id + ':' + e.message) || 0) + 1);
   }

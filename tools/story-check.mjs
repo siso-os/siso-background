@@ -59,7 +59,9 @@ const top = Math.min(...Array.from({ length: 60 }, (_, k) => d.cam(137 + k * 0.7
 if (top > space + 100) problems.push(`the camera never reaches space while riding the rocket (highest y ${top.toFixed(0)})`);
 const strike = S.EVENTS.find((e) => e.id === 'strike');
 if (strike && Math.abs(d.cam(strike.at + 8).y - space) > 60) problems.push(`the camera is not in space for the strike (y ${d.cam(strike.at + 8).y.toFixed(0)})`);
-for (const b of S.BEATS.filter((b) => /tower/i.test(b.title))) if (Math.abs(d.cam(b.at + 6).y) > 160) problems.push(`the camera is not down by the sea for "${b.title}"`);
+// home: down at the bay, at most the islands' height up (the tower barrage is framed high, so the tower and the
+// stream climbing out of it are in shot), never still up in the clouds or space
+for (const b of S.BEATS.filter((b) => /tower/i.test(b.title))) if (Math.abs(d.cam(b.at + 6).y) > 600) problems.push(`the camera is not home at the bay for "${b.title}" (y ${d.cam(b.at + 6).y.toFixed(0)})`);
 if (d.fade(LOOP - 0.1) < 0.97 || d.fade(0.02) < 0.97) problems.push('the seam is not black when the camera jumps');
 if (d.fade(LOOP / 2) !== 0) problems.push('the fade is up in the middle of the loop');
 const jump = Math.hypot(d.cam(LOOP - 0.01).x - d.cam(LOOP + 0.01).x, d.cam(LOOP - 0.01).y - d.cam(LOOP + 0.01).y);

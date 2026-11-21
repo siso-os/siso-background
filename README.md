@@ -2,7 +2,7 @@
 
 <h1 align="center">SISO Background</h1>
 
-<p align="center"><b>A living sky war, drawn entirely in code.</b><br>
+<p align="center"><b>A living sky war, painted and played live in the browser.</b><br>
 Floating islands, a city under siege, rockets to orbit and alien palaces: one endless scene that tells its own story,
 and hands you the camera whenever you want it.</p>
 
@@ -13,8 +13,10 @@ and hands you the camera whenever you want it.</p>
   MIT
 </p>
 
-No video, no sprite sheets: every frame is painted live by Canvas 2D and a WebGL2 sky, from about 80 hand-written
-assets and a seeded world. Time is the only state, so any second of the scene looks the same on every machine.
+No video: every frame is drawn live by Canvas 2D and a WebGL2 sky, from a seeded world. About 80 assets are written
+in code, and 108 paintings (most graded for day, dusk and night, 209 images) draw over them in black and ember, with
+the SISO lion crest on the home island. Time is the only state, so any second of the scene looks the same on every
+machine.
 
 ## The story
 
@@ -99,7 +101,11 @@ scenes; anything that can show an image can play them.
 - `src/engine/`: the camera, the world, the director that schedules the random events, and the WebGL sky and sea.
 - `src/events/`: one file per event (patrols, flybys, the wars). `src/events/README.md` says how to add one.
 - `src/story/`: the story loop: the script and the director that plays it.
-- `refs/`: the reference paintings the assets are matched to. `art/`: the earlier photo art, kept as references.
+- `art/map.json`: which painted image draws which asset, in which state and light. `tools/art.py` builds them into
+  `img/` from the art releases, and `src/core/sprites.js` draws them. `img/` isn't in git: without it, or with
+  `?art=0`, every asset draws its coded art.
+- `refs/`: the reference paintings the assets are matched to. The rest of `art/` is the earlier photo art, kept as
+  references.
 - `media/`: the pictures in this README, filmed from the scene with `tools/film.mjs` and cut with `tools/cut.py`.
 - `rounds/<name>/`: each build round's reasoning and before/after shots.
 
@@ -116,6 +122,8 @@ Query options:
 | `?h=21` | Start at 9 pm (the open world) |
 | `?zoom=1` | Show the whole width (1.25 by default) |
 | `?stats=1` | Show frame times |
+| `?art=0` | Only the coded art, no painted images |
+| `?grade=blue` | The earlier blue night instead of black and ember |
 | `&freeze=1&t=30` | Hold one moment |
 | `&events=hellfire` | Play only that event |
 | `&y=-6900` | Start in space |
