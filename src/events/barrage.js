@@ -37,7 +37,7 @@ export default {
   plan(r, { t0, x0, seed }) {
     const p = pair(seed, x0);
     if (!p) return null;
-    const H = p.home, E = p.enemy, es = E.s || 1;
+    const H = p.home, E = p.enemy, es = E.s || 1, hs = H.s || 1;   // hs: the hero island is drawn larger
     const bobH = (t) => bobAt(H, t), bobE = (t) => bobAt(E, t);
     // the SISO missiles: one for each port firing of the tower's own barrage, picked up where the asset's little
     // launch flash ends (half a cycle after the port opens, 60 units up and 30 out)
@@ -46,14 +46,18 @@ export default {
       for (let n = Math.ceil((t0 + BARRAGE[0]) * 1.4 + i / 6); (n - i / 6) / 1.4 < t0 + BARRAGE[1]; n++) {
         const T = (n - i / 6) / 1.4 + 0.5 / 1.4;
         const fx = sg * 3.6 + sg * 30, fy = py - 60;
-        const from = [H.x + TOWER_K * fx, H.y + bobH(T) + TOWER_Y + TOWER_K * fy, H.z];
-        const fl = r.range(3.6, 4.4), th = T + fl;
-        const engines = r() < 0.25;
-        const hx = engines ? r.range(-70, 70) : r.range(-175, 175), hy = engines ? -78 : r.range(-240, -165);
-        const to = [E.x + hx * es, E.y + bobE(th) + hy * es, E.z + 0.002];
-        const c1 = [from[0] + sg * r.range(40, 110), from[1] - r.range(300, 420), H.z];
-        const c2 = [to[0] - r.range(180, 320), Math.min(from[1], to[1]) - r.range(260, 380), E.z];
-        ms.push({ T: T - t0, fl, from, c1, c2, to, seed: r.int(0, 3), big: r() < 0.4 });
+        const from = [H.x + hs * TOWER_K * fx, H.y + bobH(T) + hs * (TOWER_Y + TOWER_K * fy), H.z];
+        // two from each port firing, the second a beat later and higher: a stream that climbs well above the tower
+        // before it turns (the owner's art direction, 20 Nov: "an exaggerated rising stream of glowing trails")
+        for (const k of [0, 1]) {
+          const fl = r.range(3.8, 4.8) + k * 0.5, th = T + k * 0.18 + fl;
+          const engines = r() < 0.25;
+          const hx = engines ? r.range(-70, 70) : r.range(-175, 175), hy = engines ? -78 : r.range(-240, -165);
+          const to = [E.x + hx * es, E.y + bobE(th) + hy * es, E.z + 0.002];
+          const c1 = [from[0] + sg * r.range(30, 140), from[1] - r.range(560, 820) - k * 160, H.z];
+          const c2 = [to[0] - r.range(160, 320), Math.min(from[1], to[1]) - r.range(420, 620), E.z];
+          ms.push({ T: T + k * 0.18 - t0, fl, from, c1, c2, to, seed: r.int(0, 3), big: r() < 0.4 });
+        }
       }
     });
     // the enemy rounds on the dome: from its wall guns to a point on the shell facing it
@@ -65,7 +69,7 @@ export default {
       const from = [E.x + g[0] * es, E.y + bobE(t0 + tl) + g[1] * es, E.z];
       const th0 = r.range(0.45, 1.15);                        // the angle from the dome's top, toward the enemy
       const hitX = 250 * Math.sin(th0), hitY = -296 * Math.cos(th0);
-      const to = [H.x + DOME_K * hitX, H.y + bobH(t0 + th) + DOME_Y + DOME_K * hitY, H.z + 0.004];
+      const to = [H.x + hs * DOME_K * hitX, H.y + bobH(t0 + th) + hs * (DOME_Y + DOME_K * hitY), H.z + 0.004];
       const c1 = [from[0] - r.range(120, 220), from[1] - r.range(160, 260), E.z];
       const c2 = [to[0] + r.range(200, 320), to[1] - r.range(160, 240), H.z];
       shots.push({ tl, fl, from, c1, c2, to, hitX, hitY, seed: r.int(0, 3) });
@@ -92,7 +96,7 @@ export default {
     // the SISO barrage
     for (const m of ev.ms) {
       const th = m.T + m.fl;
-      if (u >= m.T && u < th + 1.4) missile(out, { path: (f) => bez3(m.from, m.c1, m.c2, m.to, f), ease: (f) => f * (0.6 + 0.4 * f), t0: ev.t0 + m.T, t1: ev.t0 + th, linger: 1.4, t, state: 'siso', s: 0.8, view, back: 1.3, len: 380, wind: 6, seed: m.seed, lights, glow: 1.2 });
+      if (u >= m.T && u < th + 1.4) missile(out, { path: (f) => bez3(m.from, m.c1, m.c2, m.to, f), ease: (f) => f * (0.6 + 0.4 * f), t0: ev.t0 + m.T, t1: ev.t0 + th, linger: 1.4, t, state: 'siso', s: 0.8, view, back: 1.3, len: 720, wind: 6, seed: m.seed, lights, glow: 2.2 });
       if (u >= th) {
         const dy = bobAt(ev.E, t) - bobAt(ev.E, ev.t0 + th);    // the hit rides on the island as it bobs
         blast(out, lights, flashes, { x: m.to[0], y: m.to[1] + dy, z: m.to[2], th: ev.t0 + th, t, size: m.big ? 0.55 : 0.38, seed: m.seed, sky: m.big ? 0.12 : 0 });

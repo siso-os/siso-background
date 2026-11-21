@@ -73,7 +73,7 @@ await withServer(async (base) => {
       const t = from + k / fps;
       const file = path.join(out, `f${String(k).padStart(5, '0')}.jpg`);
       if (fs.existsSync(file) && fs.statSync(file).size > 0) continue;   // a rerun picks up where the last one stopped
-      await ev(`(() => { const t = ${t}; scene.frame(t); const f = document.getElementById('fade'); if (f && scene.story) f.style.opacity = String(scene.story.fade(t)); return (window.__errors || []).length; })()`);
+      await ev(`(async () => { const t = ${t}; scene.frame(t); if (scene.artReady) { await scene.artReady(); scene.frame(t); } const f = document.getElementById('fade'); if (f && scene.story) f.style.opacity = String(scene.story.fade(t)); return (window.__errors || []).length; })()`);
       const shot = await c.send('Page.captureScreenshot', { format: 'jpeg', quality: jpeg, clip: { x: 0, y: 0, width: W, height: H, scale: 1 } });
       fs.writeFileSync(file + '.tmp', Buffer.from(shot.data, 'base64')); fs.renameSync(file + '.tmp', file);
       if (k % Math.max(1, Math.round(n / 10)) === 0) console.log(`frame ${k}/${n}  t ${t.toFixed(2)}  ${((Date.now() - t0) / (k + 1)).toFixed(0)} ms/frame`);

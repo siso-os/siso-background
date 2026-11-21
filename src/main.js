@@ -7,14 +7,16 @@
 // URL: ?t= start second, ?h= start hour (17.0), ?day= seconds per day (1440), ?freeze=1 one frame at ?t= and stop,
 // ?x= ?y= place the camera, ?seed=, ?auto=0 no drift, ?selftest=1 run the self-tests, ?stats=1 frame times,
 // ?dpr= cap for the 2D layers (1), ?sky= most backdrop pixels (2000000), ?events=patrol,flyby only these events,
-// ?zoom= how far the view is zoomed in (1.25; the self-test always uses 1), ?story=0|1, ?beat= start at a story beat.
+// ?zoom= how far the view is zoomed in (1.25; the self-test always uses 1), ?story=0|1, ?beat= start at a story beat,
+// ?art=0 the coded art only (no painted images), ?grade=blue the earlier navy night instead of black and ember.
 
 import { Renderer } from './engine/renderer.js';
 import { Camera } from './engine/camera.js';
 import { Director } from './engine/director.js';
 import { StoryDirector } from './story/director.js';
-import { lightAt } from './core/light.js';
+import { lightAt, setGrade } from './core/light.js';
 import { altitudeOf, LEVELS, setZoom, zoom } from './engine/view.js';
+import { loadSprites, artReady } from './core/sprites.js';
 
 export const HOME_X = 1500;   // the camera starts with the SISO home bay coming into view
 
@@ -31,6 +33,7 @@ export function params(search = location.search) {
     reduced: typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches,
     story: q.get('story') === '1' || (q.get('story') !== '0' && !['x', 'y', 'freeze', 'events', 'selftest'].some((k) => q.has(k))),
     hourSet: q.has('h'), beat: q.has('beat') ? Math.trunc(num('beat', 0)) : null,
+    art: q.get('art') !== '0', grade: q.get('grade') || 'ember',
   };
 }
 
@@ -39,6 +42,7 @@ export const hourAt = (t, P) => ((((P.h + (t / P.day) * 24) % 24) + 24) % 24);
 // The scene: camera, director and renderer, and frame(t) that draws the moment t from wherever the camera is.
 export function createScene(canvases, P, { preserve = false } = {}) {
   setZoom(P.zoom ?? 1);
+  setGrade(P.grade);
   const story = P.story ? new StoryDirector({ seed: P.seed }) : null;
   const drift = P.auto ? (P.reduced ? 20 : 40) : 0;
   const x0 = P.x !== null ? P.x - drift * P.t : HOME_X;
@@ -154,6 +158,8 @@ function storyBar(story, { jump }) {
 
 async function boot() {
   const P = params();
+  // the painted art (img/, built by tools/art.py): read its index first; images then load as they are wanted
+  if (P.art && !P.selftest) await loadSprites('img/');
   const $ = (id) => document.getElementById(id);
   const canvases = { sky: $('sky'), far: $('far'), mid: $('mid'), main: $('main'), near: $('near') };
   const scene = createScene(canvases, P, { preserve: P.freeze || P.selftest });
@@ -181,7 +187,7 @@ async function boot() {
   const bar = story && !P.freeze && !P.selftest ? storyBar(story, { jump: jumpTo }) : null;
   const fade = story ? $('fade') : null;
   window.scene = scene;
-  scene.clock = clock; scene.jump = jumpTo;
+  scene.clock = clock; scene.jump = jumpTo; scene.artReady = artReady;
 
   if (P.selftest) {
     const { selftest } = await import('./engine/selftest.js');
@@ -192,6 +198,8 @@ async function boot() {
   }
   if (P.freeze) {
     still = clock(start);
+    scene.frame(still);
+    await artReady();     // a still waits for its painted images, then draws again
     const st = scene.frame(still);
     if (fade) fade.style.opacity = story.fade(still).toFixed(3);
     const d = document.documentElement.dataset;

@@ -21,6 +21,13 @@ const K = [
 
 const mixc = (a, b, t) => [lerp(a[0], b[0], t), lerp(a[1], b[1], t), lerp(a[2], b[2], t)];
 
+// The grade over the keyframes. 'ember' (the default, the owner's art direction of 20 Nov: black and ember, "more
+// futuristic"): as the sun goes, the sky goes to black with an ember band on the horizon, the haze to smoke, the
+// ambient warm; by day it does nothing. 'blue' is the earlier navy night. setGrade() picks it for the page (?grade=).
+let GRADE = 'ember';
+export const setGrade = (g) => { GRADE = g === 'blue' ? 'blue' : 'ember'; };
+const EMBER = { top: [5, 4, 8], hor: [104, 36, 16], haze: [46, 24, 20], amb: [56, 36, 34], key: [255, 168, 116] };
+
 export function lightAt(hour = 12, { overcast = 0, altitude = 0 } = {}) {
   const h = ((hour % 24) + 24) % 24;
   let i = 0;
@@ -38,6 +45,16 @@ export function lightAt(hour = 12, { overcast = 0, altitude = 0 } = {}) {
     neon: lerp(a.neon, b.neon, f),
     stars: lerp(a.stars, b.stars, f),
   };
+  const dayT0 = (h - 5.6) / 13.2, elev0 = Math.sin(Math.PI * clamp(dayT0, -0.2, 1.2));
+  if (GRADE === 'ember') {
+    const night0 = 1 - smooth(-0.15, 0.2, elev0), low = clamp(1 - Math.abs(elev0 - 0.05) / 0.25);
+    const e = 0.86 * smooth(0.25, 1, night0) + 0.3 * low;
+    L.sky.top = mixc(L.sky.top, EMBER.top, e);
+    L.sky.horizon = mixc(L.sky.horizon, EMBER.hor, e * 0.9);
+    L.haze = mixc(L.haze, EMBER.haze, e * 0.85);
+    L.ambient = mixc(L.ambient, EMBER.amb, e * 0.7);
+    L.key = mixc(L.key, EMBER.key, e * 0.45);
+  }
   // Sun across the sky in screen fractions: rises at the left around 05:40, sets at the right around 18:40.
   const dayT = (h - 5.6) / 13.2;
   L.sun = { x: lerp(0.08, 0.92, dayT), elev: Math.sin(Math.PI * clamp(dayT, -0.2, 1.2)), up: dayT > 0 && dayT < 1 };

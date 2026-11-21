@@ -116,7 +116,8 @@ function paintExhaustClouds(ctx, o, p, rise, near) {
     smoke(RX - 16, -10, size, 0.54 * groundRoll, near * 0.86, 2);
     smoke(RX + 15, -7, size * 0.85, 0.61 * groundRoll, near * 0.9, 0);
   }
-  const spread = clamp(rise / 270), opacity = clamp(rise / 20);
+  // o.plume (0..1, default 1): how much of this column is left; the launch event thins it as its own plume ages
+  const spread = clamp(rise / 270), opacity = clamp(rise / 20) * (o.plume ?? 1);
   if (opacity > 0.01) {
     for (let i = 0; i < 26; i++) {
       const u = i / 25, y = lerp(-13, top + 9, u), age = (1 - u) * spread;
